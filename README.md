@@ -1,2 +1,2 @@
 # PoketBot
-protable battle bots
+portable battle bots
