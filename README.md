@@ -10,5 +10,5 @@ Pas une réflexion approfondie sur les différences d'accès aux études supéri
 
 <b>MAIS DES ROBOTS ! <b></br>
 </br>
-voir Wiki pour plus d'informations
+voir [Wiki](https://github.com/mux99/PocketBot/wiki) pour plus d'informations
 
