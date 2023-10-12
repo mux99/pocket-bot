@@ -2,20 +2,16 @@
 
 </script>
 
-<form action="?/register" method="post">
+<form method="post">
 	<label
 		>username
-		<input type="text" name="username" value="test" />
+		<input type="text" name="username" placeholder="username" required />
 	</label>
 
-	<label>
-		email
-		<input type="email" name="email" value="test@mail.com" />
-	</label>
 
 	<label>
 		password
-		<input type="password" name="password" value="mdp" />
+		<input type="password" name="password" placeholder="password" required />
 	</label>
 
 	<button>Register</button>
