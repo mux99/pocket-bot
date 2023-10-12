@@ -1,12 +1,6 @@
-import { initDB } from '$lib/server/db';
+import { initDatabase } from '$lib/server/db';
 
-let pool;
-
-try {
-	pool = await initDB();
-} catch (error) {
-	console.error('Error connecting to database', error);
-}
+const pool = await initDatabase();
 
 export async function handle({ event, resolve }) {
 	event.locals.pool = pool;
