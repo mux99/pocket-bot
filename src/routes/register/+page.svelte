@@ -1,5 +1,5 @@
 <script>
-
+	export let form;
 </script>
 
 <form method="post">
@@ -8,11 +8,22 @@
 		<input type="text" name="username" placeholder="username" required />
 	</label>
 
+	{#if form?.username}
+		<p class="error">{form.username}</p>
+	{/if}
+
+	{#if form?.db}
+		<p class="error">{form.db}</p>
+	{/if}
 
 	<label>
 		password
 		<input type="password" name="password" placeholder="password" required />
 	</label>
+
+	{#if form?.password}
+		<p class="error">{form.password}</p>
+	{/if}
 
 	<button>Register</button>
 </form>

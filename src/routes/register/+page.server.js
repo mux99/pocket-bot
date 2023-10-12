@@ -1,10 +1,14 @@
-export const actions = {
-	register: async ({ request }) => {
-		const data = await request.formData();
-		const username = data.get('username');
-		const email = data.get('email');
-		const password = data.get('password');
+import { register } from '$lib/server/account';
+import { fail, redirect } from '@sveltejs/kit';
 
-		console.log(username, email, password);
+export const actions = {
+	default: async ({ cookies, request, locals }) => {
+		try {
+			await register(request, cookies, locals);
+		} catch (error) {
+			return fail(400, error.body);
+		}
+
+		throw redirect(303, '/');
 	}
 };
