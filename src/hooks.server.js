@@ -1,10 +1,17 @@
-import { connectToDB } from '$lib/db';
+import { initDB } from '$lib/server/db';
 
-export const handle = async ({ event, resolve }) => {
-	const pool = await connectToDB();
-	event.locals = { pool };
+let pool;
+
+try {
+	pool = await initDB();
+} catch (error) {
+	console.error('Error connecting to database', error);
+}
+
+export async function handle({ event, resolve }) {
+	event.locals.pool = pool;
+
 	const response = await resolve(event);
-	pool.release();
 
 	return response;
-};
+}
