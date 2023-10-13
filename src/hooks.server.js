@@ -1,6 +1,7 @@
-import { initDatabase } from '$lib/server/db';
+import { createPool, testConnection } from '$lib/server/db';
 
-const pool = await initDatabase();
+const pool = createPool();
+await testConnection(pool);
 
 export async function handle({ event, resolve }) {
 	event.locals.pool = pool;

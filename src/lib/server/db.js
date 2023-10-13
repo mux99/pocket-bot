@@ -13,7 +13,9 @@ import {
  * Creates a new connection pool to a PostgreSQL database.
  * @returns {Pool} A new instance of the Pool class from the 'pg' library.
  */
-function createPool() {
+export function createPool() {
+	console.info('Creating a new connection pool to PostgreSQL...');
+
 	return new Pool({
 		host: POSTGRES_HOST || 'localhost',
 		port: POSTGRES_PORT || 5432,
@@ -28,32 +30,9 @@ function createPool() {
  * @param {Object} pool - The pool object used to connect to the database.
  * @returns {Promise<void>} - A promise that resolves when the connection is successful.
  */
-async function testConnection(pool) {
+export async function testConnection(pool) {
 	const { rows } = await pool.query('SELECT NOW()');
 	if (rows.length) {
-		console.log(`Connected to PostgreSQL`);
+		console.info('Successfully connected to PostgreSQL');
 	}
-}
-
-/**
- * Logs the connection details to the console.
- */
-function logConnectionDetails() {
-	console.log(`Connection details:
-- Host: ${POSTGRES_HOST || 'localhost'}
-- Port: ${POSTGRES_PORT || 5432}
-- Database: ${POSTGRES_DATABASE || 'postgres'}
-- User: ${POSTGRES_USER || 'postgres'}
-- Password: ${POSTGRES_PASSWORD || 'postgres'}`);
-}
-
-/**
- * Initializes the database connection pool tests the connection and log connection details.
- * @returns {Promise<Pool>} A promise that resolves with the connection pool object.
- */
-export async function initDatabase() {
-	const pool = createPool();
-	await testConnection(pool);
-	logConnectionDetails();
-	return pool;
 }
