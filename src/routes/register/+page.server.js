@@ -1,10 +1,23 @@
-import { register } from '$lib/server/account';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect, error, fail } from '@sveltejs/kit';
+import {
+	getFormData,
+	checkFormFields,
+	hashPassword,
+	createUser,
+	throwErrors
+} from '../../lib/server/account.js';
 
 export const actions = {
-	default: async ({ cookies, request, locals }) => {
+	default: async ({ request, locals }) => {
 		try {
-			await register(request, cookies, locals);
+			let errors = {};
+
+			const { username, password } = await getFormData(request);
+			errors = checkFormFields(username, password);
+			throwErrors(errors);
+			const hashedPasword = await hashPassword(password);
+			errors = await createUser(locals, username, hashedPasword);
+			throwErrors(errors);
 		} catch (error) {
 			return fail(400, error.body);
 		}
