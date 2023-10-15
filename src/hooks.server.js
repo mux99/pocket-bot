@@ -10,3 +10,7 @@ export async function handle({ event, resolve }) {
 
 	return response;
 }
+
+export function handleError({ event, error }) {
+	console.error(error.stack);
+}

@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
+// import { v4 as uuidv4 } from 'uuid';
 
 export async function getFormData(request) {
 	const formData = await request.formData();
@@ -10,6 +11,7 @@ export async function getFormData(request) {
 
 export function checkFormFields(username, password) {
 	let errors = {};
+
 	if (!username || typeof username !== 'string') {
 		errors.username = 'Username is required';
 	}
@@ -23,35 +25,59 @@ export function checkFormFields(username, password) {
 
 export function throwErrors(errors) {
 	if (Object.keys(errors).length) {
-		throw error(400, errors);
+		throw Error('salut');
 	}
 }
 
-export async function hashPassword(password) {
-	const saltRounds = 10;
-
-	try {
-		const hashedPassword = await bcrypt.hash(password, saltRounds);
-		return hashedPassword;
-	} catch (error) {
-		console.error(error);
-	}
+export async function hashPassword(password, saltRounds) {
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
+	return hashedPassword;
 }
 
 export async function createUser(locals, username, hashedPassword) {
 	let errors = {};
+	let query = null;
 
 	try {
-		await locals.pool.query({
-			text: 'INSERT INTO users (username, password) VALUES ($1, $2)',
+		query = await locals.pool.query({
+			text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
 			values: [username, hashedPassword]
 		});
+
+		return {
+			errors: errors,
+			user_id: query.rows[0].user_id
+		};
 	} catch (error) {
 		if (error.code === '23505') {
 			errors.db = 'Username is already taken';
+
+			return {
+				errors: errors,
+				user_id: null
+			};
 		}
-		console.error(error);
-	} finally {
-		return errors;
+		throw Error(error);
 	}
+}
+
+export function generateUuid() {
+	const uuid = crypto.randomUUID();
+	return uuid;
+}
+
+export async function setSession(locals, user_id, uuid, cookies) {
+	// generate a date 7 days from now
+	const now = new Date();
+	const expires_at = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+	await locals.pool.query({
+		text: 'INSERT INTO sessions (user_id, uuid, expires_at) VALUES ($1, $2, $3)',
+		values: [user_id, uuid, expires_at]
+	});
+
+	cookies.set('uuid', uuid, {
+		path: '/',
+		expires: expires_at
+	});
 }
