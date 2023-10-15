@@ -81,3 +81,18 @@ export async function setSession(locals, user_id, uuid, cookies) {
 		expires: expires_at
 	});
 }
+
+export async function getUserinfo({ cookies, locals }) {
+	const uuid = cookies.get('uuid');
+
+	if (!uuid) {
+		return null;
+	}
+
+	const { rows } = await locals.pool.query({
+		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
+		values: [uuid]
+	});
+
+	return rows[0];
+}
