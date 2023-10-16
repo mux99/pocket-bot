@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS sessions (
     user_id INT NOT NULL,
     uuid VARCHAR(255) UNIQUE NOT NULL,
     expires_at TIMESTAMPTZ NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
