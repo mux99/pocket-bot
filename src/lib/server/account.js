@@ -1,6 +1,4 @@
-import { error } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
-// import { v4 as uuidv4 } from 'uuid';
 
 export async function getFormData(request) {
 	const formData = await request.formData();
@@ -10,14 +8,31 @@ export async function getFormData(request) {
 }
 
 export function checkFormFields(username, password) {
-	let errors = {};
+	let errors = {
+		password: []
+	};
 
 	if (!username || typeof username !== 'string') {
 		errors.username = 'Username is required';
 	}
 
 	if (!password || typeof password !== 'string') {
-		errors.password = 'Password is required';
+		errors.password.push('Password is required');
+	}
+
+	if (password.length < 8) {
+		errors.password.push('Password must be at least 8 characters long');
+	}
+
+	if (!/[A-Z]/.test(password)) {
+		errors.password.push('Password must contain at least one uppercase character');
+	}
+	if (!/\d/.test(password)) {
+		errors.password.push('Password must contain at least one number');
+	}
+
+	if (!errors.password.length) {
+		return {};
 	}
 
 	return errors;

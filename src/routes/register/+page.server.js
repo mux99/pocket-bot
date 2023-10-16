@@ -30,7 +30,6 @@ export const actions = {
 		}
 
 		const uuid = generateUuid();
-		console.log(uuid);
 		await setSession(locals, user_id, uuid, cookies);
 
 		throw redirect(303, '/');

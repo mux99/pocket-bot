@@ -22,7 +22,9 @@
 	</label>
 
 	{#if form?.password}
-		<p class="error">{form.password}</p>
+		{#each form.password as passwordError}
+			<p class="error">{passwordError}</p>
+		{/each}
 	{/if}
 
 	<button>Register</button>
