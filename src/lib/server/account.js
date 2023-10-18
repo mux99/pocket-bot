@@ -111,3 +111,12 @@ export async function getUserinfo({ cookies, locals }) {
 
 	return rows[0];
 }
+
+export async function checkIfAdmin({ locals }) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT * FROM admins WHERE user_id = $1',
+		values: [locals.userInfo.user_id]
+	});
+
+	return rows[0] ? true : false;
+}
