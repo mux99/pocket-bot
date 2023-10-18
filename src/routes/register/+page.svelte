@@ -2,30 +2,52 @@
 	export let form;
 </script>
 
-<form method="post">
-	<label
-		>username
-		<input type="text" name="username" placeholder="username" required />
-	</label>
+<div class="flex flex-col gap-14 my-14 mx-72">
+	<p class="text-white font-semibold text-5xl w-2/3">
+		Join the pocket bot community and start playing now.
+	</p>
+	<form
+		method="post"
+		class="bg-modal rounded-3xl flex flex-col gap-8 p-8 justify-center text-3xl"
+	>
+		<div class="flex flex-col gap-2">
+			<label for="username" class="text-white font-semibold">Username </label>
+			<input
+				type="text"
+				name="username"
+				placeholder="Username"
+				required
+				class="rounded-lg p-1 placeholder:text-white placeholder:font-light bg-gradient-to-r from-orange-800 to-yellow-500 drop-shadow-2xl"
+			/>
+		</div>
 
-	{#if form?.username}
-		<p class="error">{form.username}</p>
-	{/if}
+		{#if form?.username}
+			<p class="text-red-600">{form.username}</p>
+		{/if}
 
-	{#if form?.db}
-		<p class="error">{form.db}</p>
-	{/if}
+		{#if form?.db}
+			<p class="text-red-600">{form.db}</p>
+		{/if}
 
-	<label>
-		password
-		<input type="password" name="password" placeholder="password" required />
-	</label>
+		<div class="flex flex-col gap-2">
+			<label for="password" class="text-white font-semibold">Password </label>
+			<input
+				type="password"
+				name="password"
+				placeholder="Password"
+				required
+				class="bg-background rounded-lg p-1 text-white"
+			/>
+		</div>
 
-	{#if form?.password}
-		{#each form.password as passwordError}
-			<p class="error">{passwordError}</p>
-		{/each}
-	{/if}
+		{#if form?.password}
+			{#each form.password as passwordError}
+				<p class="text-red-600">{passwordError}</p>
+			{/each}
+		{/if}
 
-	<button>Register</button>
-</form>
+		<div class="text-right">
+			<button class="text-white font-semibold bg-background m-auto rounded-lg p-1">Register</button>
+		</div>
+	</form>
+</div>
