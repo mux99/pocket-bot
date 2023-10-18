@@ -1,0 +1,50 @@
+const int capteur1 = A0; // Broche pour le premier capteur Hall
+const int capteur2 = A1; // Broche pour le deuxième capteur Hall
+const int capteur3 = A2; // Broche pour le troisième capteur Hall
+bool alive = false; // boolean qui renseigne l'état robot
+
+//initialisons la communication série et définissons les broches comme des entrées
+void setup() {
+    Serial.begin(115200);
+    pinMode(capteur1, INPUT);
+    pinMode(capteur2, INPUT);
+    pinMode(capteur3, INPUT); 
+}
+
+//lit les valeurs analogiques des trois capteurs à effet Hall à l'aide de la fonction analogRead() et stocke ces valeurs
+void loop() {
+    int value1 = analogRead(capteur1);
+    int value2 = analogRead(capteur2);
+    int value3 = analogRead(capteur3);
+
+    //check si les valeurs des capteurs sont supérieurs à 500 (détecte un aimant) et print un message d'information si un aimant est détecté ou non 
+    if (value1 > 500 || value2 > 500 || value3 > 500) {
+        alive = true;
+    } else {
+        alive = false;
+    }
+
+    Serial.print("État : ");
+    if (alive) {
+        Serial.println("Vivant");
+    } else {
+        Serial.println("Mort");
+    }
+
+    int count = 0
+
+    if (value1 > 500) {
+        count++;
+    }
+    if (value2 > 500) {
+        count++;
+    }
+    if (value3 > 500) {
+        count++;
+    }
+
+    Serial.print("Nombre de vie(s): ");
+    Serial.println(count);
+
+    delay(10000); // Attendre 10 seconde avant de refaire la lecture
+}
