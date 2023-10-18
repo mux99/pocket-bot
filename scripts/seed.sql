@@ -16,8 +16,6 @@ VALUES
   ('Irene', '$2b$10$Uo.576WqbP7l7zcHr2SN7./Dw/iEq9HyZ/7wGVh/pifGSCviyu6Sq'),
   ('Quinn', '$2b$10$d/fCrQl3RBSV7BaSJDq0yel0X2lCoNgo5fpmhxdvPbscek8BKUcNO');
 
-
-
 INSERT INTO sessions (user_id, uuid, expires_at)
 VALUES
   (1, 'b531c4e2-3459-4e83-955c-942f71d52133', '2023-10-15 08:43:46.562+00'),
