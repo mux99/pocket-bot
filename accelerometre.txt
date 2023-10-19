@@ -3,18 +3,18 @@
 #include <Adafruit_ADXL345_U.h>
 
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
-bool estEnPositionDebout = true; // Booléen pour enregistrer l'état du robot.
+bool isStanding = true; // Boolean to record the robot's state.
 
 void setup(void)
 {
-   // Démarre la communication série à 9600 bauds.
+   // Start serial communication at 9600 baud.
    Serial.begin(9600);
 
-   // Vérifie si le capteur ADXL345 est disponible.
+   // Check if the ADXL345 sensor is available.
    if (!accel.begin())
    {
-      Serial.println("Aucun capteur valide trouvé");
-      while (1); // Boucle infinie si le capteur n'est pas trouvé.
+      Serial.println("No valid sensor found");
+      while (1); // Infinite loop if the sensor is not found.
    }
 }
 
@@ -22,26 +22,26 @@ void loop(void)
 {
    sensors_event_t event;
 
-   // Obtient les données d'accélération du capteur ADXL345.
+   // Get acceleration data from the ADXL345 sensor.
    accel.getEvent(&event);
 
-   // Affiche les valeurs d'accélération dans les trois axes (X, Y, Z).
+   // Display acceleration values in three axes (X, Y, Z).
    Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
    Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
    Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");
-   Serial.println("m/s^2 "); // Unité des valeurs d'accélération.
+   Serial.println("m/s^2 "); // Unit for acceleration values.
 
-   // Vérifie si le robot est à l'envers (vous pouvez ajuster la valeur en fonction de votre configuration).
+   // Check if the robot is upside down (you can adjust the value based on your configuration).
    if (event.acceleration.z < -9.0)
    {
-      estEnPositionDebout = false;
-      Serial.println("Le robot n'est pas debout.");
+      isStanding = false;
+      Serial.println("The robot is not standing.");
    }
    else
    {
-      estEnPositionDebout = true;
-      Serial.println("Le robot est debout.");
+      isStanding = true;
+      Serial.println("The robot is standing.");
    }
 
-   delay(500); // Attend 500 millisecondes avant de lire à nouveau les données.
+   delay(500); // Wait for 500 milliseconds before reading data again.
 }
