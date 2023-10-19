@@ -1,0 +1,36 @@
+#include <Wire.h>
+#include <MPU6050.h>
+
+MPU6050 mpu;
+
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+
+  mpu.initialize();
+
+  if (mpu.testConnection()) {
+    Serial.println("MPU6050 connection successful");
+  } else {
+    Serial.println("MPU6050 connection failed");
+  }
+}
+
+void loop() {
+  int16_t ax, ay, az;
+  mpu.getAcceleration(&ax, &ay, &az);
+
+  // ajuster les seuils en fonction de l'accéléromètre
+  int seuilBas = -8000;
+  int seuilHaut = 8000;
+
+  if (az > seuilHaut) {
+    Serial.println("Le robot est debout.");
+  } else if (az < seuilBas) {
+    Serial.println("Le robot n'est pas debout.");
+  } else {
+    Serial.println("Le robot est en position intermédiaire.");
+  }
+
+  delay(1000); // Attendre une seconde avant de lire à nouveau les données de l'accéléromètre.
+}
