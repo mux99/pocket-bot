@@ -1,25 +1,26 @@
 #include <Wire.h>
-#include <Adafruit_Sensor.h> 
+#include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL345_U.h>
 
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified();
+bool estEnPositionDebout = true; // Booléen pour enregistrer l'état du robot.
 
-void setup(void) 
+void setup(void)
 {
    // Démarre la communication série à 9600 bauds.
-   Serial.begin(9600);  
+   Serial.begin(9600);
 
    // Vérifie si le capteur ADXL345 est disponible.
-   if(!accel.begin())
+   if (!accel.begin())
    {
       Serial.println("Aucun capteur valide trouvé");
-      while(1); // Boucle infinie si le capteur n'est pas trouvé.
+      while (1); // Boucle infinie si le capteur n'est pas trouvé.
    }
 }
 
-void loop(void) 
+void loop(void)
 {
-   sensors_event_t event; 
+   sensors_event_t event;
 
    // Obtient les données d'accélération du capteur ADXL345.
    accel.getEvent(&event);
@@ -29,6 +30,18 @@ void loop(void)
    Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
    Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");
    Serial.println("m/s^2 "); // Unité des valeurs d'accélération.
+
+   // Vérifie si le robot est à l'envers (vous pouvez ajuster la valeur en fonction de votre configuration).
+   if (event.acceleration.z < -9.0)
+   {
+      estEnPositionDebout = false;
+      Serial.println("Le robot n'est pas debout.");
+   }
+   else
+   {
+      estEnPositionDebout = true;
+      Serial.println("Le robot est debout.");
+   }
 
    delay(500); // Attend 500 millisecondes avant de lire à nouveau les données.
 }
