@@ -18,6 +18,6 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 
 CREATE TABLE IF NOT EXISTS admins (
-  user_id INT NOT NULL,
+  user_id INT NOT NULL PRIMARY KEY,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
