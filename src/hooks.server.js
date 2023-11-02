@@ -11,7 +11,9 @@ export async function handle({ event, resolve }) {
 
 	if (event.url.pathname !== '/login' && event.url.pathname !== '/register') {
 		if (!event.locals.userInfo) throw redirect(308, '/login');
-	}
+	} else {
+		if (event.locals.userInfo) throw redirect(303, '/');
+	};
 
 	if (event.url.pathname.startsWith('/admin')) {
 		const isAdmin = await checkIfAdmin(event);
@@ -21,7 +23,7 @@ export async function handle({ event, resolve }) {
 	const response = await resolve(event);
 
 	return response;
-}
+};
 
 export function handleError({ error }) {
 	console.error(error.stack);
