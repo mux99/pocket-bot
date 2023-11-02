@@ -132,3 +132,13 @@ export async function checkIfPasswordIsCorrect(locals, username, password) {
 	const result = await bcrypt.compare(password, hash);
 	return result;
 };
+
+export async function getUserId(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT user_id AS id FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	const id = rows[0].id;
+	return id;
+};
