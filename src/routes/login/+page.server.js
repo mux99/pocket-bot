@@ -15,16 +15,16 @@ export const actions = {
         const check1 = await checkIfUsernameExists(locals, username);
         if (!check1) {
             return {
-                success: '',
-                error: 'Username does not exist'
+                success: false,
+                message: 'Username does not exist'
             };
         };
 
         const check2 = await checkIfPasswordIsCorrect(locals, username, password);
         if (!check2) {
             return {
-                success: '',
-                error: 'Incorrect password'
+                success: false,
+                message: 'Incorrect password'
             };
         };
 
@@ -33,8 +33,8 @@ export const actions = {
         await setSession(locals, userId, uuid, cookies);
 
         return {
-            success: 'Successfully logged in',
-            error: ''
+            success: true,
+            message: 'Successfully logged in'
         };
     }
 };
