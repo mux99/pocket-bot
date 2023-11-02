@@ -121,3 +121,14 @@ export async function checkIfUsernameExists(locals, username) {
 	const result = rows[0].exists;
 	return result;
 };
+
+export async function checkIfPasswordIsCorrect(locals, username, password) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT password AS hash FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	const hash = rows[0].hash;
+	const result = await bcrypt.compare(password, hash);
+	return result;
+};
