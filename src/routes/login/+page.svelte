@@ -18,11 +18,11 @@
 
     <button>Login</button>
 
-    {#if form?.success}
-        <p>{form.success}</p>
-    {/if}
-
-    {#if form?.error}
-        <p>{form.error}</p>
+    {#if form?.message}
+        {#if form?.success}
+            <p class="text-green-600">{form?.message}</p>
+        {:else}
+            <p class="text-red-600">{form?.message}</p>
+        {/if}
     {/if}
 </form>
