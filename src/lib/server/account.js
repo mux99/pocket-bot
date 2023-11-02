@@ -111,3 +111,13 @@ export async function getUserinfo({ cookies, locals }) {
 
 	return rows[0];
 }
+
+export async function checkIfUsernameExists(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
+		values: [username]
+	});
+
+	const result = rows[0].exists;
+	return result;
+};
