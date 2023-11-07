@@ -12,8 +12,7 @@ export const actions = {
     default: async ({ request, locals, cookies }) => {
         const { username, password } = await getFormData(request);
 
-        const check1 = await checkIfUsernameExists(locals, username);
-        if (!check1) {
+        if (!await checkIfUsernameExists(locals, username)) {
             return {
                 success: false,
                 message: 'Username does not exist'
