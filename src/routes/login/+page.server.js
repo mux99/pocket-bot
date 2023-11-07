@@ -19,8 +19,7 @@ export const actions = {
             };
         };
 
-        const check2 = await checkIfPasswordIsCorrect(locals, username, password);
-        if (!check2) {
+        if (!await checkIfPasswordIsCorrect(locals, username, password)) {
             return {
                 success: false,
                 message: 'Incorrect password'
