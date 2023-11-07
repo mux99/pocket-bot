@@ -35,4 +35,4 @@ export const actions = {
             message: 'Successfully logged in'
         };
     }
-};
+}
