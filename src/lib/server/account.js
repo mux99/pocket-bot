@@ -118,9 +118,8 @@ export async function checkIfAdmin({ locals }) {
 		values: [locals.userInfo.user_id]
 	});
 
-	const result = rows[0].exists;
-	return result;
-};
+	return rows[0].exists;
+}
 
 export async function checkIfPasswordIsCorrect(locals, username, password) {
 	const { rows } = await locals.pool.query({
