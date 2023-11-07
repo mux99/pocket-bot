@@ -127,10 +127,8 @@ export async function checkIfPasswordIsCorrect(locals, username, password) {
 		values: [username]
 	});
 
-	const hash = rows[0].hash;
-	const result = await bcrypt.compare(password, hash);
-	return result;
-};
+	return await bcrypt.compare(password, rows[0].hash);
+}
 
 export async function getUserId(locals, username) {
 	const { rows } = await locals.pool.query({
