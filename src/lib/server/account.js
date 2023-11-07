@@ -136,6 +136,5 @@ export async function getUserId(locals, username) {
 		values: [username]
 	});
 
-	const id = rows[0].id;
-	return id;
-};
+	return rows[0].id;
+}
