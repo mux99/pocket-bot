@@ -118,8 +118,9 @@ export async function checkIfUsernameExists(locals, username) {
 		values: [username]
 	});
 
-	return rows[0].exists;
-}
+	const result = rows[0].exists;
+	return result;
+};
 
 export async function checkIfPasswordIsCorrect(locals, username, password) {
 	const { rows } = await locals.pool.query({
@@ -127,8 +128,10 @@ export async function checkIfPasswordIsCorrect(locals, username, password) {
 		values: [username]
 	});
 
-	return await bcrypt.compare(password, rows[0].hash);
-}
+	const hash = rows[0].hash;
+	const result = await bcrypt.compare(password, hash);
+	return result;
+};
 
 export async function getUserId(locals, username) {
 	const { rows } = await locals.pool.query({
@@ -136,5 +139,6 @@ export async function getUserId(locals, username) {
 		values: [username]
 	});
 
-	return rows[0].id;
-}
+	const id = rows[0].id;
+	return id;
+};
