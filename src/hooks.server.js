@@ -2,7 +2,7 @@ import { createPool, testConnection } from '$lib/server/db';
 import { getUserinfo } from '$lib/server/account';
 import { redirect } from '@sveltejs/kit';
 
-const pool = createPool();
+export const pool = createPool();
 await testConnection(pool);
 
 export async function handle({ event, resolve }) {
