@@ -1,4 +1,5 @@
 <script>
+    /** @type {import('./$types').ActionData} */
     export let form;
 </script>
 
@@ -8,13 +9,13 @@
         <input type="text" name="username" placeholder="username" required />
     </label>
 
-    {#if form?.receiver}
-        <p class="error">{form.receiver}</p>
-    {/if}
+    <button>Send friend request</button>
 
-    {#if form?.request}
-        <p class="error">{form.request}</p>
+    {#if form?.message}
+        {#if form?.success}
+            <p class="text-green-600">{form?.message}</p>
+        {:else}
+            <p class="text-red-600">{form?.message}</p>
+        {/if}
     {/if}
-
-    <button>Send a friend request</button>
 </form>
