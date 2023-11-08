@@ -111,3 +111,30 @@ export async function getUserinfo({ cookies, locals }) {
 
 	return rows[0];
 }
+
+export async function checkIfUsernameExists(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
+		values: [username]
+	});
+
+	return rows[0].exists;
+}
+
+export async function checkIfPasswordIsCorrect(locals, username, password) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT password AS hash FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	return await bcrypt.compare(password, rows[0].hash);
+}
+
+export async function getUserId(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT user_id AS id FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	return rows[0].id;
+}

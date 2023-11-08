@@ -11,7 +11,9 @@ export async function handle({ event, resolve }) {
 
 	if (event.url.pathname !== '/login' && event.url.pathname !== '/register') {
 		if (!event.locals.userInfo) throw redirect(308, '/login');
-	}
+	} else {
+		if (event.locals.userInfo) throw redirect(303, '/');
+	};
 
 	const response = await resolve(event);
 
