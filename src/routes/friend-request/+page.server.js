@@ -1,28 +1,44 @@
-import {fail} from "@sveltejs/kit";
 import {
     getFormData,
-    getReceiverId,
-    getSenderId,
     sendFriendRequest
-} from "$lib/server/friendRequest.js";
+} from "$lib/server/friendRequest";
+import {
+    getUserId,
+    checkIfUsernameExists
+} from "$lib/server/account";
 
+/** @type {import('./$types').Actions} */
 export const actions = {
     default: async ({ request, locals, cookies }) => {
-        let errors = {};
-        let receiverId = null;
-
         const { username } = await getFormData(request);
 
-        ({ errors, receiverId } = await getReceiverId(locals, username));
-        if (Object.keys(errors).length) {
-            return fail(400, errors);
+        if (!await checkIfUsernameExists(locals, username)) {
+            return {
+                success: false,
+                message: 'Username does not exist'
+            };
         }
 
-        const senderId = await getSenderId(cookies, locals);
+        const senderId = locals.userInfo.user_id;
+        const receiverId = await getUserId(locals, username);
 
-        errors = await sendFriendRequest(locals, senderId, receiverId);
-        if (Object.keys(errors).length) {
-            return fail(400, errors);
+        if (senderId === receiverId) {
+            return {
+                success: false,
+                message: 'No self-request'
+            };
         }
+
+        if (!await sendFriendRequest(locals, senderId, receiverId)) {
+            return {
+                success: false,
+                message: 'Request already sent'
+            };
+        };
+
+        return {
+            success: true,
+            message: 'Request sent successfully'
+        };
     }
 };
