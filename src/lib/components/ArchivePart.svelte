@@ -6,7 +6,7 @@
 
     function durationToString(duration) {
         duration /=1000;
-        let minute = (duration / 60).toFixed(0);
+        let minute = Math.floor(duration / 60);
         if (duration % 60 === 0)
             return `${minute} m`;
         return `${minute} m ${(duration % 60).toFixed(0)} s`;
