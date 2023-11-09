@@ -8,7 +8,7 @@
     let selectSortType = "date";
     const sortTypes = {
         date: (a, b) => a.date > b.date ? 1 : -1,
-        duration: (a, b) => a.duration > b.duration ? 1 : -1,
+        duration: (a, b) => parseInt(a.duration) > parseInt(b.duration) ? -1 : 1,
         won: (a, b) => a.winner_id === user.id ? 1 : -1,
         lost: (a, b) => a.loser_id === user.id ? 1 : -1
     };
