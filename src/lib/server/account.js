@@ -137,6 +137,7 @@ export async function getUserId(locals, username) {
 	});
 
 	return rows[0].id;
+}
 
 export async function checkIfAdmin({ locals }) {
 	const { rows } = await locals.pool.query({
