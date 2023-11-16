@@ -139,6 +139,16 @@ export async function getUserId(locals, username) {
 	return rows[0].id;
 }
 
+export async function checkIfAdmin({ locals }) {
+	if (!locals.userInfo) return false;
+	const { rows } = await locals.pool.query({
+		text: 'SELECT * FROM admins WHERE user_id = $1',
+		values: [locals.userInfo.user_id]
+	});
+
+	return rows[0];
+}
+  
 export async function getArchiveParts(userId) {;
 	const {rows} = await pool.query({
 	text: "SELECT\n" +

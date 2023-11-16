@@ -3,7 +3,7 @@ import { getUserinfo } from '$lib/server/account';
 import { redirect } from '@sveltejs/kit';
 
 export const pool = createPool();
-await testConnection(pool);
+testConnection(pool);
 
 export async function handle({ event, resolve }) {
 	event.locals.pool = pool;
@@ -20,6 +20,6 @@ export async function handle({ event, resolve }) {
 	return response;
 }
 
-export function handleError({ event, error }) {
+export function handleError({ error }) {
 	console.error(error.stack);
 }
