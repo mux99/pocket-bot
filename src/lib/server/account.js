@@ -170,3 +170,13 @@ export async function deleteDbSession(locals) {
 export async function deleteBrowserSession( cookies) {
 	await cookies.delete('uuid')
 }
+
+export async function usernameToId(username) {
+	const {rows} = await pool.query({
+		text: 'SELECT user_id FROM users WHERE username=$1;',
+		values: [username]
+	});
+	if (!rows.length)
+		return null;
+	return rows[0].user_id;
+}

@@ -54,3 +54,13 @@ CREATE TABLE IF NOT EXISTS archive_parts (
     CONSTRAINT archive_parts_participants CHECK (winner != loser),
     CONSTRAINT archive_parts_duration CHECK (duration_ms > 0)
 );
+
+CREATE TABLE IF NOT EXISTS part_proposal (
+    requester_id INT,
+    opponent_id INT,
+    accepted BOOLEAN NULL DEFAULT NULL,
+    CONSTRAINT pk_part_proposal PRIMARY KEY (requester_id),
+    CONSTRAINT fk_part_proposal_requester FOREIGN KEY (requester_id) REFERENCES users(user_id),
+    CONSTRAINT fk_part_proposal_participant FOREIGN KEY (opponent_id) REFERENCES users(user_id),
+    CONSTRAINT part_proposal_requester_participant CHECK (requester_id != opponent_id)
+);
