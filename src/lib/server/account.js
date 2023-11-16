@@ -145,5 +145,5 @@ export async function checkIfAdmin({ locals }) {
 		values: [locals.userInfo.user_id]
 	});
 
-	return rows[0] ? true : false;
+	return rows[0];
 }
