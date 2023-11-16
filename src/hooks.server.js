@@ -1,5 +1,5 @@
 import { createPool, testConnection } from '$lib/server/db';
-import { getUserinfo, checkIfAdmin } from '$lib/server/account';
+import { getUserinfo } from '$lib/server/account';
 import { redirect } from '@sveltejs/kit';
 
 export const pool = createPool();
