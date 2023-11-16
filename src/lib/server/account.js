@@ -140,6 +140,7 @@ export async function getUserId(locals, username) {
 }
 
 export async function checkIfAdmin({ locals }) {
+	if (!locals.userInfo) return false;
 	const { rows } = await locals.pool.query({
 		text: 'SELECT * FROM admins WHERE user_id = $1',
 		values: [locals.userInfo.user_id]
