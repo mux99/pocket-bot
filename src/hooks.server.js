@@ -15,11 +15,6 @@ export async function handle({ event, resolve }) {
 		if (event.locals.userInfo) throw redirect(303, '/');
 	};
 
-	if (event.url.pathname.startsWith('/admin')) {
-		const isAdmin = await checkIfAdmin(event);
-		if (!isAdmin) throw redirect(308, '/');
-	}
-
 	const response = await resolve(event);
 
 	return response;
