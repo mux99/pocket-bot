@@ -4,9 +4,8 @@ import {redirect} from "@sveltejs/kit";
 export const load = async (serverLoadEvent) => {
     const user = await getUserinfo(serverLoadEvent);
     if (user == null)
-        throw redirect(303, '/');
+        throw redirect(303, '/login');
     user["parts"] = await getArchiveParts(user["user_id"]);
-    console.log(user["parts"])
     return {
         'user': user
     }

@@ -6,6 +6,13 @@ import {
     generateUuid,
     setSession
 } from '$lib/server/account';
+import {redirect} from "@sveltejs/kit";
+
+export const load = async (serverLoadEvent) => {
+    const {locals} = serverLoadEvent;
+    if (locals.userInfo)
+        throw redirect(308, '/');
+}
 
 /** @type {import('./$types').Actions} */
 export const actions = {

@@ -6,7 +6,13 @@ import {
 	createUser,
 	generateUuid,
 	setSession
-} from '../../lib/server/account.js';
+} from '$lib/server/account.js';
+
+export const load = async (serverLoadEvent) => {
+	const {locals} = serverLoadEvent;
+	if (locals.userInfo)
+		throw redirect('/');
+}
 
 export const actions = {
 	default: async ({ request, locals, cookies }) => {
@@ -21,9 +27,9 @@ export const actions = {
 			return fail(400, errors);
 		}
 
-		const hashedPasword = await hashPassword(password, saltRounds);
+		const hashedPassword = await hashPassword(password, saltRounds);
 
-		({ errors, user_id } = await createUser(locals, username, hashedPasword));
+		({ errors, user_id } = await createUser(locals, username, hashedPassword));
 
 		if (Object.keys(errors).length) {
 			return fail(400, errors);
