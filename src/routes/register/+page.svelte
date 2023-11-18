@@ -17,7 +17,7 @@
 				name="username"
 				placeholder="Username"
 				required
-				class="rounded-lg p-1 placeholder:text-white placeholder:font-light bg-gradient-to-r from-orange-800 to-yellow-500 drop-shadow-2xl"
+				class="bg-background rounded-lg p-1 text-white"
 			/>
 		</div>
 
