@@ -54,8 +54,7 @@ export function throwErrors(errors) {
 }
 
 export async function hashPassword(password, saltRounds) {
-	const hashedPassword = await bcrypt.hash(password, saltRounds);
-	return hashedPassword;
+	return await bcrypt.hash(password, saltRounds);
 }
 
 export async function createUser(locals, username, hashedPassword) {
@@ -72,8 +71,7 @@ export async function createUser(locals, username, hashedPassword) {
 }
 
 export function generateUuid() {
-	const uuid = crypto.randomUUID();
-	return uuid;
+	return crypto.randomUUID();
 }
 
 export async function setSession(locals, user_id, uuid, cookies) {
@@ -103,11 +101,12 @@ export async function getUserinfo({ cookies, locals }) {
 		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
 		values: [uuid]
 	});
+
 	return rows[0];
 }
 
-export async function checkIfUsernameExists(locals, username) {
-	const { rows } = await locals.pool.query({
+export async function checkIfUsernameExists(username) {
+	const { rows } = await pool.query({
 		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
 		values: [username]
 	});
@@ -115,17 +114,17 @@ export async function checkIfUsernameExists(locals, username) {
 	return rows[0].exists;
 }
 
-export async function checkIfPasswordIsCorrect(locals, username, password) {
-	const { rows } = await locals.pool.query({
+export async function checkIfPasswordIsCorrect(username, password) {
+	const { rows } = await pool.query({
 		text: 'SELECT password AS hash FROM users WHERE username = $1',
 		values: [username]
 	});
-
+	if (!rows)return false;
 	return await bcrypt.compare(password, rows[0].hash);
 }
 
 export async function getUserId(locals, username) {
-	const { rows } = await locals.pool.query({
+	const {rows} = await locals.pool.query({
 		text: 'SELECT user_id AS id FROM users WHERE username = $1',
 		values: [username]
 	});
@@ -143,7 +142,7 @@ export async function checkIfAdmin({ locals }) {
 	return rows[0];
 }
   
-export async function getArchiveParts(userId) {;
+export async function getArchiveParts(userId) {
 	const {rows} = await pool.query({
 	text: "SELECT\n" +
 		"    part_id AS \"id\",\n" +

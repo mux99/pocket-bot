@@ -23,3 +23,8 @@ export async function handle({ event, resolve }) {
 export function handleError({ error }) {
 	console.error(error.stack);
 }
+
+import {
+	API_URL
+} from '$env/static/private';
+export const apiUrl = API_URL === undefined ? 'http://localhost:5173/' : API_URL;

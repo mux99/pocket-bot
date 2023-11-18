@@ -12,14 +12,14 @@ export const actions = {
     default: async ({ request, locals, cookies }) => {
         const { username, password } = await getFormData(request);
 
-        if (!await checkIfUsernameExists(locals, username)) {
+        if (!await checkIfUsernameExists(username)) {
             return {
                 success: false,
                 message: 'Username does not exist'
             };
         };
 
-        if (!await checkIfPasswordIsCorrect(locals, username, password)) {
+        if (!await checkIfPasswordIsCorrect(username, password)) {
             return {
                 success: false,
                 message: 'Incorrect password'
