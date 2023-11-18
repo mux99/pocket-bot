@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import {pool} from "../../hooks.server.js";
 
 export async function getFormData(request) {
 	const formData = await request.formData();
@@ -108,6 +109,61 @@ export async function getUserinfo({ cookies, locals }) {
 		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
 		values: [uuid]
 	});
+	return rows[0];
+}
+
+export async function checkIfUsernameExists(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
+		values: [username]
+	});
+
+	return rows[0].exists;
+}
+
+export async function checkIfPasswordIsCorrect(locals, username, password) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT password AS hash FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	return await bcrypt.compare(password, rows[0].hash);
+}
+
+export async function getUserId(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT user_id AS id FROM users WHERE username = $1',
+		values: [username]
+	});
+
+	return rows[0].id;
+}
+
+export async function checkIfAdmin({ locals }) {
+	if (!locals.userInfo) return false;
+	const { rows } = await locals.pool.query({
+		text: 'SELECT * FROM admins WHERE user_id = $1',
+		values: [locals.userInfo.user_id]
+	});
 
 	return rows[0];
+}
+  
+export async function getArchiveParts(userId) {;
+	const {rows} = await pool.query({
+	text: "SELECT\n" +
+		"    part_id AS \"id\",\n" +
+		"    winner.user_id AS \"winner_id\",\n" +
+		"    winner.username AS \"winner_username\",\n" +
+		"    loser.user_id AS \"loser_id\",\n" +
+		"    loser.username AS \"loser_username\",\n" +
+		"    duration_ms AS \"duration\",\n" +
+		"    date\n" +
+		"FROM archive_parts AS parts\n" +
+		"JOIN users AS winner ON parts.winner = winner.user_id\n" +
+		"JOIN users AS loser ON parts.loser = loser.user_id\n" +
+		"WHERE winner=$1 OR loser=$1;",
+	values: [userId]
+	});
+	return rows;
 }
