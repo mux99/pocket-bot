@@ -9,12 +9,10 @@ export async function handle({ event, resolve }) {
 	event.locals.pool = pool;
 	event.locals.userInfo = await getUserinfo(event);
 
-	if (event.url.pathname !== '/login' && event.url.pathname !== '/register') {
-		if (!event.locals.userInfo) throw redirect(308, '/login');
-	} else {
-		if (event.locals.userInfo) throw redirect(303, '/');
-	};
-
+	// if user is not logged in, redirect him to /login
+	if (!event.locals.userInfo && event.url.pathname !== '/login' && event.url.pathname !== '/register') {
+		throw redirect(307, '/login');
+	}
 	const response = await resolve(event);
 
 	return response;
