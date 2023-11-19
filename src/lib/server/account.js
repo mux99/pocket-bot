@@ -22,11 +22,6 @@ export async function checkFormFields(username, password, locals) {
 		errors.password.push('Password is required');
 	}
 
-	// query = await locals.pool.query({
-	// 	text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
-	// 	values: [username, hashedPassword]
-	// }
-
 	const query = await locals.pool.query(
 		{
 			text: 'SELECT username FROM users WHERE username = $1',
@@ -64,7 +59,6 @@ export async function hashPassword(password, saltRounds) {
 }
 
 export async function createUser(locals, username, hashedPassword) {
-	// todo: enlever erreur déjà affichée avant dans le code
 	let query = null;
 
 	query = await locals.pool.query({

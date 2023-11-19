@@ -1,4 +1,5 @@
 <script>
+	import { enhance } from '$app/forms';
 	export let form;
 </script>
 
@@ -6,9 +7,11 @@
 	<p class="text-white font-semibold text-5xl w-2/3">
 		Join the pocket bot community and start playing now.
 	</p>
+
 	<form
 		method="post"
 		class="bg-modal rounded-3xl flex flex-col gap-8 p-8 justify-center text-3xl"
+		use:enhance
 	>
 		<div class="flex flex-col gap-2">
 			<label for="username" class="text-white font-semibold">Username </label>
