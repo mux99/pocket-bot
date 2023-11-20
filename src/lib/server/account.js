@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import {pool} from "../../hooks.server.js";
+import { pool } from "../../hooks.server.js";
 
 export async function getFormData(request) {
 	const formData = await request.formData();
@@ -159,4 +159,14 @@ export async function getArchiveParts(userId) {
 	values: [userId]
 	});
 	return rows;
+}
+
+export async function deleteDbSession(locals, cookies) {
+	await locals.pool.query({
+		text: 'DELETE FROM sessions WHERE user_id = $1',
+		values: [locals.userInfo.user_id]
+	});
+}
+export async function deleteBrowserSession(locals, cookies) {
+	await cookies.delete('uuid')
 }
