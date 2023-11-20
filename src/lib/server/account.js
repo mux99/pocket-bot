@@ -8,17 +8,29 @@ export async function getFormData(request) {
 	return { username, password };
 }
 
-export function checkFormFields(username, password) {
+export async function checkFormFields(username, password, locals) {
 	let errors = {
+		username: [],
 		password: []
 	};
 
-	if (!username || typeof username !== 'string') {
-		errors.username = 'Username is required';
+	if (!username) {
+		errors.username.push('Username is required');
 	}
 
-	if (!password || typeof password !== 'string') {
+	if (!password) {
 		errors.password.push('Password is required');
+	}
+
+	const query = await locals.pool.query(
+		{
+			text: 'SELECT username FROM users WHERE username = $1',
+			values: [username]
+		}
+	)
+
+	if (query.rows.length) {
+		errors.username.push('Username is already taken');
 	}
 
 	if (password.length < 8) {
@@ -30,10 +42,6 @@ export function checkFormFields(username, password) {
 	}
 	if (!/\d/.test(password)) {
 		errors.password.push('Password must contain at least one number');
-	}
-
-	if (!errors.password.length) {
-		return {};
 	}
 
 	return errors;
@@ -51,30 +59,16 @@ export async function hashPassword(password, saltRounds) {
 }
 
 export async function createUser(locals, username, hashedPassword) {
-	let errors = {};
 	let query = null;
 
-	try {
-		query = await locals.pool.query({
-			text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
-			values: [username, hashedPassword]
-		});
+	query = await locals.pool.query({
+		text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
+		values: [username, hashedPassword]
+	});
 
-		return {
-			errors: errors,
-			user_id: query.rows[0].user_id
-		};
-	} catch (error) {
-		if (error.code === '23505') {
-			errors.db = 'Username is already taken';
-
-			return {
-				errors: errors,
-				user_id: null
-			};
-		}
-		throw Error(error);
-	}
+	return {
+		user_id: query.rows[0].user_id
+	};
 }
 
 export function generateUuid() {

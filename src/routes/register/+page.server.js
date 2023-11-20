@@ -15,22 +15,19 @@ export const actions = {
 		const saltRounds = 10;
 
 		const { username, password } = await getFormData(request);
-		errors = checkFormFields(username, password);
+		errors = await checkFormFields(username, password, locals);
 
-		if (Object.keys(errors).length) {
+		if (errors.username.length || errors.password.length) {
 			return fail(400, errors);
 		}
 
 		const hashedPasword = await hashPassword(password, saltRounds);
 
-		({ errors, user_id } = await createUser(locals, username, hashedPasword));
-
-		if (Object.keys(errors).length) {
-			return fail(400, errors);
-		}
+		({ user_id } = await createUser(locals, username, hashedPasword));
 
 		const uuid = generateUuid();
 		await setSession(locals, user_id, uuid, cookies);
+
 
 		throw redirect(303, '/');
 	}
