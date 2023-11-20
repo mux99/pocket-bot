@@ -12,15 +12,8 @@ export const load = async (serverLoadEvent) => {
 
 export const actions = {
   logout: async ({ locals, cookies }) => {
-    /* 
-    supprimer le cookie de la db
-    supprimer le cookie du navigateur
-    gérer les erreurs
-    rediriger l'utilisateur vers la page /login
-    */
-
-    await deleteDbSession(locals, cookies)
-    await deleteBrowserSession(locals, cookies)
+    await deleteDbSession(locals)
+    await deleteBrowserSession(cookies)
     throw redirect(303, '/login');
   }
 };

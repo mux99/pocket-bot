@@ -161,12 +161,12 @@ export async function getArchiveParts(userId) {
 	return rows;
 }
 
-export async function deleteDbSession(locals, cookies) {
+export async function deleteDbSession(locals) {
 	await locals.pool.query({
 		text: 'DELETE FROM sessions WHERE user_id = $1',
 		values: [locals.userInfo.user_id]
 	});
 }
-export async function deleteBrowserSession(locals, cookies) {
+export async function deleteBrowserSession( cookies) {
 	await cookies.delete('uuid')
 }
