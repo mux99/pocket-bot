@@ -1,5 +1,6 @@
 import {redirect} from "@sveltejs/kit";
-import {getUserinfo} from "$lib/server/account.js";
+import {getUserinfo, softDeleteUser} from "$lib/server/account.js";
+import {pool} from "../../hooks.server.js";
 
 export const load = async (serverLoadEvent) => {
     const response = await getUserinfo(serverLoadEvent);
@@ -7,5 +8,13 @@ export const load = async (serverLoadEvent) => {
         throw redirect('/');
     return {
         user: response
+    }
+};
+
+export const actions = {
+    default: async ({cookies}) => {
+        if(softDeleteUser(pool, cookies.get('uuid'))) {
+            throw redirect(303, '/');
+        }
     }
 };
