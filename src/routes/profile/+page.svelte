@@ -8,3 +8,5 @@
 <form action="?/logout" method="post">
 	<button type="submit">logout</button>
 </form>
+<br>
+<a href="/profile/delete">Delete my account</a>
