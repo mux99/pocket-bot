@@ -189,3 +189,11 @@ export async function checkIfUsernameExists(locals, username) {
 
 	return rows[0].exists;
 }
+
+// set deleted as true and randomize username
+export async function softDeleteUser(locals, userId) {
+	await locals.pool.query({
+		text: "UPDATE users SET username = $1, deleted = true WHERE user_id = $2",
+		values: [generateUuid(), userId]
+	});
+}
