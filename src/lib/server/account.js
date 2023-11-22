@@ -161,7 +161,6 @@ export async function getArchiveParts(userId) {
 	return rows;
 }
 
-// set deleted as true and randomize username
 export async function softDeleteUser(locals, userId) {
 	await locals.pool.query({
 		text: "UPDATE users SET username = $1, deleted = true WHERE user_id = $2",
