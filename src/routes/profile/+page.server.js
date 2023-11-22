@@ -1,5 +1,6 @@
 import {redirect} from "@sveltejs/kit";
-import {getUserinfo, deleteDbSession, deleteBrowserSession} from "$lib/server/account.js";
+import {getUserinfo, softDeleteUser, deleteDbSession, deleteBrowserSession} from "$lib/server/account.js";
+import {pool} from "../../hooks.server.js";
 
 export const load = async (serverLoadEvent) => {
     const response = await getUserinfo(serverLoadEvent);
@@ -11,9 +12,14 @@ export const load = async (serverLoadEvent) => {
 };
 
 export const actions = {
-  logout: async ({ locals, cookies }) => {
-    await deleteDbSession(locals)
-    await deleteBrowserSession(cookies)
-    throw redirect(303, '/login');
-  }
+    default: async ({cookies}) => {
+        if(softDeleteUser(pool, cookies.get('uuid'))) {
+            throw redirect(303, '/');
+        }
+    },
+    logout: async ({ locals, cookies }) => {
+        await deleteDbSession(locals)
+        await deleteBrowserSession(cookies)
+        throw redirect(303, '/login');
+    }
 };
