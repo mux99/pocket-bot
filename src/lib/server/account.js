@@ -161,9 +161,21 @@ export async function getArchiveParts(userId) {
 	return rows;
 }
 
-export async function softDeleteUser(locals, userId) {
-	await locals.pool.query({
-		text: "UPDATE users SET username = $1, deleted = true WHERE user_id = $2",
-		values: [generateUuid(), userId]
+export async function softDeleteUser(pool, uuid) {
+	const { rows } = await pool.query({
+		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
+		values: [uuid]
 	});
+
+	await pool.query({
+		text: "DELETE FROM sessions WHERE user_id = $1",
+		values: [rows[0].user_id]
+	});
+
+	await pool.query({
+		text: "UPDATE users SET username = $1, deleted = true WHERE user_id = $2",
+		values: [generateUuid(), rows[0].user_id]
+	});
+
+	return true;
 }
