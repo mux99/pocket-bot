@@ -8,7 +8,7 @@ export async function getFormData(request) {
 	return { username, password };
 }
 
-export async function checkFormFields(username, password, locals) {
+export async function checkFormFields(username, password) {
 	let errors = {
 		username: [],
 		password: []
@@ -22,7 +22,7 @@ export async function checkFormFields(username, password, locals) {
 		errors.password.push('Password is required');
 	}
 
-	const query = await locals.pool.query(
+	const query = await pool.query(
 		{
 			text: 'SELECT username FROM users WHERE username = $1',
 			values: [username]
@@ -57,10 +57,10 @@ export async function hashPassword(password, saltRounds) {
 	return await bcrypt.hash(password, saltRounds);
 }
 
-export async function createUser(locals, username, hashedPassword) {
+export async function createUser(username, hashedPassword) {
 	let query = null;
 
-	query = await locals.pool.query({
+	query = await pool.query({
 		text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
 		values: [username, hashedPassword]
 	});
@@ -74,12 +74,12 @@ export function generateUuid() {
 	return crypto.randomUUID();
 }
 
-export async function setSession(locals, user_id, uuid, cookies) {
+export async function setSession(user_id, uuid, cookies) {
 	// generate a date 7 days from now
 	const now = new Date();
 	const expires_at = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-	await locals.pool.query({
+	await pool.query({
 		text: 'INSERT INTO sessions (user_id, uuid, expires_at) VALUES ($1, $2, $3)',
 		values: [user_id, uuid, expires_at]
 	});
@@ -90,14 +90,14 @@ export async function setSession(locals, user_id, uuid, cookies) {
 	});
 }
 
-export async function getUserinfo({ cookies, locals }) {
+export async function getUserinfo({ cookies }) {
 	const uuid = cookies.get('uuid');
 
 	if (!uuid) {
 		return null;
 	}
 
-	const { rows } = await locals.pool.query({
+	const { rows } = await pool.query({
 		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
 		values: [uuid]
 	});
@@ -123,8 +123,8 @@ export async function checkIfPasswordIsCorrect(username, password) {
 	return await bcrypt.compare(password, rows[0].hash);
 }
 
-export async function getUserId(locals, username) {
-	const {rows} = await locals.pool.query({
+export async function getUserId(username) {
+	const {rows} = await pool.query({
 		text: 'SELECT user_id AS id FROM users WHERE username = $1',
 		values: [username]
 	});
@@ -134,7 +134,7 @@ export async function getUserId(locals, username) {
 
 export async function checkIfAdmin({ locals }) {
 	if (!locals.userInfo) return false;
-	const { rows } = await locals.pool.query({
+	const { rows } = await pool.query({
 		text: 'SELECT * FROM admins WHERE user_id = $1',
 		values: [locals.userInfo.user_id]
 	});

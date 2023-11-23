@@ -26,9 +26,9 @@ export const actions = {
             };
         };
 
-        const userId = await getUserId(locals, username);
+        const userId = await getUserId(username);
         const uuid = generateUuid();
-        await setSession(locals, userId, uuid, cookies);
+        await setSession(userId, uuid, cookies);
 
         return {
             success: true,

@@ -12,7 +12,7 @@ export const actions = {
     default: async ({ request, locals }) => {
         const { username } = await getFormData(request);
 
-        if (!await checkIfUsernameExists(locals, username)) {
+        if (!await checkIfUsernameExists(username)) {
             return {
                 success: false,
                 message: 'Username does not exist'
@@ -20,7 +20,7 @@ export const actions = {
         }
 
         const senderId = locals.userInfo.user_id;
-        const receiverId = await getUserId(locals, username);
+        const receiverId = await getUserId(username);
 
         if (senderId === receiverId) {
             return {
@@ -30,7 +30,7 @@ export const actions = {
         }
 
         try {
-            await sendFriendRequest(locals, senderId, receiverId);
+            await sendFriendRequest(senderId, receiverId);
             return {
                 success: true,
                 message: 'Request sent successfully'
