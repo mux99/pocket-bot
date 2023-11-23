@@ -9,7 +9,7 @@ import {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-    default: async ({ request, locals, cookies }) => {
+    default: async ({ request, locals }) => {
         const { username } = await getFormData(request);
 
         if (!await checkIfUsernameExists(locals, username)) {
@@ -29,16 +29,17 @@ export const actions = {
             };
         }
 
-        if (!await sendFriendRequest(locals, senderId, receiverId)) {
+        try {
+            await sendFriendRequest(locals, senderId, receiverId);
+            return {
+                success: true,
+                message: 'Request sent successfully'
+            };
+        } catch (error) {
             return {
                 success: false,
                 message: 'Request already sent'
-            };
-        };
-
-        return {
-            success: true,
-            message: 'Request sent successfully'
-        };
+            }
+        }
     }
 };
