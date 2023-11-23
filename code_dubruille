@@ -1,0 +1,135 @@
+#include <Servo.h>
+#include <Wire.h>
+#include <L298N.h>
+
+// Connections
+//TX (1) -> Bluetooth RX
+//RX (2) -> Bluetooth TX
+#define B_state A6 // Bluetooth State 
+
+#define S1 2 // Servo 1
+#define S2 3 // Servo 2
+
+#define BTN_LED 4 // base of button LED transistor
+
+// D10 (10) -> Motor controller EN1
+// D6 (6) -> Motor controller INT1
+// D5 (5) -> Motor controller INT2
+L298N Left_Motor(10, 6, 5);
+// D9 (9) -> Motor controller INT3
+// D8 (8) -> Motor controller INT4
+// D7 (7) -> Motor controller EN2
+L298N Right_Motor(9, 8, 7);
+
+#define Hall1 A1 // Hall sensor 1
+#define Hall2 A2 // Hall sensor 2
+#define Hall3 A3 // Hall sensor 3
+
+//SDA () -> Accelerometer SDA
+//SCL () -> Accelerometer SCL
+int ADXL345 = 0x53; // The ADXL345 sensor I2C address
+float X_out, Y_out, Z_out;  // Outputs
+
+#define Bat A7 // Batery Tention bridge | 12V -> R1=100Ω R2=220Ω
+
+
+Servo servo1;
+Servo servo2;
+
+void setup() {
+  //bluetooth setup
+  Serial1.begin(9600);
+  Serial1.setTimeout(50);
+  pinMode(B_state, INPUT);
+
+  //servo setup
+  servo1.attach(S1);
+  servo1.write(0);
+  servo2.attach(S2);
+  servo2.write(0);
+
+  //setup button LED
+  pinMode(BTN_LED, OUTPUT);
+  digitalWrite(BTN_LED, HIGH);
+
+  //setup acclelerometer
+  Wire.begin();
+  Wire.beginTransmission(ADXL345);
+  Wire.write(0x2D);
+  Wire.write(8);
+  Wire.endTransmission();
+  delay(10);
+
+  
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+  //await bluetooth connection
+  if (analogRead(B_state) < 200){
+    digitalWrite(BTN_LED, !digitalRead(BTN_LED));
+    delay(200);
+    return;
+  }
+  digitalWrite(BTN_LED, HIGH);
+
+  //read commands if avaliable
+  while (Serial1.available() > 3) {
+    char command[3];
+    Serial1.readBytes(command, 3);
+    int v = Serial1.parseInt();
+    parseCommand(command, v);
+  }
+  Serial1.flush();
+}
+
+void parseCommand(String cmm, int value) {
+
+Serial1.flush();
+  Serial1.print("value :");
+  Serial1.println(value);
+  Serial1.flush();
+  Serial1.print("Command :");
+  Serial1.println(int(cmm));
+  Serial1.flush();
+
+
+  if (cmm == "LFT") {
+    int val = int(abs((float)value * 2.55));
+    Left_Motor.forward();
+    Left_Motor.setSpeed(val);
+  }
+  else if (cmm == "RGT") {
+    Right_Motor.forward();
+    Right_Motor.setSpeed(int(abs((float)value * 2.55)));
+  }
+  else if (cmm == "ARM") {
+  }
+
+  else if (cmm == "BAT") {
+    Serial1.println("BATx");
+    Serial1.println(analogRead(Bat));
+    Serial1.println("BATy");
+  }
+
+  else if (cmm == "LIV") {
+    
+  }
+
+  else if (cmm == "FLP") {
+    Wire.beginTransmission(ADXL345);
+    Wire.write(0x36);
+    Wire.endTransmission(false);
+    Wire.requestFrom(ADXL345, 2, true);
+    Z_out = ( Wire.read()| Wire.read() << 8);
+    Z_out = Z_out/256;
+
+    Serial1.print("FLP");
+    if (Z_out >= 0) {
+      Serial1.println("0");    
+    }
+    else {
+      Serial1.println("1");
+    }
+  }
+}
