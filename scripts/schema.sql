@@ -33,5 +33,6 @@ CREATE TABLE IF NOT EXISTS friends (
     user_id_2 INT NOT NULL,
     PRIMARY KEY (user_id_1, user_id_2),
     FOREIGN KEY (user_id_1) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id_2) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id_2) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT friends_users CHECK (user_id_1 != user_id_2)
 );
