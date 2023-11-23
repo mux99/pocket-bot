@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS friend_requests (
     is_confirmed BOOLEAN NOT NULL DEFAULT 'no',
     PRIMARY KEY (sender_id, receiver_id),
     FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT friend_requests_users CHECK (sender_id != receiver_id)
 );
 
 CREATE TABLE IF NOT EXISTS friends (
