@@ -1,10 +1,9 @@
 #include <Servo.h>
 #include <Wire.h>
-#include <L298N.h>
 
 // Connections
-//TX (1) -> Bluetooth RX
-//RX (2) -> Bluetooth TX
+//TX -> Bluetooth RX
+//RX -> Bluetooth TX
 #define B_state A6 // Bluetooth State 
 
 #define S1 2 // Servo 1
@@ -107,12 +106,27 @@ int get_motor_speed(int percentage) {
 void parseCommand(String cmm, int value) {
   if (cmm == "LFT") {
     analogWrite(M_en2,get_motor_speed(value));
+    if (value < 0) {
+      digitalWrite(M_in3, LOW);
+      digitalWrite(M_in4, HIGH);
+    } else {
+      digitalWrite(M_in3, HIGH);
+      digitalWrite(M_in4, LOW);
+    }
   }
   else if (cmm == "RGT") {
     analogWrite(M_en1,get_motor_speed(value));
+    if (value < 0){
+      digitalWrite(M_in1, LOW);
+      digitalWrite(M_in2, HIGH);
+    } else {
+      digitalWrite(M_in1, HIGH);
+      digitalWrite(M_in2, LOW);
+    }
   }
   else if (cmm == "ARM") {
-    
+    servo1.write(value*30);
+    servo2.write(value*30)
   }
 
   else if (cmm == "BAT") {
@@ -121,7 +135,12 @@ void parseCommand(String cmm, int value) {
   }
 
   else if (cmm == "LIV") {
-    
+    int lives = 0;
+    lives += digitalRead(Hall1);
+    lives += digitalRead(Hall2);
+    lives += digitalRead(Hall3);
+    Serial1.print("LIV");
+    Serial1.prinln(lives);
   }
 
   else if (cmm == "FLP") {
