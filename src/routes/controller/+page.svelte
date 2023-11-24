@@ -1,15 +1,11 @@
 <script>
   import { onMount, afterUpdate } from 'svelte';
+  import { startDrag, endDrag, moveJoystick } from './scripts/joystick.js';
+  import { updateBattery, updateLives } from './scripts/update.js';
+  import { handleKeyDown, handleKeyUp } from './scripts/key.js'
 
   let joystick, outerCircle, actionButton, batteryPercentage, lifeContainer, batteryIcon;
-  let batteryPercent = 25;
-  let lives = 3;
-  let isDragging = false;
-  let distanceJoystick = 0;
-  let angleJoystick = 0;
-  let keysPressed = { z: false, q: false, d: false, s: false };
-  let joystickPosition = { x: 0, y: 0 };
-  const smoothingFactor = 0.1;
+  
 
   onMount(() => {
     joystick = document.getElementById('joystick');
@@ -18,12 +14,10 @@
     batteryPercentage = document.getElementById('batteryPercentage');
     lifeContainer = document.getElementById('lifeContainer');
     batteryIcon = document.getElementById('batteryIcon');
-
     init();
   });
 
   afterUpdate(() => {
-    // Update logic after each Svelte update
     updateBattery();
     updateLives();
   });
@@ -39,141 +33,7 @@
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
   }
-
-  function startDrag(e) {
-    isDragging = true;
-    moveJoystick(e);
-  }
-
-  function endDrag() {
-    if (isDragging) {
-      isDragging = false;
-      resetJoystickPosition();
-    }
-  }
-
-  function moveJoystick(e) {
-    if (isDragging) {
-      const rect = outerCircle.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left - rect.width / 2;
-      const offsetY = e.clientY - rect.top - rect.height / 2;
-      const maxDistance = rect.width / 2;
-      let distance = (Math.hypot(offsetX, offsetY) / maxDistance) * 100;
-      distance = Math.min(distance, 100);
-      let logicAngle = (Math.atan2(offsetY, offsetX) * 180) / Math.PI;
-      let displayAngle = (logicAngle + 360 + 90) % 360;
-      displayAngle = 360 - displayAngle;
-      updatePosition(displayAngle, distance);
-      const limitedX = Math.cos((logicAngle * Math.PI) / 180) * (distance / 100) * maxDistance;
-      const limitedY = Math.sin((logicAngle * Math.PI) / 180) * (distance / 100) * maxDistance;
-      joystick.style.transform = `translate(-50%, -50%) translate(${limitedX}px, ${limitedY}px)`;
-      console.log(displayAngle);
-      console.log(distance);
-    }
-  }
-
-  function resetJoystickPosition() {
-    joystick.style.transform = 'translate(-50%, -50%) translate(0, 0)';
-    updatePosition(0, 0);
-  }
-
-  function calculateMotorSpeeds(angle, distance) {
-    const eq1 = Math.cos((angle * Math.PI) / 90) * distance;
-    const eq2 = Math.cos(((90 + angle) * Math.PI) / 90) * distance;
-    let left, right;
-    if (angle < 90) {
-      left = eq1;
-      right = distance;
-    } else if (angle < 180) {
-      left = -distance;
-      right = eq2;
-    } else if (angle < 270) {
-      left = eq2;
-      right = -distance;
-    } else {
-      left = distance;
-      right = eq1;
-    }
-    return { left, right };
-  }
-
-  function updatePosition(angle, distance) {
-    angleJoystick = angle;
-    distanceJoystick = distance;
-    console.log(calculateMotorSpeeds(angleJoystick, distanceJoystick));
-  }
-
-  function updateLives() {
-    lifeContainer.innerHTML = '';
-
-    for (let i = 0; i < lives; i++) {
-      const lifeIcon = document.createElement('img');
-      lifeIcon.classList.add('life-icon');
-      lifeIcon.src = '/heart.svg';
-      lifeContainer.appendChild(lifeIcon);
-    }
-  }
-
-  function updateBattery() {
-    const percentage = batteryPercent || 100;
-    batteryPercentage.textContent = `${percentage}%`;
-
-    const gradientColor = getGradientColor(percentage);
-    batteryIcon.style.background = `linear-gradient(to right, ${gradientColor} ${percentage}%, rgba(255, 255, 255, 0.3) 0%)`;
-  }
-
-  function getGradientColor(percentage) {
-    if (percentage > 80) {
-      return '#078a00';
-    } else if (percentage > 60) {
-      return '#748a01';
-    } else if (percentage > 40) {
-      return '#e08a03';
-    } else if (percentage > 20) {
-      return '#ce4501';
-    } else if (percentage >= 0) {
-      return '#bb0002';
-    }
-  }
-
-  function handleKeyDown(event) {
-    const key = event.key.toLowerCase();
-
-    if (keysPressed.hasOwnProperty(key)) {
-      keysPressed[key] = true;
-      handleKeyChanges();
-    }
-  }
-
-  function handleKeyUp(event) {
-    const key = event.key.toLowerCase();
-
-    if (keysPressed.hasOwnProperty(key)) {
-      keysPressed[key] = false;
-      handleKeyChanges();
-    }
-  }
-
-  function handleKeyChanges() {
-    const targetX = (keysPressed.d ? 1 : 0) - (keysPressed.q ? 1 : 0);
-    const targetY = (keysPressed.s ? 1 : 0) - (keysPressed.z ? 1 : 0);
-
-    joystickPosition.x += smoothingFactor * (targetX - joystickPosition.x);
-    joystickPosition.y += smoothingFactor * (targetY - joystickPosition.y);
-
-    const angle = Math.atan2(joystickPosition.y, joystickPosition.x);
-    const distance = Math.min(outerCircle.clientWidth / 2, outerCircle.clientHeight / 2);
-
-    updatePosition(angle, distance);
-
-    const limitedX = Math.cos(angle) * distance;
-    const limitedY = Math.sin(angle) * distance;
-    joystick.style.transform = `translate(-50%, -50%) translate(${limitedX}px, ${limitedY}px)`;
-
-    if (!(keysPressed.z || keysPressed.q || keysPressed.d || keysPressed.s)) {
-      resetJoystickPosition();
-    }
-  }
+  
 </script>
 <style>
     :root{
