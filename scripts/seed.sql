@@ -44,6 +44,46 @@ VALUES
   (
     'Quinn',
     '$2b$10$d/fCrQl3RBSV7BaSJDq0yel0X2lCoNgo5fpmhxdvPbscek8BKUcNO'
+  ),
+  (
+    'Jack',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjvgPY/yeF.JFvq7mYmGxkxHexYq'
+  ),
+  (
+    'Katie',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mamGxkxHexYw'
+  ),
+  (
+    'Laura',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mqmGxkxHexYe'
+  ),
+  (
+    'Mike',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mYzGxkxHexYr'
+  ),
+  (
+    'Nancy',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mYmGxyxHexYt'
+  ),
+  (
+    'Oliver',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mYmGxkkHexYt'
+  ),
+  (
+    'Patricia',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFbq7mYmGxkxHexYt'
+  ),
+  (
+    'Quentin',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvqamYmGxkxHexY'
+  ),
+  (
+    'Rachel',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mgmGxkxHexYy'
+  ),
+  (
+    'Steve',
+    '$2b$10$DKmsc6Eu6XRrH12.lfDXtOpwJCjv2PY/yeF.JFvq7mYmGxkxdexYy'
   );
 
 INSERT INTO
@@ -100,7 +140,7 @@ INSERT INTO
     total_duration_s
   )
 VALUES
-  (1, 0.50, 20, 10, 10, 300, 6000),
+  (1, 0.51, 20, 10, 10, 300, 6000),
   (2, 0.60, 30, 18, 12, 350, 10500),
   (3, 0.70, 40, 28, 12, 400, 16000),
   (4, 0.80, 50, 40, 10, 320, 16000),
@@ -109,4 +149,14 @@ VALUES
   (7, 0.65, 100, 65, 35, 400, 40000),
   (8, 0.55, 120, 66, 54, 350, 42000),
   (9, 0.45, 140, 63, 77, 400, 56000),
-  (10, 0.35, 160, 56, 104, 360, 57600);
+  (10, 0.35, 160, 56, 104, 360, 57600),
+  (11, 0.51, 20, 10, 10, 300, 6000),
+  (12, 0.60, 30, 18, 12, 350, 10500),
+  (13, 0.70, 40, 28, 12, 400, 16000),
+  (14, 0.80, 50, 40, 10, 320, 16000),
+  (15, 0.90, 60, 54, 6, 360, 21600),
+  (16, 0.75, 80, 60, 20, 380, 30400),
+  (17, 0.65, 100, 65, 35, 400, 40000),
+  (18, 0.55, 120, 66, 54, 350, 42000),
+  (19, 0.45, 140, 63, 77, 400, 56000),
+  (20, 0.35, 160, 56, 104, 360, 57600);
