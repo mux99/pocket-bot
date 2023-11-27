@@ -63,7 +63,7 @@ CREATE TABLE
 CREATE TABLE
   IF NOT EXISTS user_statistics (
     user_statistics_id SERIAL,
-    user_id INT NOT NULL,
+    user_id INT NOT NULL UNIQUE,
     win_lose_ratio DECIMAL(5, 2),
     total_games INT NOT NULL DEFAULT 0,
     total_wins INT NOT NULL DEFAULT 0,
