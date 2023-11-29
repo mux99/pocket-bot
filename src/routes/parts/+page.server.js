@@ -2,11 +2,13 @@ import {getArchiveParts, getUserinfo} from "$lib/server/account.js";
 import {redirect} from "@sveltejs/kit";
 
 export const load = async (serverLoadEvent) => {
-    const user = await getUserinfo(serverLoadEvent);
-    if (user == null)
-        throw redirect(303, '/');
-    user["parts"] = await getArchiveParts(user["user_id"]);
-    console.log(user["parts"])
+    const {locals} = serverLoadEvent;
+    if (!locals.userInfo)
+        throw redirect(303, '/login');
+    const user = {
+        user_id: locals.userInfo.user_id
+    };
+    user.parts = await getArchiveParts(locals.userInfo.user_id);
     return {
         'user': user
     }

@@ -51,7 +51,8 @@
                 {/each}
             </div>
         {:else}
-            <h2>Il est temps de faire une partie</h2>
+            <h2>It's time to make some parts !</h2>
+            <br>
         {/if}
     </div>
 </div>
