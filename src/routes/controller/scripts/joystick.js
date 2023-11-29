@@ -1,11 +1,9 @@
-import { isDragging_conf, distanceJoystick_conf, angleJoystick_conf } from './config.js'
+import { updateSpeed, updateArm } from './blt.js';
 
-let isDragging = isDragging_conf;
-let distanceJoystick = distanceJoystick_conf;
-let angleJoystick = angleJoystick_conf;
+let isDragging_boolean = false;
 
 export function moveJoystick(e) {
-    if (isDragging) {
+    if (isDragging_boolean) {
         const rect = outerCircle.getBoundingClientRect();
         const offsetX = e.clientX - rect.left - rect.width / 2;
         const offsetY = e.clientY - rect.top - rect.height / 2;
@@ -25,21 +23,28 @@ export function moveJoystick(e) {
 }
 
 export function startDrag(e) {
-    isDragging = true;
-    moveJoystick(e);
+  isDragging_boolean = true;
+  moveJoystick(e, isDragging_boolean);
+}
+
+export function activateArms(activate_bool) {
+  if (activate_bool == 1) {
+    updateArm("1");
+  }
+  else if (activate_bool == 0) {
+    updateArm("0");
+  }
 }
 
 export function endDrag(e) {
-    if (isDragging) {
-        isDragging = false;
+    if (isDragging_boolean) {
+      isDragging_boolean = false;
         resetJoystickPosition();
     }
 }
 
 export function updatePosition(angle, distance) {
-    angleJoystick = angle;
-    distanceJoystick = distance;
-    console.log(calculateMotorSpeeds(angleJoystick, distanceJoystick));
+    console.log(calculateMotorSpeeds(angle, distance));
 }
 
 export function resetJoystickPosition() {
@@ -64,5 +69,6 @@ export function calculateMotorSpeeds(angle, distance) {
       left_speed = distance;
       right_speed = eq1;
     }
+    updateSpeed(left_speed.toString(), right_speed.toString());
     return { left_speed, right_speed };
 }

@@ -1,11 +1,9 @@
-import { lives_conf, batteryPercent_conf } from './config.js'
-let lives = lives_conf;
-let batteryPercent = batteryPercent_conf;
+let isFall = 0;
 
-export function updateLives() {
+export function updateLives(lives_left) {
     lifeContainer.innerHTML = '';
 
-    for (let i = 0; i < lives; i++) {
+    for (let i = 0; i < lives_left; i++) {
       const lifeIcon = document.createElement('img');
       lifeIcon.classList.add('life-icon');
       lifeIcon.src = '/heart.svg';
@@ -13,12 +11,16 @@ export function updateLives() {
     }
 }
 
-export function updateBattery() {
-    const percentage = batteryPercent || 100;
+export function updateBattery(battery_left) {
+    const percentage = battery_left || 100;
     batteryPercentage.textContent = `${percentage}%`;
 
     const gradientColor = getGradientColor(percentage);
     batteryIcon.style.background = `linear-gradient(to right, ${gradientColor} ${percentage}%, rgba(255, 255, 255, 0.3) 0%)`;
+}
+
+export function updateFall(fall_bool) {
+    isFall = fall_bool;
 }
 
 function getGradientColor(percentage) {

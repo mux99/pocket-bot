@@ -1,11 +1,10 @@
 <script>
   import { onMount, afterUpdate } from 'svelte';
-  import { startDrag, endDrag, moveJoystick } from './scripts/joystick.js';
+  import { startDrag, endDrag, moveJoystick, activateArms } from './scripts/joystick.js';
   import { updateBattery, updateLives } from './scripts/update.js';
   import { handleKeyDown, handleKeyUp } from './scripts/key.js'
 
   let joystick, outerCircle, actionButton, batteryPercentage, lifeContainer, batteryIcon;
-  
 
   onMount(() => {
     joystick = document.getElementById('joystick');
@@ -18,8 +17,8 @@
   });
 
   afterUpdate(() => {
-    updateBattery();
-    updateLives();
+    updateBattery(98);
+    updateLives(3);
   });
 
   function init() {
@@ -27,8 +26,8 @@
     document.addEventListener('mouseup', endDrag);
     document.addEventListener('mousemove', moveJoystick);
 
-    // Attach other event listeners as needed
-    // actionButton.addEventListener('click', activateArms);
+    actionButton.addEventListener('mousedown', function() {activateArms(1);});
+    actionButton.addEventListener('mouseup', function() {activateArms(0);});
 
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);

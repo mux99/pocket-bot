@@ -1,5 +1,8 @@
 import { resetJoystickPosition, updatePosition  } from './joystick.js';
-import { joystickPosition_conf, smoothingFactor, keysPressed_conf } from './config.js';
+
+let joystickPosition_conf = { x: 0, y: 0};
+let keysPressed_conf = { z: false, q: false, d: false, s: false};
+const smoothingFactor = 0.1;
 
 let joystickPosition = joystickPosition_conf;
 let keysPressed = keysPressed_conf;
