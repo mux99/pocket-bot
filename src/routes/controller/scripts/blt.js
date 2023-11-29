@@ -1,5 +1,5 @@
 //import 
-import { s } from 'vitest/dist/types-198fd1d9.js';
+// import { s } from 'vitest/dist/types-198fd1d9.js';
 import { updateBattery, updateLives, updateFall } from './update.js';
 
 //given
