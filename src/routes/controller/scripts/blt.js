@@ -1,18 +1,3 @@
-//import 
-// import { s } from 'vitest/dist/types-198fd1d9.js';
-import { updateBattery, updateLives, updateFall } from './update.js';
-
-//given
-let myInterval;
-let characteristicCache = null;
-let deviceCache = null;
-let readBuffer = '';
-let operatingSystem = "";
-
-let rightSpeed = "0"; 
-let leftSpeed = "0";
-let armActivate = "0";
-
 /*
 notes:
 - the page always sends a signal when connected
@@ -25,6 +10,26 @@ notes:
 
 - modifications where made to the base code (I can't remembre witch ones ^^)
 */
+let myInterval;
+let characteristicCache = null;
+let deviceCache = null;
+let readBuffer = '';
+let rightSpeed = "0"; 
+let leftSpeed = "0";
+let armActivate = "0";
+let operatingSystem = "";
+
+export function get_os() {
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        operatingSystem = "iOS"
+        }
+        else if (window.DeviceMotionEvent !== undefined) {
+            operatingSystem = "Android"
+        }
+        else {
+            operatingSystem = "other"
+        }
+}
 
 export function updateSpeed(left_speed, right_speed) {
     leftSpeed = left_speed;
@@ -35,20 +40,8 @@ export function updateArm(arm_bool) {
     armActivate = arm_bool;
 }
 
-// Setup on page launch ----------------------------------------------------------------------------
-
-// if (typeof DeviceMotionEvent.requestPermission === 'function') {
-//     operatingSystem = "iOS"
-// }
-// else if (window.DeviceMotionEvent !== undefined) {
-//     operatingSystem = "Android"
-// }
-// else {
-//     operatingSystem = "other"
-// }
-
 // Bluetooth actions ---------------------------------------------------------------------------------
-function connect() {
+export function connect() {
     return (deviceCache ? Promise.resolve(deviceCache) :
         requestBluetoothDevice()).
     then(device => connectDeviceAndCacheCharacteristic(device)).
@@ -56,7 +49,7 @@ function connect() {
     then(myInterval = setInterval(sendingBLEinfo, 100)).
     catch(error => handleError(error));
 }
-function disconnect() {
+export function disconnect() {
     clearInterval(myInterval); //stop sending data every time
     if (deviceCache) {
         console.log('Disconnecting from "' + deviceCache.name + '" bluetooth device...');
@@ -137,7 +130,7 @@ function requestBluetoothDevice() {
 
     return navigator.bluetooth.requestDevice({
         filters: [{
-            services: [0xDEAF]
+             services: [0xDEAF]
         }],
     }).
     then(device => {
@@ -239,33 +232,4 @@ function handleCharacteristicValueChanged(event) {
             readBuffer += c;
         }
     }
-}
-
-//-----------------------------------------------------------------------------------------------------
-// our code
-//-----------------------------------------------------------------------------------------------------
-
-
-//called on bluetooth button click
-function bluetooth_click() {
-    let bluetooth_button = document.getElementById("bluetooth_button");
-    if (bluetooth_button.classList.contains("connected")) {
-        bluetooth_button.classList.remove("connected");
-        bluetooth_button.classList.add("disconnected");
-        disconnect();
-    }
-    else if (bluetooth_button.classList.contains("disconnected")) {
-        bluetooth_button.classList.remove("disconnected");
-        bluetooth_button.classList.add("connecting");
-        connect();
-    }
-}
-
-//called on connection error
-function handleError(error) {
-    let bluetooth_button = document.getElementById("bluetooth_button");
-    console.log(error);
-    bluetooth_button.classList.remove("connected");
-    bluetooth_button.classList.remove("connecting");
-    bluetooth_button.classList.add("disconnected");
 }

@@ -3,8 +3,10 @@
   import { startDrag, endDrag, moveJoystick, activateArms } from './scripts/joystick.js';
   import { updateBattery, updateLives } from './scripts/update.js';
   import { handleKeyDown, handleKeyUp } from './scripts/key.js'
+  import { connect, disconnect, get_os } from './scripts/blt.js'
 
   let joystick, outerCircle, actionButton, batteryPercentage, lifeContainer, batteryIcon;
+  let operatingSystem = "";
 
   onMount(() => {
     joystick = document.getElementById('joystick');
@@ -31,8 +33,32 @@
 
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
+
+    get_os();
   }
-  
+
+  //called on bluetooth button click
+  function bluetooth_click() {
+    let bluetooth_button = document.getElementById("bluetooth_button");
+    if (bluetooth_button.classList.contains("connected")) {
+        bluetooth_button.classList.remove("connected");
+        bluetooth_button.classList.add("disconnected");
+        disconnect();
+    }
+    else if (bluetooth_button.classList.contains("disconnected")) {
+        bluetooth_button.classList.remove("disconnected");
+        bluetooth_button.classList.add("connecting");
+        connect();
+    }
+}
+
+function handleError(error) {
+    let bluetooth_button = document.getElementById("bluetooth_button");
+    console.log(error);
+    bluetooth_button.classList.remove("connected");
+    bluetooth_button.classList.remove("connecting");
+    bluetooth_button.classList.add("disconnected");
+}
 </script>
 <style>
     :root{
@@ -199,7 +225,7 @@
     }
 </style>
 
-<body onload="init();">
+<body>
     <div class="battery">
         <div class="battery-icon" id="batteryIcon">
             <span id="batteryPercentage"></span>
@@ -222,6 +248,6 @@
         </div>
     </div>
     <div id="btcontainer"><button id="bluetooth_button" type="button" class="disconnected"
-        onclick="bluetooth_click()"></button>
+        on:click={bluetooth_click}></button>
     </div>
 </body>
