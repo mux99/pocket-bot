@@ -13,7 +13,7 @@ export const load = async (serverLoadEvent) => {
 
 export const actions = {
     default: async ({cookies}) => {
-        if(softDeleteUser(pool, cookies.get('uuid'))) {
+        if(await softDeleteUser(pool, cookies.get('uuid'))) {
             throw redirect(303, '/');
         }
     },
