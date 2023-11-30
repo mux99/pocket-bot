@@ -1,1 +1,1 @@
-<h1>admin page</h1>
+<a href="/admin/users">View Users</a>
