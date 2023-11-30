@@ -181,6 +181,7 @@ export async function usernameToId(username) {
 	return rows[0].user_id;
 }
 
+<<<<<<< HEAD
 export async function checkIfUsernameExists(locals, username) {
 	const { rows } = await locals.pool.query({
 		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
