@@ -85,12 +85,15 @@ function handleError(error) {
         align-items: center;
         display: flex;
         margin-top: 5vh;
+        user-select: none;
+        pointer-events: none;
     } 
 
     .battery {
         position: absolute;
         top: 3vh;
         right: 3vh;
+        user-select: none;
     }
 
     .battery-icon {
@@ -132,6 +135,7 @@ function handleError(error) {
         align-items: center;
         justify-content: center;
         padding: 2vh;
+        user-select: none;
     }
 
     .action-button:hover {
