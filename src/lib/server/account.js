@@ -161,7 +161,7 @@ export async function getArchiveParts(userId) {
 	return rows;
 }
 
-export async function softDeleteUser(pool, uuid) {
+export async function softDeleteUser(uuid) {
 	const { rows } = await pool.query({
 		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
 		values: [uuid]
