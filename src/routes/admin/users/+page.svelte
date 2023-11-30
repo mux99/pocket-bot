@@ -16,6 +16,9 @@
             <tr>
                 <td>{user.user_id}</td>
                 <td>{user.username}</td>
+                <td><a href="/admin/users/{user.user_id}">View</a></td>
+                <td><a href="/admin/users/{user.user_id}/edit">Edit</a></td>
+                <td><a href="/admin/users/{user.user_id}/delete">Delete</a></td>
             </tr>
         {/each}
     </tbody>
