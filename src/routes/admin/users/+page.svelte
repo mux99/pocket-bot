@@ -2,6 +2,8 @@
     export let data;
 </script>
 
+<h2>There are a total of { data.users.length } users registered.</h2>
+
 <table>
     <thead>
         <tr>
