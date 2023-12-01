@@ -110,13 +110,13 @@ export async function getUserinfo({ cookies, locals }) {
 	return rows[0];
 }
 
-export async function checkIfUsernameExists(username) {
-	const { rows } = await pool.query({
-		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
-		values: [username]
+export async function getUserRoles(userId) {
+	const {rows} = await pool.query({
+		text: 'SELECT array_agg(roles.name) FROM users_roles AS roles WHERE user_id = $1',
+		values: [userId]
 	});
 
-	return rows[0].exists;
+	return rows[0];
 }
 
 export async function checkIfPasswordIsCorrect(username, password) {
