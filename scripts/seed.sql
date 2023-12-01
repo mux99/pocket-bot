@@ -18,8 +18,23 @@ VALUES
 
 INSERT INTO roles (role_id, name)
 VALUES
+  (0, 'suspended'),
   (1, 'user'),
   (2, 'admin');
+
+INSERT INTO users_roles (user_id, role_id)
+VALUES
+  (1, 1),
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 1),
+  (5, 1),
+  (6, 1),
+  (7, 1),
+  (8, 1),
+  (9, 1),
+  (10, 1);
 
 INSERT INTO sessions (user_id, uuid, expires_at)
 VALUES
