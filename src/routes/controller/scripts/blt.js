@@ -1,3 +1,5 @@
+import { updateBattery, updateLives, updateFall } from './update.js'
+
 /*
 notes:
 - the page always sends a signal when connected
@@ -46,7 +48,7 @@ export function connect() {
         requestBluetoothDevice()).
     then(device => connectDeviceAndCacheCharacteristic(device)).
     then(characteristic => startNotifications(characteristic)).
-    then(myInterval = setInterval(sendingBLEinfo, 100)).
+    then(myInterval = setInterval(sendingBLEinfo, 2000)).
     catch(error => handleError(error));
 }
 export function disconnect() {
@@ -84,6 +86,7 @@ function sendingBLEinfo() {
 }
 
 function receive(data) {
+    console.log(data);
     const charac = /(BAT|LIV|FLP)(\d+)/g;
     let result;
     const sameCmd = {};
@@ -112,6 +115,13 @@ function receive(data) {
     }
 }
 
+function handleError(error) {
+    let bluetooth_button = document.getElementById("bluetooth_button");
+    console.log(error);
+    bluetooth_button.classList.remove("connected");
+    bluetooth_button.classList.remove("connecting");
+    bluetooth_button.classList.add("disconnected");
+}
 
 // General Bluetooth ----------------------------------------------------------------------------------
 function startNotifications(characteristic) {
@@ -130,7 +140,7 @@ function requestBluetoothDevice() {
 
     return navigator.bluetooth.requestDevice({
         filters: [{
-             services: [0xDEAF]
+             services: [0xFFE0]
         }],
     }).
     then(device => {
@@ -155,12 +165,12 @@ function connectDeviceAndCacheCharacteristic(device) {
     then(server => {
         console.log('GATT server connected, getting service...');
 
-        return server.getPrimaryService(0xDEAF);
+        return server.getPrimaryService(0xFFE0);
     }).
     then(service => {
         console.log('Service found, getting characteristic...');
 
-        return service.getCharacteristic(0xDEAD);
+        return service.getCharacteristic(0xFFE1);
     }).
     then(characteristic => {
         console.log('Characteristic found');

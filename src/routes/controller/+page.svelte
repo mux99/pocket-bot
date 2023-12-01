@@ -6,7 +6,6 @@
   import { connect, disconnect, get_os } from './scripts/blt.js'
 
   let joystick, outerCircle, actionButton, batteryPercentage, lifeContainer, batteryIcon;
-  let operatingSystem = "";
 
   onMount(() => {
     joystick = document.getElementById('joystick');
@@ -19,8 +18,7 @@
   });
 
   afterUpdate(() => {
-    updateBattery(98);
-    updateLives(3);
+    updateLives("3");
   });
 
   function init() {
@@ -50,14 +48,6 @@
         bluetooth_button.classList.add("connecting");
         connect();
     }
-}
-
-function handleError(error) {
-    let bluetooth_button = document.getElementById("bluetooth_button");
-    console.log(error);
-    bluetooth_button.classList.remove("connected");
-    bluetooth_button.classList.remove("connecting");
-    bluetooth_button.classList.add("disconnected");
 }
 </script>
 <style>
@@ -201,9 +191,9 @@ function handleError(error) {
         background-size: contain;
         background-repeat: no-repeat;
     }
-    #bluetooth_button.connected { border-color: #00ff00;}
-    #bluetooth_button.disconnected {border-color: #f00102;}
-    #bluetooth_button.connecting {border-color: #fd9621;}
+    :global(#bluetooth_button.connected) { border-color: #00ff00; }
+    :global(#bluetooth_button.disconnected) { border-color: #f00102; }
+    :global(#bluetooth_button.connecting) { border-color: #fd9621; }
 
     @media screen and (max-width: 767px) and (orientation: portrait) {
         #bluetooth_button { height: 6vh; width: 6vh; }
