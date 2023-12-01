@@ -114,6 +114,7 @@ void parseCommand(String cmm, int value) {
       digitalWrite(M_in4, LOW);
     }
   }
+  
   else if (cmm == "RGT") {
     analogWrite(M_en1,get_motor_speed(value));
     if (value < 0){
@@ -124,11 +125,12 @@ void parseCommand(String cmm, int value) {
       digitalWrite(M_in2, LOW);
     }
   }
+  
   else if (cmm == "ARM") {
     servo1.write(value*30);
-    servo2.write(value*30)
+    servo2.write(value*30);
   }
-
+  
   else if (cmm == "BAT") {
     Serial1.print("BAT");
     Serial1.println(analogRead(Bat));
@@ -140,7 +142,7 @@ void parseCommand(String cmm, int value) {
     lives += digitalRead(Hall2);
     lives += digitalRead(Hall3);
     Serial1.print("LIV");
-    Serial1.prinln(lives);
+    Serial1.println(lives);
   }
 
   else if (cmm == "FLP") {
