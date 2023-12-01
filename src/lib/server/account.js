@@ -65,6 +65,11 @@ export async function createUser(locals, username, hashedPassword) {
 		values: [username, hashedPassword]
 	});
 
+	await locals.pool.query({
+		text: 'INSERT INTO users_roles (user_id, role_id) VALUES ($1, 1)',
+		values: [query.rows[0].user_id]
+	});
+
 	return {
 		user_id: query.rows[0].user_id
 	};
