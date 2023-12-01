@@ -9,6 +9,18 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS roles (
+  role_id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users_roles (
+  user_id INT NOT NULL,
+  role_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+  FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS sessions (
   session_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
@@ -35,11 +47,6 @@ CREATE TABLE IF NOT EXISTS friends (
     FOREIGN KEY (user_id_1) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id_2) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT friends_users CHECK (user_id_1 != user_id_2)
-);
-
-CREATE TABLE IF NOT EXISTS admins (
-  user_id INT NOT NULL PRIMARY KEY,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS archive_parts (
