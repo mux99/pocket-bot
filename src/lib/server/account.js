@@ -111,12 +111,17 @@ export async function getUserinfo({ cookies, locals }) {
 }
 
 export async function getUserRoles(userId) {
-	const {rows} = await pool.query({
-		text: 'SELECT array_agg(roles.name) FROM users_roles AS roles WHERE user_id = $1',
-		values: [userId]
-	});
+    const {rows} = await pool.query({
+        text: `
+            SELECT array_agg(roles.name)
+            FROM users_roles
+            JOIN roles ON users_roles.role_id = roles.role_id
+            WHERE users_roles.user_id = $1
+        `,
+        values: [userId]
+    });
 
-	return rows[0];
+	return rows[0].array_agg;
 }
 
 export async function checkIfPasswordIsCorrect(username, password) {
