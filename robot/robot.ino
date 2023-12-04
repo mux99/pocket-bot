@@ -83,7 +83,7 @@ void loop() {
   digitalWrite(BTN_LED, HIGH);
 
   //read commands if avaliable
-  while (Serial1.available() > 5) {
+  while (Serial1.available() > 4) {
     char cmm[3];
     Serial1.readBytes(cmm, 3);
     int value = Serial1.parseInt();
