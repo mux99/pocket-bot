@@ -16,6 +16,26 @@ VALUES
   ('Irene', '$2b$10$Uo.576WqbP7l7zcHr2SN7./Dw/iEq9HyZ/7wGVh/pifGSCviyu6Sq'),
   ('Quinn', '$2b$10$d/fCrQl3RBSV7BaSJDq0yel0X2lCoNgo5fpmhxdvPbscek8BKUcNO');
 
+INSERT INTO roles (role_id, name)
+VALUES
+  (0, 'suspended'),
+  (1, 'user'),
+  (2, 'admin');
+
+INSERT INTO users_roles (user_id, role_id)
+VALUES
+  (1, 1),
+  (1, 1),
+  (2, 1),
+  (3, 1),
+  (4, 1),
+  (5, 1),
+  (6, 1),
+  (7, 1),
+  (8, 1),
+  (9, 1),
+  (10, 1);
+
 INSERT INTO sessions (user_id, uuid, expires_at)
 VALUES
   (1, 'b531c4e2-3459-4e83-955c-942f71d52133', '2023-10-15 08:43:46.562+00'),
@@ -23,10 +43,6 @@ VALUES
   (3, 'b531c4e2-3459-4e83-955c-942f71d52135', '2023-10-17 08:43:46.562+00'),
   (4, 'b531c4e2-3459-4e83-955c-942f71d52136', '2023-10-18 08:43:46.562+00'),
   (5, 'b531c4e2-3459-4e83-955c-942f71d52137', '2023-10-19 08:43:46.562+00');
-
-INSERT INTO admins (user_id)
-VALUES
-  (1);
 
 INSERT INTO archive_parts (winner, loser, duration_ms, date)
 VALUES

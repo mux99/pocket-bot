@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import {pool} from "../../hooks.server.js";
+import { pool } from "../../hooks.server.js";
 
 export async function getFormData(request) {
 	const formData = await request.formData();
@@ -65,6 +65,11 @@ export async function createUser(locals, username, hashedPassword) {
 		values: [username, hashedPassword]
 	});
 
+	await locals.pool.query({
+		text: 'INSERT INTO users_roles (user_id, role_id) VALUES ($1, 1)',
+		values: [query.rows[0].user_id]
+	});
+
 	return {
 		user_id: query.rows[0].user_id
 	};
@@ -105,13 +110,18 @@ export async function getUserinfo({ cookies, locals }) {
 	return rows[0];
 }
 
-export async function checkIfUsernameExists(username) {
-	const { rows } = await pool.query({
-		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
-		values: [username]
-	});
+export async function getUserRoles(userId) {
+    const {rows} = await pool.query({
+        text: `
+            SELECT array_agg(roles.name)
+            FROM users_roles
+            JOIN roles ON users_roles.role_id = roles.role_id
+            WHERE users_roles.user_id = $1
+        `,
+        values: [userId]
+    });
 
-	return rows[0].exists;
+	return rows[0].array_agg ? rows[0].array_agg : [];
 }
 
 export async function checkIfPasswordIsCorrect(username, password) {
@@ -159,4 +169,24 @@ export async function getArchiveParts(userId) {
 	values: [userId]
 	});
 	return rows;
+}
+
+export async function deleteDbSession(locals) {
+	await locals.pool.query({
+		text: 'DELETE FROM sessions WHERE user_id = $1',
+		values: [locals.userInfo.user_id]
+	});
+}
+export async function deleteBrowserSession( cookies) {
+	await cookies.delete('uuid')
+}
+
+export async function usernameToId(username) {
+	const {rows} = await pool.query({
+		text: 'SELECT user_id FROM users WHERE username=$1;',
+		values: [username]
+	});
+	if (!rows.length)
+		return null;
+	return rows[0].user_id;
 }
