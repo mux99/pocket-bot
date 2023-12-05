@@ -1,5 +1,8 @@
 <script>
     export let data;
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 <div class="min-h-screen flex items-center justify-center bg-gray-900 text-white">
@@ -13,11 +16,13 @@
                 <span class="inline-block bg-blue-500 text-white px-2 py-1 rounded mr-2">{role}</span>
             {/each}
         </p>
+        <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={goBack}>Go back</button>
     </div>
     {:else}
         <div class="bg-gray-800 p-6 rounded shadow-lg max-w-md w-full text-center">
             <h1 class="text-3xl font-bold mb-4">404</h1>
             <p>User not found</p>
+            <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={goBack}>Go back</button>
         </div>
     {/if}
 </div>
