@@ -11,7 +11,14 @@ export const load = async (serverLoadEvent) => {
     if (!roles.includes('admin'))
         throw redirect(303, '/');
 
-    const { rows } = await serverLoadEvent.locals.pool.query('SELECT * FROM users WHERE user_id = $1', [serverLoadEvent.params.userId]);
+        const { rows } = await serverLoadEvent.locals.pool.query(`
+        SELECT users.*, array_agg(DISTINCT roles.name) as roles
+        FROM users
+        LEFT JOIN users_roles ON users.user_id = users_roles.user_id
+        LEFT JOIN roles ON users_roles.role_id = roles.role_id
+        WHERE users.user_id = $1
+        GROUP BY users.user_id
+    `, [serverLoadEvent.params.userId]);
 
     return { user: rows[0] }
 }
