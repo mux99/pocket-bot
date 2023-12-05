@@ -16,7 +16,11 @@
                 <span class="inline-block bg-blue-500 text-white px-2 py-1 rounded mr-2">{role}</span>
             {/each}
         </p>
-        <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" on:click={goBack}>Go back</button>
+        <div class="mt-4">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" on:click={goBack}>Go back</button>
+            <a href="/admin/users/{data.user.user_id}/edit" class="inline-block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">Edit</a>
+            <a href="/admin/users/{data.user.user_id}/delete" class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</a>
+        </div>
     </div>
     {:else}
         <div class="bg-gray-800 p-6 rounded shadow-lg max-w-md w-full text-center">
