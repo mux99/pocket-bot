@@ -13,7 +13,8 @@
     }
 
     function getOpponentUsername() {
-        return part.winner_id === user.user_id ? part.loser_username : part.winner_username
+        if(part.winner_deleted || part.loser_deleted) return "Deleted User"
+        else return part.winner_id === user.user_id ? part.loser_username : part.winner_username
     }
 
 </script>

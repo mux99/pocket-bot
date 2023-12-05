@@ -148,8 +148,10 @@ export async function getArchiveParts(userId) {
 		"    part_id AS \"id\",\n" +
 		"    winner.user_id AS \"winner_id\",\n" +
 		"    winner.username AS \"winner_username\",\n" +
+		"    winner.deleted AS \"winner_deleted\",\n" +
 		"    loser.user_id AS \"loser_id\",\n" +
 		"    loser.username AS \"loser_username\",\n" +
+		"    loser.deleted AS \"loser_deleted\",\n" +
 		"    duration_ms AS \"duration\",\n" +
 		"    date\n" +
 		"FROM archive_parts AS parts\n" +
