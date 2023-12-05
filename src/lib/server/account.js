@@ -121,7 +121,7 @@ export async function getUserRoles(userId) {
         values: [userId]
     });
 
-	return rows[0].array_agg;
+	return rows[0].array_agg ? rows[0].array_agg : [];
 }
 
 export async function checkIfPasswordIsCorrect(username, password) {
