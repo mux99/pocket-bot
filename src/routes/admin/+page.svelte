@@ -1,1 +1,1 @@
-<a href="/admin/users">View Users</a>
+<a href="/admin/users" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Users</a>
