@@ -9,32 +9,36 @@
     h1 {
         color: #9CA3AF;
     }
-    .global {
+    #global {
         display: flex;
         background-color: #111827;
     }
-    .left {
+    #left {
         width: 50%;
     }
-    .right {
+    #right {
         width: 50%;
     }
-    .vl {
+    #vl {
         width: 1px;
         background-color: #9CA3AF;
     }
 </style>
 
-<div class="global">
-    <div class="left">
+<div id="global">
+    <div id="left">
         <h1>Friends</h1>
         <div>You have no friends</div>
     </div>
 
-    <div class="vl"></div>
+    <div id="vl"></div>
 
-    <div class="right">
+    <div id="right">
         <h1>Requests</h1>
-        <FriendRequest username={data[0].username}/>
+        <div>
+            {#each data as {username}}
+                <FriendRequest username={username}/>
+            {/each}
+        </div>
     </div>
 </div>
