@@ -158,8 +158,10 @@ export async function getArchiveParts(userId) {
 		"    part_id AS \"id\",\n" +
 		"    winner.user_id AS \"winner_id\",\n" +
 		"    winner.username AS \"winner_username\",\n" +
+		"    winner.deleted AS \"winner_deleted\",\n" +
 		"    loser.user_id AS \"loser_id\",\n" +
 		"    loser.username AS \"loser_username\",\n" +
+		"    loser.deleted AS \"loser_deleted\",\n" +
 		"    duration_ms AS \"duration\",\n" +
 		"    date\n" +
 		"FROM archive_parts AS parts\n" +
@@ -171,12 +173,32 @@ export async function getArchiveParts(userId) {
 	return rows;
 }
 
+export async function softDeleteUser(uuid) {
+	const { rows } = await pool.query({
+		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
+		values: [uuid]
+	});
+
+	await pool.query({
+		text: "DELETE FROM sessions WHERE user_id = $1",
+		values: [rows[0].user_id]
+	});
+
+	await pool.query({
+		text: "UPDATE users SET username = $1, deleted = true WHERE user_id = $2",
+		values: [generateUuid(), rows[0].user_id]
+	});
+
+	return true;
+}
+
 export async function deleteDbSession(locals) {
 	await locals.pool.query({
 		text: 'DELETE FROM sessions WHERE user_id = $1',
 		values: [locals.userInfo.user_id]
 	});
 }
+  
 export async function deleteBrowserSession( cookies) {
 	await cookies.delete('uuid')
 }
