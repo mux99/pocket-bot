@@ -180,3 +180,12 @@ export async function usernameToId(username) {
 		return null;
 	return rows[0].user_id;
 }
+
+export async function checkIfUsernameExists(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
+		values: [username]
+	});
+
+	return rows[0].exists;
+}
