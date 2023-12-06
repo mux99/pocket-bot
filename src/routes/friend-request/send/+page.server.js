@@ -4,7 +4,7 @@ import {
 } from "$lib/server/friendRequest";
 import {
     getUserId,
-    checkIfUsernameExists
+    usernameToId
 } from "$lib/server/account";
 
 /** @type {import('./$types').Actions} */
@@ -12,7 +12,7 @@ export const actions = {
     default: async ({ request, locals }) => {
         const { username } = await getFormData(request);
 
-        if (!await checkIfUsernameExists(locals, username)) {
+        if (!await usernameToId(username)) {
             return {
                 success: false,
                 message: 'Username does not exist'

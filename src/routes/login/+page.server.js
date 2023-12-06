@@ -1,10 +1,9 @@
 import {
     getFormData,
-    checkIfUsernameExists,
     checkIfPasswordIsCorrect,
     getUserId,
     generateUuid,
-    setSession
+    setSession, usernameToId
 } from '$lib/server/account';
 
 /** @type {import('./$types').Actions} */
@@ -12,7 +11,7 @@ export const actions = {
     default: async ({ request, locals, cookies }) => {
         const { username, password } = await getFormData(request);
 
-        if (!await checkIfUsernameExists(username)) {
+        if (!await usernameToId(username)) {
             return {
                 success: false,
                 message: 'Username or password incorrect'
