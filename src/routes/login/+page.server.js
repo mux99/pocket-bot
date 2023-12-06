@@ -15,16 +15,16 @@ export const actions = {
         if (!await checkIfUsernameExists(username)) {
             return {
                 success: false,
-                message: 'Username does not exist'
+                message: 'Username or password incorrect'
             };
-        };
+        }
 
         if (!await checkIfPasswordIsCorrect(username, password)) {
             return {
                 success: false,
-                message: 'Incorrect password'
+                message: 'Username or password incorrect'
             };
-        };
+        }
 
         const userId = await getUserId(locals, username);
         const uuid = generateUuid();

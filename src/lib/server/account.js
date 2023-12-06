@@ -141,16 +141,6 @@ export async function getUserId(locals, username) {
 
 	return rows[0].id;
 }
-
-export async function checkIfAdmin({ locals }) {
-	if (!locals.userInfo) return false;
-	const { rows } = await locals.pool.query({
-		text: 'SELECT * FROM admins WHERE user_id = $1',
-		values: [locals.userInfo.user_id]
-	});
-
-	return rows[0];
-}
   
 export async function getArchiveParts(userId) {
 	const {rows} = await pool.query({
@@ -211,4 +201,13 @@ export async function usernameToId(username) {
 	if (!rows.length)
 		return null;
 	return rows[0].user_id;
+}
+
+export async function checkIfUsernameExists(locals, username) {
+	const { rows } = await locals.pool.query({
+		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
+		values: [username]
+	});
+
+	return rows[0].exists;
 }

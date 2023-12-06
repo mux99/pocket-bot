@@ -6,6 +6,7 @@ import {
     checkIfUsernameExists,
     getUserinfo
 } from "$lib/server/account.js";
+import { existsSync } from "fs";
 
 export const load = async (serverLoadEvent) => {
     const info = await getUserinfo(serverLoadEvent);
@@ -13,7 +14,8 @@ export const load = async (serverLoadEvent) => {
         throw redirect('/');
     return {
         user: info,
-        api_url: apiUrl
+        api_url: apiUrl,
+        has_profile_picture: existsSync(`static/profile-picture/${info.user_id}.png`)
     }
 };
 

@@ -23,6 +23,19 @@ CREATE TABLE IF NOT EXISTS users_roles (
   FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS roles (
+  role_id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users_roles (
+  user_id INT NOT NULL,
+  role_id INT NOT NULL,
+  CONSTRAINT pk_users_roles PRIMARY KEY (user_id, role_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS sessions (
   session_id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
@@ -58,8 +71,8 @@ CREATE TABLE IF NOT EXISTS archive_parts (
     duration_ms BIGINT,
     date TIMESTAMPTZ,
     CONSTRAINT pk_archive_parts PRIMARY KEY (part_id),
-    CONSTRAINT fk_archive_parts_users_winner FOREIGN KEY (winner) REFERENCES users(user_id),
-    CONSTRAINT fk_archive_parts_Users_loser FOREIGN KEY (loser) REFERENCES users(user_id),
+    CONSTRAINT fk_archive_parts_users_winner FOREIGN KEY (winner) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_archive_parts_Users_loser FOREIGN KEY (loser) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT archive_parts_participants CHECK (winner != loser),
     CONSTRAINT archive_parts_duration CHECK (duration_ms > 0)
 );
@@ -69,7 +82,7 @@ CREATE TABLE IF NOT EXISTS part_proposal (
     opponent_id INT,
     accepted BOOLEAN NULL DEFAULT NULL,
     CONSTRAINT pk_part_proposal PRIMARY KEY (requester_id),
-    CONSTRAINT fk_part_proposal_requester FOREIGN KEY (requester_id) REFERENCES users(user_id),
-    CONSTRAINT fk_part_proposal_participant FOREIGN KEY (opponent_id) REFERENCES users(user_id),
+    CONSTRAINT fk_part_proposal_requester FOREIGN KEY (requester_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_part_proposal_participant FOREIGN KEY (opponent_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT part_proposal_requester_participant CHECK (requester_id != opponent_id)
 );
