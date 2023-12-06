@@ -10,3 +10,15 @@ export async function sendFriendRequest(locals, senderId, receiverId){
         values: [senderId, receiverId, new Date().toISOString()]
     });
 }
+
+export async function getFriendRequests(locals) {
+    try {
+        const { rows } = await locals.pool.query({
+            text: 'SELECT username FROM friend_requests JOIN users ON sender_id = user_id WHERE receiver_id = $1',
+            values: [locals.userInfo.user_id]
+        });
+        return rows;
+    } catch (e) {
+        console.log(e.message);
+    }
+}
