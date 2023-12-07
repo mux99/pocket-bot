@@ -17,7 +17,6 @@ export async function checkIfAlreadyFriend(locals, receiverId) {
             text: 'SELECT * FROM friends WHERE user_id_1 = $1 AND user_id_2 = $2 UNION SELECT * FROM friends WHERE user_id_2 = $1 AND user_id_1 = $2',
             values: [locals.userInfo.user_id, receiverId]
         });
-        console.log(rows)
         return !rows.length;
 
     } catch (e) {
