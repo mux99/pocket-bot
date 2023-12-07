@@ -9,6 +9,7 @@
                 userId
             })
         });
+        window.location.reload();
     }
 
     async function decline() {
@@ -18,6 +19,7 @@
                 userId
             })
         });
+        window.location.reload();
     }
 </script>
 
@@ -27,6 +29,7 @@
         border-radius: 4px;
         background-color: #1F2937;
         margin: 10px;
+        height: 110px;
     }
     #global:hover {
         background-color: #334155;

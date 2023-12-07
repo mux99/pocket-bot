@@ -1,7 +1,9 @@
 <script>
     /** @type {import('./$types').PageData} */
     export let data;
-    data = data.post;
+    let friends = data.friends;
+    let requests = data.requests;
+    import Friend from "$lib/components/Friend.svelte";
     import FriendRequest from "$lib/components/FriendRequest.svelte";
 </script>
 
@@ -30,7 +32,15 @@
 <div id="global">
     <div id="left">
         <h1>Friends</h1>
-        <div>You have no friends</div>
+        <div>
+            {#if !friends}
+                <p>No friends</p>
+            {:else}
+                {#each friends as {username}}
+                    <Friend username={username}/>
+                {/each}
+            {/if}
+        </div>
     </div>
 
     <div id="vl"></div>
@@ -38,10 +48,10 @@
     <div id="right">
         <h1>Requests</h1>
         <div>
-            {#if !data}
-                <p>No friends</p>
+            {#if !requests}
+                <p>No requests</p>
             {:else}
-                {#each data as {sender_id, username}}
+                {#each requests as {sender_id, username}}
                     <FriendRequest userId={sender_id} username={username}/>
                 {/each}
             {/if}

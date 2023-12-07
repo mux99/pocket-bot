@@ -33,10 +33,18 @@ export async function acceptRequest(locals, senderId) {
         console.log(e.message);
     }
 
+    let order = [];
+    if (senderId < locals.userInfo.user_id) {
+        order.push(senderId);
+        order.push(locals.userInfo.user_id);
+    } else {
+        order.push(locals.userInfo.user_id);
+        order.push(senderId);
+    }
     try {
         await locals.pool.query({
             text: 'INSERT INTO friends (user_id_1, user_id_2) VALUES ($1, $2)',
-            values: [senderId, locals.userInfo.user_id]
+            values: order
         });
     } catch (e) {
         console.log(e.message);
