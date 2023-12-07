@@ -11,6 +11,20 @@ export async function sendFriendRequest(locals, senderId, receiverId){
     });
 }
 
+export async function checkIfAlreadyFriend(locals, receiverId) {
+    try {
+        const { rows } = await locals.pool.query({
+            text: 'SELECT * FROM friends WHERE user_id_1 = $1 AND user_id_2 = $2 UNION SELECT * FROM friends WHERE user_id_2 = $1 AND user_id_1 = $2',
+            values: [locals.userInfo.user_id, receiverId]
+        });
+        console.log(rows)
+        return !rows.length;
+
+    } catch (e) {
+        console.log(e.message);
+    }
+}
+
 export async function getFriendRequests(locals) {
     try {
         const { rows } = await locals.pool.query({

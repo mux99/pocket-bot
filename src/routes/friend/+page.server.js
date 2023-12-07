@@ -5,6 +5,6 @@ import {getFriends} from "$lib/server/friend.js";
 export async function load({ locals }) {
     return {
         'requests': await getFriendRequests(locals),
-        friends: await getFriends(locals)
+        'friends': await getFriends(locals)
     };
 }
