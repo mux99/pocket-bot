@@ -8,6 +8,8 @@
 <style>
     h1 {
         color: #9CA3AF;
+        margin: 10px;
+        font-size: larger;
     }
     #global {
         display: flex;
@@ -36,9 +38,13 @@
     <div id="right">
         <h1>Requests</h1>
         <div>
-            {#each data as {username}}
-                <FriendRequest username={username}/>
-            {/each}
+            {#if !data}
+                <p>No friends</p>
+            {:else}
+                {#each data as {sender_id, username}}
+                    <FriendRequest userId={sender_id} username={username}/>
+                {/each}
+            {/if}
         </div>
     </div>
 </div>
