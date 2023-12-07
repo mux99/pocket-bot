@@ -1,4 +1,5 @@
 import {
+    checkIfAlreadyFriend,
     getFormData,
     sendFriendRequest
 } from "$lib/server/friendRequest";
@@ -26,6 +27,13 @@ export const actions = {
             return {
                 success: false,
                 message: 'No self-request'
+            };
+        }
+
+        if (!await checkIfAlreadyFriend(locals, receiverId)) {
+            return {
+                success: false,
+                message: 'You are already friends'
             };
         }
 
