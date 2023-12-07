@@ -1,6 +1,6 @@
 import {redirect} from "@sveltejs/kit";
+import {getUserinfo, softDeleteUser, deleteDbSession, deleteBrowserSession} from "$lib/server/account.js";
 import {pool} from "../../hooks.server.js";
-import {getUserinfo, deleteDbSession, deleteBrowserSession} from "$lib/server/account.js";
 
 export const load = async (serverLoadEvent) => {
     const response = await getUserinfo(serverLoadEvent);
