@@ -1,5 +1,6 @@
 #include <Servo.h>
 #include <Wire.h>
+#include <string.h>
 
 // Connections
 //TX -> Bluetooth RX
@@ -35,14 +36,15 @@ Servo servo2;
 
 void setup() {
   //bluetooth setup
+  Serial.begin(9600);
   Serial1.begin(9600);
   pinMode(B_state, INPUT);
 
   //servo setup
   servo1.attach(S1);
-  servo1.write(0);
+  servo1.write(90);
   servo2.attach(S2);
-  servo2.write(0);
+  servo2.write(90);
 
   //motor control
   pinMode(M_in1, OUTPUT);
@@ -81,20 +83,32 @@ void loop() {
     return;
   }
   digitalWrite(BTN_LED, HIGH);
+  delay(20);
 
   //read commands if avaliable
-  while (Serial1.available() > 4) {
-    char cmm[3];
+  char out[255];
+  out[0] = NULL;
+  while (Serial1.available() > 0) {
+    Serial.println(Serial1.available());
+    char cmm[4];
+    cmm[3] = NULL;
+
     Serial1.readBytes(cmm, 3);
     int value = Serial1.parseInt();
-    parseCommand(cmm, value);
+    parseCommand(cmm, value, out);
 
+    Serial.println(Serial1.available());
     //clear CR & LF from buffer
-    if (Serial.available() < 3) {
+    if (Serial1.available() < 3) {
       Serial1.read();
-      delay(20);
+      delay(1);
       Serial1.read();
+
+      if (out[0] != NULL) {
+        Serial1.println(out);
+      }
     }
+    delay(5);
   }
 }
 
@@ -103,8 +117,8 @@ int get_motor_speed(int percentage) {
   return int(abs(63.75 + (float)percentage * 1.9125));
 }
 
-void parseCommand(String cmm, int value) {
-  if (cmm == "LFT") {
+void parseCommand(char* cmm, int value, char* out) {
+  if (strcmp(cmm,"LFT") == 0) {
     analogWrite(M_en2,get_motor_speed(value));
     if (value < 0) {
       digitalWrite(M_in3, LOW);
@@ -115,7 +129,8 @@ void parseCommand(String cmm, int value) {
     }
   }
   
-  else if (cmm == "RGT") {
+  else if (strcmp(cmm,"RGT") == 0) {
+    Serial.println("test");
     analogWrite(M_en1,get_motor_speed(value));
     if (value < 0){
       digitalWrite(M_in1, LOW);
@@ -126,26 +141,30 @@ void parseCommand(String cmm, int value) {
     }
   }
   
-  else if (cmm == "ARM") {
-    servo1.write(value*30);
-    servo2.write(value*30);
+  else if (strcmp(cmm,"ARM") == 0) {
+    servo1.write(90+(value*30));
+    servo2.write(90+(value*-30));
   }
   
-  else if (cmm == "BAT") {
-    Serial1.print("BAT");
-    Serial1.println(analogRead(Bat));
+  else if (strcmp(cmm,"BAT") == 0) {
+    strcat(out,"BAT");
+    char buf[16];
+    itoa(int(100*(analogRead(Bat)-385)/72), buf, 10);
+    strcat(out, buf);
   }
 
-  else if (cmm == "LIV") {
+  else if (strcmp(cmm,"LIV") == 0) {
     int lives = 0;
-    lives += digitalRead(Hall1);
-    lives += digitalRead(Hall2);
-    lives += digitalRead(Hall3);
-    Serial1.print("LIV");
-    Serial1.println(lives);
+    lives += 1-digitalRead(Hall1);
+    lives += 1-digitalRead(Hall2);
+    lives += 1-digitalRead(Hall3);
+    strcat(out,"LIV");
+    char buf[16];
+    itoa(lives, buf, 10);
+    strcat(out, buf);
   }
 
-  else if (cmm == "FLP") {
+  else if (strcmp(cmm,"FLP") == 0) {
     Wire.beginTransmission(ADXL345);
     Wire.write(0x36);
     Wire.endTransmission(false);
@@ -153,12 +172,12 @@ void parseCommand(String cmm, int value) {
     Z_out = ( Wire.read()| Wire.read() << 8);
     Z_out = Z_out/256;
 
-    Serial1.print("FLP");
+    strcat(out,"FLP");
     if (Z_out >= 0) {
-      Serial1.println("0");    
+      strcat(out,"0");    
     }
     else {
-      Serial1.println("1");
+      strcat(out,"1");
     }
   }
 }
