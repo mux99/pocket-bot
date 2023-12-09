@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     restart: always
     container_name: postgres
-    ports:
-      - "5432:5432"
 
   svelte-kit:
     build:
