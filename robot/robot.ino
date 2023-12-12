@@ -27,6 +27,7 @@
 //SCL () -> Accelerometer SCL
 int ADXL345 = 0x53; // The ADXL345 sensor I2C address
 float X_out, Y_out, Z_out;  // Outputs
+int battery = 0;
 
 #define Bat A7 // Batery Tention bridge | 12V -> R1=100Ω R2=220Ω
 
@@ -97,6 +98,8 @@ void loop() {
     int value = Serial1.parseInt();
     parseCommand(cmm, value, out);
 
+    battery = (int(100*(analogRead(Bat)-385)/72) + (battery*8))/9;
+
     Serial.println(Serial1.available());
     //clear CR & LF from buffer
     if (Serial1.available() < 3) {
@@ -149,7 +152,7 @@ void parseCommand(char* cmm, int value, char* out) {
   else if (strcmp(cmm,"BAT") == 0) {
     strcat(out,"BAT");
     char buf[16];
-    itoa(int(100*(analogRead(Bat)-385)/72), buf, 10);
+    itoa(battery, buf, 10);
     strcat(out, buf);
   }
 
