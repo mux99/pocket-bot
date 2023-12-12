@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS archive_parts (
     loser SERIAL,
     duration_ms BIGINT,
     date TIMESTAMPTZ,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pk_archive_parts PRIMARY KEY (part_id),
     CONSTRAINT fk_archive_parts_users_winner FOREIGN KEY (winner) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_archive_parts_Users_loser FOREIGN KEY (loser) REFERENCES users(user_id) ON DELETE CASCADE,

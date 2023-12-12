@@ -157,7 +157,7 @@ export async function getArchiveParts(userId) {
 		"FROM archive_parts AS parts\n" +
 		"JOIN users AS winner ON parts.winner = winner.user_id\n" +
 		"JOIN users AS loser ON parts.loser = loser.user_id\n" +
-		"WHERE winner=$1 OR loser=$1;",
+		"WHERE winner=$1 AND parts.deleted=false OR loser=$1 AND parts.deleted=false;",
 	values: [userId]
 	});
 	return rows;
