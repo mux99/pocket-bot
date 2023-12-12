@@ -16,7 +16,7 @@ export const actions = {
         if(await softDeleteUser(pool, cookies.get('uuid'))) {
             throw redirect(303, '/');
         }
-    }
+    },
   logout: async ({ locals, cookies }) => {
     await deleteDbSession(locals)
     await deleteBrowserSession(cookies)

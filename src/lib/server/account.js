@@ -203,7 +203,6 @@ export async function usernameToId(username) {
 	return rows[0].user_id;
 }
 
-<<<<<<< HEAD
 export async function checkIfUsernameExists(locals, username) {
 	const { rows } = await locals.pool.query({
 		text: 'SELECT EXISTS (SELECT 1 FROM users WHERE username = $1) AS exists',
@@ -211,20 +210,4 @@ export async function checkIfUsernameExists(locals, username) {
 	});
 
 	return rows[0].exists;
-}
-
-// set deleted as true and randomize username
-
-export async function softDeleteUser(pool, uuid) {
-	const { rows } = await pool.query({
-		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
-		values: [uuid]
-	});
-
-	await pool.query({
-		text: "DELETE FROM sessions WHERE user_id = $1",
-		values: [rows[0].user_id]
-	});
-
-	return true;
 }
