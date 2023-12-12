@@ -12,10 +12,8 @@ export const load = async (serverLoadEvent) => {
         throw redirect(303, '/');
 
     const { rows } = await serverLoadEvent.locals.pool.query(`
-        SELECT part_id, duration_ms, date
-        FROM archive_parts
-        ORDER BY part_id ASC
+        SELECT * FROM modules ORDER BY module_id ASC
     `);
 
-    return { parts: rows }
+    return { modules: rows }
 }
