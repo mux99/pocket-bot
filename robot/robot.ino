@@ -119,20 +119,8 @@ int get_motor_speed(int percentage) {
 
 void parseCommand(char* cmm, int value, char* out) {
   if (strcmp(cmm,"LFT") == 0) {
-    analogWrite(M_en2,get_motor_speed(value));
-    if (value < 0) {
-      digitalWrite(M_in3, LOW);
-      digitalWrite(M_in4, HIGH);
-    } else {
-      digitalWrite(M_in3, HIGH);
-      digitalWrite(M_in4, LOW);
-    }
-  }
-  
-  else if (strcmp(cmm,"RGT") == 0) {
-    Serial.println("test");
     analogWrite(M_en1,get_motor_speed(value));
-    if (value < 0){
+    if (value < 0) {
       digitalWrite(M_in1, LOW);
       digitalWrite(M_in2, HIGH);
     } else {
@@ -141,9 +129,21 @@ void parseCommand(char* cmm, int value, char* out) {
     }
   }
   
+  else if (strcmp(cmm,"RGT") == 0) {
+    Serial.println("test");
+    analogWrite(M_en2,get_motor_speed(value));
+    if (value < 0){
+      digitalWrite(M_in3, LOW);
+      digitalWrite(M_in4, HIGH);
+    } else {
+      digitalWrite(M_in3, HIGH);
+      digitalWrite(M_in4, LOW);
+    }
+  }
+  
   else if (strcmp(cmm,"ARM") == 0) {
-    servo1.write(90+(value*30));
-    servo2.write(90+(value*-30));
+    servo1.write(90+(value*-30));
+    servo2.write(90+(value*30));
   }
   
   else if (strcmp(cmm,"BAT") == 0) {
