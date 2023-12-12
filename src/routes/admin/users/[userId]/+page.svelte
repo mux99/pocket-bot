@@ -18,7 +18,7 @@
             <h2 class="text-2xl font-bold mb-4">User Data:</h2>
             <p class="mb-2"><span class="font-semibold">User ID:</span> {data.user.user_id}</p>
             <label for="username" class="font-semibold">Username:</label>
-            <input id="username" name="username" type="text" class="border rounded px-2 py-1 mb-2 text-black" bind:value={data.user.username} />
+            <input id="username" name="username" type="text" class="border rounded px-2 mb-2 text-black" bind:value={data.user.username} />
             <p class="mt-4"><span class="font-semibold">Roles:</span>
                 {#each data.user.roles as role (role)}
                     <span class="inline-block bg-blue-500 text-white px-2 py-1 rounded mr-2">{role}</span>

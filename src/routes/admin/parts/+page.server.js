@@ -14,6 +14,7 @@ export const load = async (serverLoadEvent) => {
     const { rows } = await serverLoadEvent.locals.pool.query(`
         SELECT part_id, duration_ms, date
         FROM archive_parts
+        ORDER BY part_id ASC
     `);
 
     return { parts: rows }

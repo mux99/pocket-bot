@@ -50,10 +50,10 @@ export const actions = {
         const data = await request.formData();
 
         await pool.query({
-            text: "UPDATE users SET username = $1 WHERE user_id = $2",
-            values: [data.get('username'), params.userId]
+            text: "UPDATE archive_parts SET winner = $1, loser = $2 WHERE part_id = $3",
+            values: [data.get('winner_id'), data.get('loser_id'), params.partId]
         });
 
-        throw redirect(303, '/admin/users');
+        throw redirect(303, '/admin/parts');
     }
 }
