@@ -18,8 +18,12 @@ let deviceCache = null;
 let readBuffer = '';
 let rightSpeed = "0"; 
 let leftSpeed = "0";
+let old_rightSpeed = "0";
+let old_leftSpeed = "0";
+let old_armActivate = "0";
 let armActivate = "0";
 let operatingSystem = "";
+let compt = 1;
 
 export function get_os() {
     if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -48,7 +52,7 @@ export function connect() {
         requestBluetoothDevice()).
     then(device => connectDeviceAndCacheCharacteristic(device)).
     then(characteristic => startNotifications(characteristic)).
-    then(myInterval = setInterval(sendingBLEinfo, 2000)).
+    then(myInterval = setInterval(sendingBLEinfo, 100)).
     catch(error => handleError(error));
 }
 export function disconnect() {
@@ -79,10 +83,25 @@ export function disconnect() {
 }
 
 function sendingBLEinfo() {
-    send("BATLIVFLP", false); //querry battery, lives, flipness
-    send("LFT" + leftSpeed, false);
-    send("RGT" + rightSpeed, false);
-    send("ARM" + armActivate, false);
+    let out = "";
+    compt -= 1;
+    if (compt <= 0) {
+        out += "BAT0LIV0FLP0";
+        compt = 50;
+    }
+    if (leftSpeed != old_leftSpeed) {
+        out += "LFT" + leftSpeed;
+    }
+    if (rightSpeed != old_rightSpeed) {
+        out += "RGT" + rightSpeed;
+    }
+    if (armActivate != old_armActivate) {
+        out += "ARM" + armActivate;
+    }
+    old_armActivate = armActivate;
+    old_leftSpeed = leftSpeed;
+    old_rightSpeed = rightSpeed;
+    send(out, true);
 }
 
 function receive(data) {

@@ -17,8 +17,6 @@ export function moveJoystick(e) {
         const limitedX = Math.cos((logicAngle * Math.PI) / 180) * (distance / 100) * maxDistance;
         const limitedY = Math.sin((logicAngle * Math.PI) / 180) * (distance / 100) * maxDistance;
         joystick.style.transform = `translate(-50%, -50%) translate(${limitedX}px, ${limitedY}px)`;
-        console.log(displayAngle);
-        console.log(distance);
     }
 }
 
@@ -28,12 +26,7 @@ export function startDrag(e) {
 }
 
 export function activateArms(activate_bool) {
-  if (activate_bool == 1) {
-    updateArm("1");
-  }
-  else if (activate_bool == 0) {
-    updateArm("0");
-  }
+  updateArm(activate_bool.toString());
 }
 
 export function endDrag(e) {
@@ -44,12 +37,12 @@ export function endDrag(e) {
 }
 
 export function updatePosition(angle, distance) {
-    console.log(calculateMotorSpeeds(angle, distance));
+    calculateMotorSpeeds(angle, distance);
 }
 
 export function resetJoystickPosition() {
     joystick.style.transform = 'translate(-50%, -50%) translate(0, 0)';
-    updatePosition(0, 0);
+    updateSpeed("0", "0");
 }
 
 export function calculateMotorSpeeds(angle, distance) {
@@ -69,6 +62,6 @@ export function calculateMotorSpeeds(angle, distance) {
       left_speed = distance;
       right_speed = eq1;
     }
-    updateSpeed(left_speed.toString(), right_speed.toString());
+    updateSpeed(left_speed.toFixed(0).toString(), right_speed.toFixed(0).toString());
     return { left_speed, right_speed };
 }
