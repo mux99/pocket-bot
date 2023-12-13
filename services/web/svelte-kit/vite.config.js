@@ -7,6 +7,9 @@ export default defineConfig({
 		include: ['tests/unit/spec/*spec.js'],
 		deps: { inline: ['@sveltejs/kit'] },
 		globals: true,
+		coverage: {
+			provider: 'v8'
+		}
 	},
 	server: {
 		host: true,
