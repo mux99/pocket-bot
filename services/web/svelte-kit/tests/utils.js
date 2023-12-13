@@ -89,22 +89,6 @@ export async function createDbSessions(userId) {
 	});
 }
 
-export async function getDbSessions(userId) {
-	const {rows} = await getTempPool().query({
-		text: 'SELECT * FROM sessions WHERE user_id=$1;',
-		values: [userId]
-	});
-	return rows;
-}
-
-export async function getTableDataOfUsers(username) {
-	const {rows} = await getTempPool().query({
-		text: 'SELECT * FROM users WHERE username=$1 LIMIT 1;',
-		values: [username]
-	});
-	return rows[0];
-}
-
 export async function setAdminFromUsername(username) {
     await getTempPool().query({
         text: 'INSERT INTO users_roles (user_id, role_id) VALUES ((SELECT user_id FROM users WHERE username=$1), 2);',
@@ -138,4 +122,20 @@ export async function getLoggedCookies() {
 		path: '/',
 		expires: -1
 	};
+}
+
+export async function getDbSessions(userId) {
+	const {rows} = await getTempPool().query({
+		text: 'SELECT * FROM sessions WHERE user_id=$1;',
+		values: [userId]
+	});
+	return rows;
+}
+
+export async function getTableDataOfUsers(username) {
+	const {rows} = await getTempPool().query({
+		text: 'SELECT * FROM users WHERE username=$1 LIMIT 1;',
+		values: [username]
+	});
+	return rows[0];
 }
