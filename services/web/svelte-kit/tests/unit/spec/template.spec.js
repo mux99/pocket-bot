@@ -1,13 +1,9 @@
 import {expect, test} from "@playwright/test";
-import { setAdminFromUsername, deleteUserByUsername, getTempPool, getLoggedCookies, insertSession } from "../../utils";
-import pkg from 'pg';
-const {Pool} = pkg;
+import { setAdminFromUsername, deleteUserByUsername, getTempPool, getLoggedCookiesByUsername, insertSession } from "../../utils";
 import * as crypto from 'crypto'
 
 async function createUser(username, hashedPassword) {
-	let query = null;
-
-	query = await getTempPool().query({
+	let query = await getTempPool().query({
 		text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
 		values: [username, hashedPassword]
 	});
@@ -52,7 +48,7 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     await createUser(username, "test_password");
     await insertSession(username);
     const context = await browser.newContext();
-    await context.addCookies([await getLoggedCookies(username)]);
+    await context.addCookies([await getLoggedCookiesByUsername(username)]);
     const page = await context.newPage();
     await page.goto('/css-template');
     await expect(page.url().includes('/css-template')).not.toStrictEqual;
@@ -64,7 +60,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     console.log(page.url())
 
     const title = page.locator('h1');
-    const secondTitle = page.locator('h2');
     const formDiv = page.locator('#formTest');
     const link = page.locator('a');
     const mainDiv = page.locator('#mainDiv');
@@ -80,7 +75,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     const divColor = await getComputedStyleProperty(mainDiv, 'background-color');
     const formColor = await getComputedStyleProperty(formDiv, 'background-color');
     const formBorderColor = await getComputedStyleProperty(formDiv, 'border-color');
-    const inputColor = await getComputedStyleProperty(basicInput, 'background-color');
 
     // Test title properties
     await testCSSProperties(title, {
