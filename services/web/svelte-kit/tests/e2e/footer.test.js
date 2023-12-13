@@ -1,5 +1,5 @@
 import {expect, test} from "@playwright/test";
-import { getLoggedCookiesByUsername } from './utils.js';
+import { getLoggedCookies } from '../utils.js';
 
 test("Check if footer's buttons are correctly set", async ({ browser }) => {
    const context = await browser.newContext();

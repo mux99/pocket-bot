@@ -1,5 +1,6 @@
 import * as argon2 from "argon2"
 import { pool } from "../../hooks.server.js";
+import * as crypto from 'crypto';
 
 export async function getFormData(request) {
 	const formData = await request.formData();
