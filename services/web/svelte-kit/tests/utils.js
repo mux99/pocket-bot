@@ -1,7 +1,6 @@
 import pkg from 'pg';
 const {Pool} = pkg;
 import * as crypto from 'crypto';
-import { getTypeName } from 'eslint-plugin-svelte/lib/utils/ts-utils/index.js';
 
 export const POSTGRES_HOST = process.env.POSTGRES_HOST || 'localhost';
 export const POSTGRES_PORT = process.env.POSTGRES_PORT || 5432;
@@ -19,7 +18,7 @@ export function getTempPool() {
 	});
 }
 
-export async function getSessionUuid(username) {
+export async function getSessionUuidByUsername(username) {
     const pool = getTempPool();
     const {rows} = await pool.query({
         text: 'SELECT uuid FROM sessions AS "s" JOIN users AS "u" ON s.user_id=u.user_id  WHERE expires_at > CURRENT_TIMESTAMP AND u.username=$1;',
@@ -29,8 +28,8 @@ export async function getSessionUuid(username) {
     return rows[0].uuid;
 }
 
-export async function getLoggedCookies(username) {
-    const sessionUuid = await getSessionUuid(username);
+export async function getLoggedCookiesByUsername(username) {
+    const sessionUuid = await getSessionUuidByUsername(username);
     return {
         name: 'uuid',
         value: sessionUuid,
@@ -120,3 +119,23 @@ export async function insertSession(username) {
     });
 }
 
+export async function getSessionUuid() {
+	const pool = getTempPool();
+	const {rows} = await pool.query({
+		text: 'SELECT uuid FROM sessions WHERE expires_at > CURRENT_TIMESTAMP;',
+		values: []
+	});
+	pool.end();
+	return rows[0].uuid;
+}
+
+export async function getLoggedCookies() {
+	const sessionUuid = await getSessionUuid();
+	return {
+		name: 'uuid',
+		value: sessionUuid,
+		domain: 'localhost',
+		path: '/',
+		expires: -1
+	};
+}
