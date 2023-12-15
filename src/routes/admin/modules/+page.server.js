@@ -11,9 +11,5 @@ export const load = async (serverLoadEvent) => {
     if (!roles.includes('admin'))
         throw redirect(303, '/');
 
-    const { rows } = await serverLoadEvent.locals.pool.query(`
-        SELECT * FROM modules ORDER BY module_id ASC
-    `);
-
-    return { modules: rows }
+    // return { modules: rows }
 }
