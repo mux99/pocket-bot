@@ -1,7 +1,7 @@
 import * as argon2 from "argon2"
 import { pool } from "../../hooks.server.js";
 import * as crypto from 'crypto';
-
+import { existsSync } from 'fs';
 export async function getFormData(request) {
 	const formData = await request.formData();
 	const username = String(formData.get('username'));
@@ -29,7 +29,6 @@ export async function checkFormFields(username, password, locals) {
 			values: [username]
 		}
 	)
-
 	if (query.rows.length) {
 		errors.username.push('Username is already taken');
 	}
@@ -109,7 +108,8 @@ export async function getUserinfo({ cookies, locals }) {
 		text: 'SELECT user_id, username FROM sessions JOIN users USING (user_id) WHERE uuid = $1 AND expires_at > NOW()',
 		values: [uuid]
 	});
-
+	if (rows[0])
+		rows[0].avatar = existsSync(`static/profile-picture/${rows[0].user_id}.png`) ? `/profile-picture/${rows[0].user_id}.png` : "/img/default_avatar.png";
 	return rows[0];
 }
 

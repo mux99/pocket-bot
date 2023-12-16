@@ -1,7 +1,11 @@
 <script>
     import "../app.css";
     import Footer from "$lib/components/Footer.svelte";
+    import { redirect } from '@sveltejs/kit';
+    import Header from '$lib/components/Header.svelte';
     import { page } from "$app/stores";
+
+    export let data;
 
     function showFooter() {
         if ($page.url.pathname === '/login' || $page.url.pathname === '/register')
@@ -10,11 +14,14 @@
            return Object.keys(data).length;
         return true;
     }
-    import { redirect } from '@sveltejs/kit';
-    export let data;
+
     if ($page.url.pathname !== '/controller' && data.part)
         throw redirect(307, '/controller');
 </script>
+
+{#if data.user}
+	<Header user={data.user} />
+{/if}
 
 <slot />
 
