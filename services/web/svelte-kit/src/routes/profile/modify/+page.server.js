@@ -11,11 +11,10 @@ import { existsSync } from "fs";
 export const load = async (serverLoadEvent) => {
     const info = await getUserinfo(serverLoadEvent);
     if (!info)
-        throw redirect('/');
+        throw redirect(307, '/');
     return {
         user: info,
         api_url: apiUrl,
-        has_profile_picture: existsSync(`static/profile-picture/${info.user_id}.png`)
     }
 };
 

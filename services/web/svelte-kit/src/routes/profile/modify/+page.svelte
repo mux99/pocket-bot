@@ -7,8 +7,6 @@
     let files;
     let fileInput;
     let avatar;
-    let avatarUrl = `/profile-picture/${data.user.user_id}.png`;
-    const defaultAvatar = '/img/default_avatar.png';
     let avatarChangedSuccess = false;
     function getBase64(image) {
         const reader = new FileReader();
@@ -91,8 +89,8 @@
     {#if avatar}
         <img id="avatar" src="{avatar}" alt="new {data.user.username}'s avatar"/>
     {:else}
-        <img id="avatar" src={defaultAvatar} alt="{data.user.username}'s avatar" />
-    {/if}<br>
+        <img src={data.user.avatar} alt="{data.user.username}'s avatar" id='avatar' />
+    {/if}
     <input
       class="hidden"
       type="file"
