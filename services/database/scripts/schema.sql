@@ -87,3 +87,14 @@ CREATE TABLE IF NOT EXISTS parts(
     CONSTRAINT check_winner CHECK (loser IN (player1, player2))
 );
 
+CREATE TABLE IF NOT EXISTS notifications (
+    notification_id SERIAL,
+    receiver_id INT,
+    type VARCHAR(10),
+    sender_id INT NULL,
+    seen BOOLEAN DEFAULT FALSE,
+    CONSTRAINT pk_notifications PRIMARY KEY (notification_id),
+    CONSTRAINT fk_notifications_receiver FOREIGN KEY (receiver_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_notifications_sender FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT receiver_sender CHECK (receiver_id != sender_id)
+);

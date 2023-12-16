@@ -1,6 +1,7 @@
 import {getFormData, usernameToId} from "$lib/server/account.js";
 import {askNewPart, getPartAskedByUser} from "$lib/server/parts.js";
 import {redirect} from "@sveltejs/kit";
+import { sendNotification } from '$lib/server/notifications.js';
 
 export const actions = {
     default: async ({locals, request}) => {
@@ -18,6 +19,7 @@ export const actions = {
         if (opponentId === user_id)
             return {success: false, message : "You can't ask yourself !"};
         await askNewPart(user_id, opponentId);
+        await sendNotification(opponentId, "parts", user_id);
         return {success: true, message: "Part requests successfully", opponent: username};
     }
 }

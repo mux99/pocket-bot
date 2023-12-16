@@ -7,6 +7,7 @@ import {
     getUserId,
     usernameToId
 } from "$lib/server/account";
+import { sendNotification } from '$lib/server/notifications.js';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
@@ -39,6 +40,7 @@ export const actions = {
 
         try {
             await sendFriendRequest(locals, senderId, receiverId);
+            await sendNotification(receiverId, 'friends', senderId)
             return {
                 success: true,
                 message: 'Request sent successfully'
