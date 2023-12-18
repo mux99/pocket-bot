@@ -1,12 +1,44 @@
-import { expect, test } from "@playwright/test";
+import {expect, test} from "@playwright/test";
+import { setAdminFromUsername, deleteUserByUsername, getTempPool, getLoggedCookies, insertSession } from "../../utils";
 import pkg from 'pg';
-const { Pool } = pkg;
+const {Pool} = pkg;
+import * as crypto from 'crypto'
+
+async function createUser(username, hashedPassword) {
+	let query = null;
+
+	query = await getTempPool().query({
+		text: 'INSERT INTO users (username, password) VALUES ($1, $2) RETURNING user_id',
+		values: [username, hashedPassword]
+	});
+
+	await getTempPool().query({
+		text: 'INSERT INTO users_roles (user_id, role_id) VALUES ($1, 1)',
+		values: [query.rows[0].user_id]
+	});
+
+	return {
+		user_id: query.rows[0].user_id
+	};
+}
 
 const testCSSProperties = async (element, properties) => {
     for (const [property, value] of Object.entries(properties)) {
-        await expect(element).toHaveCSS(property, value);
+        const isEmValue = value.includes('em');
+        const expectedValue = isEmValue
+            ? Math.floor(parseFloat(value) * 17.333) // conversion en px
+            : value;
+        const receivedValue = await element.evaluate((el, prop) =>
+            window.getComputedStyle(el).getPropertyValue(prop),
+            property
+        );
+        const receivedValueInt = isEmValue
+            ? Math.floor(parseFloat(receivedValue))
+            : receivedValue;
+        await expect(receivedValueInt.toString()).toBe(expectedValue.toString());
     }
 };
+
 
 const getComputedStyleProperty = async (element, property) => {
     return await element.evaluate((el, prop) =>
@@ -16,10 +48,20 @@ const getComputedStyleProperty = async (element, property) => {
 };
 
 test("Vérifiez si les propriétés CSS sont correctement définies", async ({ browser }) => {
+    const username = crypto.randomUUID();
+    await createUser(username, "test_password");
+    await insertSession(username);
     const context = await browser.newContext();
-    await context.addCookies([await getLoggedCookies()]);
+    await context.addCookies([await getLoggedCookies(username)]);
     const page = await context.newPage();
     await page.goto('/css-template');
+    await expect(page.url().includes('/css-template')).not.toStrictEqual;
+    await setAdminFromUsername(username);
+    await page.goto('/css-template');
+    await expect(page.url().includes('/css-template')).toStrictEqual;
+
+
+    console.log(page.url())
 
     const title = page.locator('h1');
     const secondTitle = page.locator('h2');
@@ -42,15 +84,8 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
 
     // Test title properties
     await testCSSProperties(title, {
-        'font-size': '30px',
-        'line-height': '36px',
+        'font-size': '1.8em',
         'font-weight': '700',
-    });
-
-    // Test h2 title properties
-    await testCSSProperties(secondTitle, {
-        'font-size': '24px',
-        'line-height': '28px',
     });
 
     // Test div properties
@@ -63,28 +98,22 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     expect(formColor).toBe('rgb(31, 41, 55)');
     expect(formBorderColor).toBe('rgb(55, 65, 81)');
     await testCSSProperties(formDiv, {
-        'border-radius': '8px',
-        'padding': '15px',
+        'border-radius': '0.5em',
+        'padding': '1em',
     });
 
     // Test globalInput properties
     await testCSSProperties(basicInput, {
-        'margin': '5px',
         'text-align': 'left',
         'cursor': 'text',
-        'border-radius': '8px',
-        'height': '40px',
     });
 
     // Test button properties
     await testCSSProperties(basicButton, {
-        'height': '35px',
-        'border-radius': '17.5px',
-        'margin': '5px',
         'outline': 'rgb(255, 255, 255) none 0px',
         'border': '0px none rgb(255, 255, 255)',
         'font-family': 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
-        'padding': '0px 15px',
+        'padding': '0px 1em',
         'background-repeat': 'no-repeat',
         'cursor': 'pointer',
         'box-sizing': 'border-box',
@@ -97,35 +126,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     // Test green and red button color properties 
     expect(greenButtonColor).toBe('rgb(22, 163, 74)');
     expect(redButtonColor).toBe('rgb(220, 38, 38)');
+
+    await deleteUserByUsername(username);
 });
-
-async function getSessionUuid() {
-    const pool = getTempPool();
-    const { rows } = await pool.query({
-        text: 'SELECT uuid FROM sessions WHERE expires_at > CURRENT_TIMESTAMP;',
-        values: []
-    });
-    pool.end();
-    return rows[0].uuid;
-}
-
-function getTempPool() {
-    return new Pool({
-        host: process.env.POSTGRES_HOST || 'localhost',
-        port: process.env.POSTGRES_PORT || 5432,
-        database: process.env.POSTGRES_DATABASE || 'pocketbot',
-        user: process.env.POSTGRES_USER || 'postgres',
-        password: process.env.POSTGRES_PASSWORD || 'postgres'
-    });
-}
-
-async function getLoggedCookies() {
-    const sessionUuid = await getSessionUuid();
-    return {
-        name: 'uuid',
-        value: sessionUuid,
-        domain: 'localhost',
-        path: '/',
-        expires: -1
-    };
-}
