@@ -1,0 +1,24 @@
+version: "3"
+services:
+  postgres:
+    build:
+      context: ./services/database
+      dockerfile: Dockerfile
+    restart: always
+    container_name: postgres
+
+  svelte-kit:
+    build:
+      context: ./services/web
+      dockerfile: Dockerfile
+    container_name: svelte-kit
+    ports:
+      - "80:4173"
+    depends_on:
+      - postgres
+    volumes:
+      - web-logs:/root/.npm/
+
+volumes:
+  database-data:
+  web-logs:
