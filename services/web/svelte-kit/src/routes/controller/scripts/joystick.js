@@ -46,21 +46,21 @@ export function resetJoystickPosition() {
 }
 
 export function calculateMotorSpeeds(angle, distance) {
-    const eq1 = Math.cos((angle * Math.PI) / 90) * distance;
-    const eq2 = Math.cos(((90 + angle) * Math.PI) / 90) * distance;
+    const eq1 = ((-angle*distance)/0.9)+100;
+    const eq2 = ((angle*distance)/0.9)+100;
     let left_speed, right_speed;
     if (angle < 90) {
       left_speed = eq1;
-      right_speed = distance;
+      right_speed = 100;
     } else if (angle < 180) {
-      left_speed = -distance;
-      right_speed = eq2;
+      left_speed = -100;
+      right_speed = eq1;
     } else if (angle < 270) {
       left_speed = eq2;
-      right_speed = -distance;
+      right_speed = -100;
     } else {
-      left_speed = distance;
-      right_speed = eq1;
+      left_speed = 100;
+      right_speed = eq2;
     }
     updateSpeed(left_speed.toFixed(0).toString(), right_speed.toFixed(0).toString());
     return { left_speed, right_speed };

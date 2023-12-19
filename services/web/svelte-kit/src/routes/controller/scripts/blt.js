@@ -87,7 +87,7 @@ function sendingBLEinfo() {
     compt -= 1;
     if (compt <= 0) {
         out += "BAT0LIV0FLP0";
-        compt = 50;
+        compt = 15;
     }
     if (leftSpeed != old_leftSpeed) {
         out += "LFT" + leftSpeed;
