@@ -53,13 +53,11 @@
 <style>
     :root{
         --bt-image: url("https://cdn-icons-png.flaticon.com/512/9173/9173887.png");
+        overflow: hidden;
     }
 
     body {
-        font-family: 'Avenir', sans-serif;
-        overflow: hidden;
         height: 100vh;
-        background-color: #13151f;
         -moz-user-select: none;
     }
 
@@ -185,14 +183,13 @@
         border-radius: 50%;
         height: 8vh;
         width: 8vh;
-        border-color: #A8A9AD;
-        border-width: 3px;
+        border: 3px solid #A8A9AD;
         background-image: var(--bt-image);
         background-size: contain;
-        background-repeat: no-repeat;
     }
-    :global(#bluetooth_button.connected) { border-color: #00ff00; }
-    :global(#bluetooth_button.disconnected) { border-color: #f00102; }
+
+    :global(#bluetooth_button.connected) { border-color: var(--green); }
+    :global(#bluetooth_button.disconnected) { border-color: var(--red); } 
     :global(#bluetooth_button.connecting) { border-color: #fd9621; }
 
     @media screen and (max-width: 767px) and (orientation: portrait) {
@@ -218,7 +215,6 @@
         .joystick-container { top: 25%; }
     }
 </style>
-
 <body>
     <div class="battery">
         <div class="battery-icon" id="batteryIcon">
