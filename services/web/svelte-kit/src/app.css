@@ -81,9 +81,23 @@
         box-sizing: border-box;
         background-color: var(--blue);
     }
-    button:hover {
-        background-color: var(--blue-hover);
+    button:hover {background-color: var(--blue-hover);}
+
+    select {
+        height: 2.2em;
+        border-radius: 1em;
+        margin: 0.3em;
+        outline: none;
+        border: none;
+        color: var(--text-color);
+        font-family: var(--text-font);
+        padding: 0 1em;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        box-sizing: border-box;
+        background-color: var(--blue);
     }
+    select:hover {background-color: var(--blue-hover);}
 
     .am_a_button {
         display: block;

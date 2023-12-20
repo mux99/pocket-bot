@@ -21,24 +21,7 @@
 </script>
 
 <style>
-    select {
-        border: solid 0.05em rgba(0, 0, 0, 0);
-        transition-duration: 100ms;
-    }
-    select:hover {
-        border-color: white;
-    }
-    #back-profile {
-        display: inline-block;
-        padding: 0.5em;
-        margin: 0.2em;
-        border: solid 1px rgba(0, 0, 0, 0);
-        border-radius: 0.2em;
-        transition-duration: 350ms;
-    }
-    #back-profile:hover {
-        border-color: white;
-    }
+
     #page {
         font-size: 1.5em;
         text-align: center;
@@ -51,20 +34,20 @@
 
 </style>
 
-<div class="bg-gray-900 text-white text-xl">
-    <a id="back-profile" href="/profile">⤶ Back to profile</a>
+<div>
+    <a class="am_a_button" href="/profile">⤶ Back to profile</a>
     <div id="page">
-        {#if parts.length}
-            <h2 style="padding-bottom: 0.7em">
+        {#if true}
+            <h2>
                 You won
-                <span class="text-green-600 font-bold">{totalWin}</span>
+                <span style="color: var(--green);">{totalWin}</span>
                 parts and lost
-                <span class="text-red-600 font-bold">{parts.length - totalWin}</span>
+                <span style="color: var(--red);">{parts.length - totalWin}</span>
                 parts :
             </h2>
             <div>
                 <label for="sort-parts">Sort by</label>
-                <select name="sort-parts" bind:value={selectSortType} on:change={changeSortType} class="bg-gray-900">
+                <select name="sort-parts" bind:value={selectSortType} on:change={changeSortType}>
                     <option value="date">date</option>
                     <option value="duration">duration</option>
                     {#if totalWin}
@@ -75,7 +58,7 @@
                     {/if}
                 </select>
             </div>
-            <div id="all-parts" class="text-white border rounded bg-gray-800 border-gray-700">
+            <div id="all-parts">
                 {#each parts as part}
                     <ArchivePart part={part} user={user} />
                     <br>

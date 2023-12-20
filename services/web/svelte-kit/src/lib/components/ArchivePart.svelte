@@ -30,8 +30,7 @@
 </style>
 
 <div class="part">
-    <p>You {part.winner_id === user.user_id ? "won" : "lost"} against <b>{getOpponentUsername()}</b></p>
-    <button>Ask a rematch</button>
+    <span>You {part.winner_id === user.user_id ? "<span style=\"color var(--green);\">won</span>" : "<span style=\"color: var(--red);\">lost</span>"} against <b>{getOpponentUsername()}</b> <a href="/part/new">Ask a rematch</a></span>
     <div>
         Match date : {part.date}
         <br>
