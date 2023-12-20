@@ -20,6 +20,37 @@
     }
 </script>
 
+<style>
+    select {
+        border: solid 0.05em rgba(0, 0, 0, 0);
+        transition-duration: 100ms;
+    }
+    select:hover {
+        border-color: white;
+    }
+    #back-profile {
+        display: inline-block;
+        padding: 0.5em;
+        margin: 0.2em;
+        border: solid 1px rgba(0, 0, 0, 0);
+        border-radius: 0.2em;
+        transition-duration: 350ms;
+    }
+    #back-profile:hover {
+        border-color: white;
+    }
+    #page {
+        font-size: 1.5em;
+        text-align: center;
+    }
+    #all-parts {
+        padding: 1em 2em 1em 2em;
+        display: inline-block;
+        margin: 1em;
+    }
+
+</style>
+
 <div class="bg-gray-900 text-white text-xl">
     <a id="back-profile" href="/profile">⤶ Back to profile</a>
     <div id="page">
@@ -56,36 +87,3 @@
         {/if}
     </div>
 </div>
-
-
-<style>
-    select {
-        border: solid 0.05em rgba(0, 0, 0, 0);
-        transition-duration: 100ms;
-    }
-    select:hover {
-        border-color: white;
-    }
-    #back-profile {
-        display: inline-block;
-        padding: 0.5em;
-        margin: 0.2em;
-        border: solid 1px rgba(0, 0, 0, 0);
-        border-radius: 0.2em;
-        transition-duration: 350ms;
-    }
-    #back-profile:hover {
-        border-color: white;
-    }
-    #page {
-        font-size: 1.5em;
-        text-align: center;
-    }
-    #all-parts {
-        padding: 1em 2em 1em 2em;
-        display: inline-block;
-        margin: 1em;
-    }
-
-</style>
-

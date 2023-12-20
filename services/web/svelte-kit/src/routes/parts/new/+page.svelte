@@ -59,55 +59,26 @@
     }
 </script>
 
-<div style="text-align: center">
+<style>
+    .body{text-align: center; padding-top: 5em;}
+    .ok_button {background-color: var(--green);}
+    .ok_button:hover {background-color: var(--green-hover);}
+    p {color: var(--red);}
+</style>
+
+<div class="body">
     {#if form === null || !form.success}
-        <div id="form">
-            <h2 id="title">Ask a new part :</h2>
-            <form method="post" use:enhance>
-                <label for="username">Opponent's username</label>
-                <input type="text" id="username" name="username" placeholder="e.g. Robonator">
-                <br>
-                <button type="submit" id="send-invite-button">Send invite</button>
-            </form>
-            {#if form?.message}
-                <p style="color: red">{form.message}</p>
-            {/if}
-        </div>
+        <form method="post" use:enhance>
+            <h2>Ask a new part :</h2>
+            <label for="username">Opponent's username</label>
+            <input type="text" name="username" placeholder="e.g. Robonator">
+            <br>
+            <button type="submit" class="ok_button">Send invite</button>
+        </form>
+        {#if form?.message}
+            <p>{form.message}</p>
+        {/if}
     {:else}
         <PartAskedLoading opponent="{form.opponent}" cancelPartFunction="{cancelPart}" style="opacity: {form?.success ? 1 : 0}"/>
     {/if}
 </div>
-
-<style>
-    #form {
-        padding: 1em;
-        display: inline-block;
-        background-color: rgb(31 41 55);
-        color: white;
-        font-size: 1.3em;
-        box-shadow: 4px 4px 4px black;
-        border-radius: 0.5em;
-        margin: 5em 1em 1em 1em;
-    }
-
-    #title {
-        font-weight: bold;
-        font-size: 1.8em;
-    }
-
-    #username {
-        background-color: rgb(17 24 39);
-        border: rgb(55 65 81) 0.03em solid;
-        border-radius: 0.1em;
-        margin: 1em 0.5em 1em 0.5em;
-    }
-
-    #send-invite-button {
-
-        padding: 0.5em 2em 0.5em 2em;
-        border-radius: 0.5em;
-        background-color: green;
-        display: inline-block;
-        margin: 1em 0 1em 0;
-    }
-</style>
