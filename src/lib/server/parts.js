@@ -71,3 +71,10 @@ export async function getPartRequestStatus(requesterId) {
         return null;
     return rows[0].accepted;
 }
+
+export async function getAllParts() {
+    const {rows} = await pool.query({
+        text: 'SELECT part_id, duration_ms, date FROM archive_parts ORDER BY part_id',
+    });
+    return rows;
+}
