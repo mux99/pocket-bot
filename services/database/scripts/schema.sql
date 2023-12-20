@@ -73,3 +73,17 @@ CREATE TABLE IF NOT EXISTS part_proposal (
     CONSTRAINT fk_part_proposal_participant FOREIGN KEY (opponent_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT part_proposal_requester_participant CHECK (requester_id != opponent_id)
 );
+
+CREATE TABLE IF NOT EXISTS parts(
+    player1 INT,
+    player2 INT,
+    loser INT DEFAULT NULL,
+    time_start TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_parts PRIMARY KEY (player1),
+    CONSTRAINT uq_player UNIQUE (player2),
+    CONSTRAINT fk_parts_player1 FOREIGN KEY (player1) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_parts_player2 FOREIGN KEY (player2) REFERENCES users(user_id) ON DELETE CASCADE,
+    CONSTRAINT parts_players CHECK (player1 != player2),
+    CONSTRAINT check_winner CHECK (loser IN (player1, player2))
+);
+
