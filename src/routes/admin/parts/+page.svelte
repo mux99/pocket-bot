@@ -4,7 +4,7 @@
 
 <style>
     h2 {
-        color: #ddd; /* Light grey color for the heading */
+        color: #ddd;
         font-size: 24px;
     }
     table {
@@ -12,17 +12,17 @@
         border-collapse: collapse;
     }
     th, td {
-        border: 1px solid #888; /* Darker grey color for the border */
+        border: 1px solid #888;
         padding: 8px;
         text-align: left;
-        color: #ddd; /* Light grey color for the text */
+        color: #ddd;
     }
     tr:nth-child(even) {
-        background-color: #333; /* Darker grey color for every other row */
+        background-color: #333;
     }
     th {
-        background-color: #555; /* Even darker grey color for the table headers */
-        color: #ddd; /* Light grey color for the header text */
+        background-color: #555;
+        color: #ddd;
     }
 </style>
 
