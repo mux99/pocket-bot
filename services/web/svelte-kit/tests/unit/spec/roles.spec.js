@@ -47,11 +47,11 @@ describe("Test user creation", async () => {
     const locals = await getLocals();
 
     it("Check user creation includes 'user' role", async () => {
-        const username = "a_cool_username"
+        const username = "a_cool_username";
         expect(await createUser(locals, username, "a_valid_Passw0rd"));
         const userId = await usernameToId(username);
         const { rows } = await locals.pool.query("SELECT * FROM users_roles WHERE user_id = $1", [userId]);
         expect(rows).toEqual(expect.arrayContaining([{user_id: userId, role_id: 1}]));
-        await deleteUserByUsername(username)
+        await deleteUserByUsername(username);
     });
 });
