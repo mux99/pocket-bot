@@ -3,18 +3,16 @@
 </svelte:head>
 
 <script>
-    import { onMount } from 'svelte';
     import "../app.css";
+
+    let show_rules = false
   
     let rules = [
       "1.Eache person control one robot",
       "2.The first robot to have its 3 lives knocked off of him loses",
       "3.If your robot get's flipped, you Lose !"
     ];
-  
-    onMount(() => {
-      // Any initialization code can go here
-    });
+
   </script>
   
   <main style="text-align: center" id="form">
@@ -26,13 +24,18 @@
         <img src="/img/bot1-transformed.png" alt="Pocket bot picture">
         <img src="/img/bot2-transformed.png" alt="Pocket bot picture">
     </div>
-  
-    <h2>Rules</h2>
-    <ul>
-      {#each rules as rule}
-        <li>{rule}</li>
-      {/each}
+  <br>
+    <button data-testid="show_rule_button" on:click={() => show_rules = !show_rules}>{show_rules ? 'Hide Rules' : 'Show Rules'}</button> 
+
+    {#if show_rules}
+      <h2>Rules</h2>
+     <ul>
+        {#each rules as rule}
+         <li>{rule}</li>
+        {/each}
     </ul>
+    {/if}
+    
 
     <p id="notes">* Pocket Bot™ is not trademarked, the only purpose of the ™ is to look fancy</p>
   </main>
