@@ -1,12 +1,20 @@
 <script>
+    export let data;
     import "../app.css";
     import Footer from "$lib/components/Footer.svelte";
     import { page } from "$app/stores"
-    console.log($page.url.pathname);
+
+    function showFooter() {
+        if ($page.url.pathname === '/login' || $page.url.pathname === '/register')
+            return false;
+        if ($page.url.pathname === '/')
+           return data.is_connected;
+        return true;
+    }
 </script>
 
 <slot />
 
-{#if $page.url.pathname !== '/controller'}
+{#if showFooter()}
     <Footer />
 {/if}
