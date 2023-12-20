@@ -8,14 +8,14 @@
     let show_rules = false
   
     let rules = [
-      "1.Eache person control one robot",
-      "2.The first robot to have its 3 lives knocked off of him loses",
-      "3.If your robot get's flipped, you Lose !"
+      "Each person control one robot",
+      "The first robot to have its 3 lives knocked off of him loses",
+      "If your robot get's flipped, you Lose !"
     ];
 
   </script>
   
-  <main style="text-align: center" id="form">
+  <main id="form">
     <h1 id="title">Welcome to Pocket Bot™ *</h1>
     <p>Pocket Bot™ * is a real life robot combat game ! Fight against your friends or make new ones by going at it together !
         Alone ? You can also just take control of the Pocket Bot™ * and have fun controling this powerfull machine !
@@ -25,16 +25,18 @@
         <img src="/img/bot2-transformed.png" alt="Pocket bot picture">
     </div>
   <br>
-    <button data-testid="show_rule_button" on:click={() => show_rules = !show_rules}>{show_rules ? 'Hide Rules' : 'Show Rules'}</button> 
-
-    {#if show_rules}
-      <h2>Rules</h2>
-     <ul>
-        {#each rules as rule}
-         <li>{rule}</li>
-        {/each}
-    </ul>
-    {/if}
+    <button data-testid="show_rule_button" on:click={() => show_rules = !show_rules}>{show_rules ? 'Hide Rules' : 'Show Rules'}</button>
+    <br>
+    <div id="rules" >
+      {#if show_rules}
+        <h2>Rules</h2>
+        <ol>
+          {#each rules as rule}
+            <li>{rule}</li>
+          {/each}
+        </ol>
+      {/if}
+    </div>
     
 
     <p id="notes">* Pocket Bot™ is not trademarked, the only purpose of the ™ is to look fancy</p>
@@ -50,6 +52,7 @@
         box-shadow: 4px 4px 4px black;
         border-radius: 0.5em;
         margin: 5em 1em 1em 1em;
+        text-align: center;
     }
     #pictures {
         padding: 1em;
@@ -58,6 +61,16 @@
         font-size: 1.3em;
         border-radius: 0.5em;
         margin: 1em 1em 1em 1em;
+    }
+
+    #rules {
+      text-align: center;
+      display: inline-block
+    }
+
+    #rules > ol {
+      text-align: center;
+      list-style-position: inside;
     }
 
     #title {
