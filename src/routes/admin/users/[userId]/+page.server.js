@@ -1,6 +1,7 @@
 import {getUserRoles, generateUuid} from "$lib/server/account.js";
 import {pool} from "../../../../hooks.server.js";
 import {redirect} from "@sveltejs/kit";
+import {getUserInfo, updateUser} from "../../../../lib/server/users.js";
 
 async function softDeleteUser(userId) {
 	await pool.query({
@@ -26,16 +27,9 @@ export const load = async (serverLoadEvent) => {
     if (!roles.includes('admin'))
         throw redirect(303, '/');
 
-        const { rows } = await serverLoadEvent.locals.pool.query(`
-        SELECT users.*, array_agg(DISTINCT roles.name) as roles
-        FROM users
-        LEFT JOIN users_roles ON users.user_id = users_roles.user_id
-        LEFT JOIN roles ON users_roles.role_id = roles.role_id
-        WHERE users.user_id = $1
-        GROUP BY users.user_id
-    `, [serverLoadEvent.params.userId]);
+    const rows = await getUserInfo(serverLoadEvent.params.userId);
 
-    return { user: rows[0] }
+    return { user: rows }
 }
 
 export const actions = {
@@ -64,10 +58,7 @@ export const actions = {
 
         const data = await request.formData();
 
-        await pool.query({
-            text: "UPDATE users SET username = $1 WHERE user_id = $2",
-            values: [data.get('username'), params.userId]
-        });
+        await updateUser(data.get('username'), params.userId);
 
         throw redirect(303, '/admin/users');
     }
