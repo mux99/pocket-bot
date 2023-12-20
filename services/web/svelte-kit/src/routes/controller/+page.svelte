@@ -184,33 +184,13 @@
         border-radius: 50%;
         height: 8vh;
         width: 8vh;
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         border: 3px solid #A8A9AD;
         background-image: var(--bt-image);
         background-size: contain;
     }
-
     :global(#bluetooth_button.connected) { border-color: var(--green); }
     :global(#bluetooth_button.disconnected) { border-color: var(--red); } 
-=======
-        border-color: #A8A9AD;
-        border-width: 3px;
-=======
-        border: 3px solid #A8A9AD;
->>>>>>> 0e6b278 (Adapt to global css)
-        background-image: var(--bt-image);
-        background-size: contain;
-    }
-<<<<<<< HEAD
-    :global(#bluetooth_button.connected) { border-color: #00ff00; }
-    :global(#bluetooth_button.disconnected) { border-color: #f00102; }
->>>>>>> ccbd29f (delete footer in controller page)
-=======
-
-    :global(#bluetooth_button.connected) { border-color: var(--green); }
-    :global(#bluetooth_button.disconnected) { border-color: var(--red); } 
->>>>>>> 0e6b278 (Adapt to global css)
     :global(#bluetooth_button.connecting) { border-color: #fd9621; }
 
     @media screen and (max-width: 767px) and (orientation: portrait) {
@@ -236,13 +216,6 @@
         .joystick-container { top: 25%; }
     }
 </style>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> ccbd29f (delete footer in controller page)
-=======
->>>>>>> 0e6b278 (Adapt to global css)
 <body>
     <div class="battery">
         <div class="battery-icon" id="batteryIcon">
