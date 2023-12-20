@@ -72,8 +72,8 @@ export function calculateMotorSpeeds(x, y) {
       right = difference;
     }
   }
-  left = Math.floor(left);
-  right = Math.floor(right);
+  left = Math.floor(left*100);
+  right = Math.floor(right*100);
   updateSpeed(left.toFixed(0), right.toFixed(0));
   return [left, right];
 }
