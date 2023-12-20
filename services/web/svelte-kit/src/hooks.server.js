@@ -11,7 +11,7 @@ export async function handle({ event, resolve }) {
 
 
 	// if user is not logged in, redirect him to /login and allow him to navigate to /register
-	if (!event.locals.userInfo && event.url.pathname !== '/login' && event.url.pathname !== '/register') {
+	if (!event.locals.userInfo && event.url.pathname !== '/login' && event.url.pathname !== '/register' && event.url.pathname !== '/') {
 		throw redirect(307, '/login');
 	}
 
