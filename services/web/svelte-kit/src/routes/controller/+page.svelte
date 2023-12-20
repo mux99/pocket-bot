@@ -58,7 +58,6 @@
 
     body {
         height: 100vh;
-        background-color: #13151f;
         -moz-user-select: none;
     }
 
