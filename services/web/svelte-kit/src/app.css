@@ -13,8 +13,11 @@
     --shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
     
     --red: rgb(220 38 38);
+    --red-hover: rgb(221, 83, 83);
     --green: rgb(22 163 74);
+    --green-hover: rgb(75, 190, 117);
     --blue: rgb(59 130 246);
+    --blue-hover: rgb(108, 148, 212);
     
     --text-size: 11pt;
     --text-color: rgb(255, 255, 255);
@@ -37,11 +40,13 @@
         font-size: 1.8em;
         line-height: 1.8em;
         font-weight: 700;
+        margin-top: 0;
     }
     
     h2 {
         font-size: 1.5em;
         line-height: 1.75em;
+        margin-top: 0;
     }
     
     form {
@@ -74,6 +79,30 @@
         cursor: pointer;
         box-sizing: border-box;
         background-color: var(--blue);
+    }
+    button:hover {
+        background-color: var(--blue-hover);
+    }
+
+    .am_a_button {
+        display: block;
+        width: fit-content;
+        height: 2.2em;
+        border-radius: 1em;
+        margin: 0.3em;
+        color: var(--text-color);
+        font-family: var(--text-font);
+        padding: 0.4em 1em;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        box-sizing: border-box;
+        background-color: var(--blue);
+        text-decoration: none;
+    }
+    .am_a_button:hover {
+        color: var(--text-color);
+        text-decoration: none;
+        background-color: var(--blue-hover);
     }
     
     input[type=checkbox] {height: 0;width: 0;visibility: hidden;position: absolute;}
