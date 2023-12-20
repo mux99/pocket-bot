@@ -10,6 +10,4 @@ export const load = async (serverLoadEvent) => {
 
     if (!roles.includes('admin'))
         throw redirect(303, '/');
-
-    // return { modules: rows }
 }

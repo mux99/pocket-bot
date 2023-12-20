@@ -42,16 +42,6 @@
         },
         { path: '/register', active: true, description: 'This is the register module' },
     ];
-
-    // const toggleModule = (item) => {
-    //     item.active = !item.active;
-    //     modules = modules.map(module => {
-    //         if (module.submodules) {
-    //             return {...module, submodules: [...module.submodules]};
-    //         }
-    //         return {...module};
-    //     });
-    // };
 </script>
 
 <style>
