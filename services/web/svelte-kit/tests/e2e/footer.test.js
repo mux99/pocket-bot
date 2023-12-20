@@ -1,7 +1,5 @@
 import {expect, test} from "@playwright/test";
-import pkg from 'pg';
-const {Pool} = pkg;
-
+import { getLoggedCookies } from '../utils.js';
 
 test("Check if footer's buttons are correctly set", async ({ browser }) => {
    const context = await browser.newContext();
@@ -20,7 +18,7 @@ test("Check if footer's buttons are correctly set", async ({ browser }) => {
    await expect(friendsImage).not.toHaveId('selected');
    await expect(profileImage).not.toHaveId('selected');
 
-   await page.goto('/friends');
+   await page.goto('/friend');
    await expect(playImage).not.toHaveId('selected');
    await expect(friendsImage).toHaveId('selected');
    await expect(profileImage).not.toHaveId('selected');
@@ -30,34 +28,3 @@ test("Check if footer's buttons are correctly set", async ({ browser }) => {
    await expect(friendsImage).not.toHaveId('selected');
    await expect(profileImage).toHaveId('selected');
 });
-
-async function getSessionUuid() {
-   const pool = getTempPool();
-   const {rows} = await pool.query({
-      text: 'SELECT uuid FROM sessions WHERE expires_at > CURRENT_TIMESTAMP;',
-      values: []
-   });
-   pool.end();
-   return rows[0].uuid;
-}
-
-function getTempPool() {
-   return new Pool({
-      host: process.env.POSTGRES_HOST || 'localhost',
-      port: process.env.POSTGRES_PORT || 5432,
-      database: process.env.POSTGRES_DATABASE || 'postgres',
-      user: process.env.POSTGRES_USER || 'postgres',
-      password: process.env.POSTGRES_PASSWORD || 'postgres'
-   });
-}
-
-async function getLoggedCookies() {
-   const sessionUuid = await getSessionUuid();
-   return {
-      name: 'uuid',
-      value: sessionUuid,
-      domain: 'localhost',
-      path: '/',
-      expires: -1
-   };
-}
