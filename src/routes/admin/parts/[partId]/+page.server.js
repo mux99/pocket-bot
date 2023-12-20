@@ -1,6 +1,7 @@
 import {getUserRoles} from "$lib/server/account.js";
 import {pool} from "../../../../hooks.server.js";
 import {redirect} from "@sveltejs/kit";
+import {getPartInfo, updatePart} from "../../../../lib/server/parts.js";
 
 async function softDeletePart(partId) {
     await pool.query({
@@ -21,13 +22,7 @@ export const load = async (serverLoadEvent) => {
     if (!roles.includes('admin'))
         throw redirect(303, '/');
 
-    const { rows } = await serverLoadEvent.locals.pool.query(`
-        SELECT archive_parts.part_id, archive_parts.duration_ms, archive_parts.date, winner_users.username as winner_username, loser_users.username as loser_username, winner_users.user_id as winner_user_id, loser_users.user_id as loser_user_id
-        FROM archive_parts
-        LEFT JOIN users AS winner_users ON archive_parts.winner = winner_users.user_id
-        LEFT JOIN users AS loser_users ON archive_parts.loser = loser_users.user_id
-        WHERE archive_parts.part_id = $1
-    `, [serverLoadEvent.params.partId]);
+    const rows = await getPartInfo(serverLoadEvent.params.partId);
 
     return { part: rows[0] }
 }
@@ -58,10 +53,7 @@ export const actions = {
 
         const data = await request.formData();
 
-        await pool.query({
-            text: "UPDATE archive_parts SET winner = $1, loser = $2 WHERE part_id = $3",
-            values: [data.get('winner_id'), data.get('loser_id'), params.partId]
-        });
+        await updatePart(data.get('winner_id'), data.get('loser_id'), params.partId);
 
         throw redirect(303, '/admin/parts');
     }

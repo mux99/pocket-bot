@@ -78,3 +78,22 @@ export async function getAllParts() {
     });
     return rows;
 }
+
+export async function getPartInfo(partId) {
+    const {rows} = await pool.query({
+        text: 'SELECT archive_parts.part_id, archive_parts.duration_ms, archive_parts.date, winner_users.username as winner_username, loser_users.username as loser_username, winner_users.user_id as winner_user_id, loser_users.user_id as loser_user_id ' +
+            'FROM archive_parts ' +
+            'LEFT JOIN users AS winner_users ON archive_parts.winner = winner_users.user_id ' +
+            'LEFT JOIN users AS loser_users ON archive_parts.loser = loser_users.user_id ' +
+            'WHERE archive_parts.part_id = $1',
+        values: [partId]
+    });
+    return rows;
+}
+
+export async function updatePart(winnerId, loserId, partId) {
+    await pool.query({
+        text: "UPDATE archive_parts SET winner = $1, loser = $2 WHERE part_id = $3",
+        values: [winnerId, loserId, partId]
+    });
+}
