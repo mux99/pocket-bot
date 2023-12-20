@@ -1,20 +1,5 @@
-import {
-	checkFormFields,
-	checkIfPasswordIsCorrect, checkIfUsernameExists,
-	createUser, deleteDbSession,
-	generateUuid, getArchiveParts, getUserId, getUserRoles,
-	hashPassword, softDeleteUser,
-	usernameToId
-} from '$lib/server/account.js';
-import {
-	createDbSessions,
-	deletePartsOf,
-	deleteUserByUsername, getDbSessions,
-	getLocals, getTableDataOfUsers, getTempPool,
-	insertSomeParts
-} from '../../utils.js';
-import * as argon2 from "argon2";
-import * as crypto from 'crypto';
+import { createUser, usernameToId } from '$lib/server/account.js';
+import { deleteUserByUsername, getLocals } from '../../utils.js';
 
 describe("Test roles table", async () => {
     const locals = await getLocals();
