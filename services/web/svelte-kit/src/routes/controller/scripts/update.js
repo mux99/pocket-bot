@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 let isFall = "0";
+=======
+let isFall = 0;
+>>>>>>> ccbd29f (delete footer in controller page)
 
 export function updateLives(lives_left) {
     lifeContainer.innerHTML = '';
@@ -9,9 +13,12 @@ export function updateLives(lives_left) {
       lifeIcon.src = '/heart.svg';
       lifeContainer.appendChild(lifeIcon);
     }
+<<<<<<< HEAD
     if (lives_left == "3"){
         endGame();
     }
+=======
+>>>>>>> ccbd29f (delete footer in controller page)
 }
 
 export function updateBattery(battery_left) {
@@ -24,6 +31,7 @@ export function updateBattery(battery_left) {
 
 export function updateFall(fall_bool) {
     isFall = fall_bool;
+<<<<<<< HEAD
     if (isFall == "1"){
         endGame();
     }
@@ -31,6 +39,8 @@ export function updateFall(fall_bool) {
 
 export function endGame(){
     //tmp
+=======
+>>>>>>> ccbd29f (delete footer in controller page)
 }
 
 function getGradientColor(percentage) {
