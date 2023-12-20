@@ -1,8 +1,7 @@
 import {getUserRoles} from "$lib/server/account.js";
 import {redirect} from "@sveltejs/kit";
 
-export const load = async (serverLoadEvent) => {
-    const {locals} = serverLoadEvent;
+export const load = async ({ locals }) => {
     if (!locals.userInfo)
         throw redirect(303, '/login');
 
@@ -11,7 +10,7 @@ export const load = async (serverLoadEvent) => {
     if (!roles.includes('admin'))
         throw redirect(303, '/');
 
-    const { rows } = await serverLoadEvent.locals.pool.query(`
+    const { rows } = await locals.pool.query(`
         SELECT part_id, duration_ms, date
         FROM archive_parts
         ORDER BY part_id ASC
