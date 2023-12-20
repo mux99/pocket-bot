@@ -2,7 +2,7 @@
     export let data;
 
     function goBack() {
-        window.history.back();
+        window.location.href = '/admin';
     }
 </script>
 
