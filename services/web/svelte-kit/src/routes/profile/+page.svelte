@@ -18,6 +18,7 @@
 <div class="body">
     <h2>Hello, {data.user.username}</h2>
     <a class="am_a_button" href="/profile/modify">Edit my informations</a><br>
+    <a class="am_a_button" href="/parts">See part history</a><br>
 
     <form method="post" action="/profile">
         <button type="submit">Delete my account</button>

@@ -19,39 +19,22 @@
 
 </script>
 
-<div class="part hover:bg-blue-950 transition-all duration-100 border">
-    <div style="display: block">
-        <div class="part-status">You {part.winner_id === user.user_id ? "won" : "lost"} against <b>{getOpponentUsername()}</b></div>
-        <div style="text-align: right; display: inline">
-            <button class="rematch-button rounded-lg bg-green-600 text-sm font-bold">
-                Ask a rematch
-            </button>
-        </div>
-    </div>
-    <div class="text-sm">
+<style>
+    .part {
+        background-color: var(--background-3);
+        padding: 2em;
+        margin: 1em 0 1em 1em;
+        text-align: center;
+        border-radius: 1em;
+    }
+</style>
+
+<div class="part">
+    <p>You {part.winner_id === user.user_id ? "won" : "lost"} against <b>{getOpponentUsername()}</b></p>
+    <button>Ask a rematch</button>
+    <div>
         Match date : {part.date}
         <br>
         Match time : {durationToString(part.duration)}
     </div>
 </div>
-
-<style>
-    .part {
-        padding: 0.5em 7em 0.5em 7em;
-        margin: 0.5em 0 0.5em 0;
-        display: inline-block;
-        border-color: rgba(0, 0, 0, 0);
-    }
-    .part:hover {
-        border-color: white;
-    }
-    .part-status {
-        display: inline;
-        margin-right: 5em;
-    }
-    .rematch-button {
-        font-size: 0.8em;
-        padding: 0.5em;
-        margin-left: 5em;
-    }
-</style>
