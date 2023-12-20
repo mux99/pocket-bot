@@ -42,6 +42,10 @@
         },
         { path: '/register', active: true, description: 'This is the register module' },
     ];
+
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 <style>
@@ -67,6 +71,7 @@
 </style>
 
 <div class="container">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded" on:click={goBack}>Go back</button>
     <h1 class="mb-4 text-2xl font-semibold text-white">Module Activation</h1>
     <ul>
         {#each modules as module (module.path)}

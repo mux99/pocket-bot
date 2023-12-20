@@ -1,5 +1,9 @@
 <script>
     export let data;
+
+    function goBack() {
+        window.history.back();
+    }
 </script>
 
 <style>
@@ -27,6 +31,7 @@
 </style>
 
 <div class="max-w-lg mx-auto overflow-x-auto">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-2 rounded" on:click={goBack}>Go back</button>
     <h2 class="text-lg text-white font-semibold mb-4 py-3">There are a total of <span class="bg-blue-500 text-white px-2 py-1 rounded">{ data.parts.length }</span> parts registered.</h2>
     <table class="w-full">
         <thead>
