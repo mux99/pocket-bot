@@ -31,14 +31,12 @@
 
 <style>
     .part-request {
-        color: white;
         display: block;
-        background-color: rgb(31 41 55);
+        background-color: var(--background-2);
         padding: 0.5em 1.5em 0.5em 1.5em;
-        font-size: 1.3em;
         font-weight: bold;
         box-shadow: 2px 2px 2px black;
-        border: 0.5em #e5e7eb;
+        border: 1px #e5e7eb solid;
         border-radius: 0.2em;
         margin: 1em;
     }
@@ -48,17 +46,7 @@
         margin-right: 5em;
     }
 
-    .choice-button {
-        padding: 0.3em 1.2em 0.3em 1.2em;
-        border-radius: 0.2em;
-    }
+    .accept-request {background-color: var(--green);}
 
-    .accept-request {
-        background-color: green;
-        margin-right: 0.5em;
-    }
-
-    .deny-button {
-        background-color: red;
-    }
+    .deny-button {background-color: var(--green);}
 </style>

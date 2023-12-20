@@ -3,6 +3,9 @@
 </script>
 
 <style>
+    .body{
+        padding: 2em;
+    }
     form {
         display: inline;
         padding: 0;
@@ -12,7 +15,7 @@
     form > button:hover {background-color: var(--red-hover);}
 </style>
 
-<div>
+<div class="body">
     <h2>Hello, {data.user.username}</h2>
     <a class="am_a_button" href="/profile/modify">Edit my informations</a><br>
 

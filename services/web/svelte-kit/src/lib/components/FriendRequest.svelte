@@ -24,53 +24,28 @@
 </script>
 
 <style>
-    #global {
-        border: 1px;
-        border-radius: 4px;
-        background-color: #1F2937;
-        margin: 10px;
-        height: 110px;
-    }
-    #global:hover {
-        background-color: #334155;
-    }
-    #name {
-        color: #9CA3AF;
-        padding: 10px;
-    }
-    #accept {
-        background-color: #166534;
-        margin: 10px 5px 10px 10px;
-    }
-    #decline {
-        background-color: #991B1B;
-        margin: 10px 10px 10px 5px;
-    }
-    .button {
-        border-radius: 4px;
-        color: white;
-        font-weight: bold;
-        padding: 10px;
-        width: 50%;
-        text-align: center;
-    }
-    #choice {
+    .request {
+        margin: 0 1em 1em 1em;
+        background-color: var(--background-2);
+        border-radius: 1em;
+        padding: 0 1em;
+
         display: flex;
+        justify-content: space-between;
     }
+    #name {padding-top: 0.6em;}
+
+    .ok_button {background-color: var(--green);}
+    .ok_button:hover {background-color: var(--green-hover);}
+
+    .no_button {background-color: var(--red);}
+    .no_button:hover {background-color: var(--red-hover);}
 </style>
 
-<div id="global">
-    <div id="name">
-        {username}
-    </div>
-
-    <div id="choice">
-        <div class="button" id="accept">
-            <button on:click={accept}>Accept</button>
-        </div>
-
-        <div class="button" id="decline">
-            <button on:click={decline}>Decline</button>
-        </div>
-    </div>
+<div class="request">
+    <span id="name">{username}</span>
+    <span>
+        <button class="ok_button" on:click={accept}>Accept</button>
+        <button class="no_button" on:click={decline}>Decline</button>
+    </span>
 </div>

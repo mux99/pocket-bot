@@ -9,37 +9,19 @@
 </script>
 
 <style>
-    #global {
-        border: 1px;
-        border-radius: 4px;
-        background-color: #1F2937;
-        margin: 10px;
-        height: 110px;
+    .friend {
+        margin: 0 1em 1em 1em;
+        background-color: var(--background-2);
+        border-radius: 1em;
+        padding: 0 1em;
+
+        display: flex;
+        justify-content: space-between;
     }
-    #global:hover {
-        background-color: #334155;
-    }
-    #name {
-        color: #9CA3AF;
-        padding: 10px;
-    }
-    #button {
-        border-radius: 4px;
-        color: white;
-        font-weight: bold;
-        padding: 10px;
-        background-color: #166534;
-        margin: 10px 10px 10px 10px;
-        text-align: center;
-    }
+    #name {padding-top: 0.6em;}
 </style>
 
-<div id="global">
-    <div id="name">
-        {username}
-    </div>
-
-    <div id="button">
-        <button on:click={redirectToAskPartPage}>Ask part</button>
-    </div>
+<div class="friend">
+    <span id="name">{username}</span>
+    <button on:click={redirectToAskPartPage}>Ask part</button>
 </div>

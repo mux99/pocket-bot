@@ -30,7 +30,6 @@
 <style>
     #request-info {
         display: inline-block;
-        font-size: 1.75em;
         margin-bottom: 0.75em;
     }
 
@@ -38,17 +37,13 @@
         margin: 1em;
         padding: 1em;
         display: inline-block;
-        color: white;
-        background-color: rgb(17 24 39);
+        background-color: var(--background-3);
         border-radius:0.25em;
-        box-shadow: 5px 5px 5px black;
+        box-shadow: 2px 2px 2px black;
     }
 
     #no-request {
-        font-size: 1.5em;
         transition: color ease-in 500ms;
     }
-    #no-request > a:hover {
-        color: aqua;
-    }
+    #no-request > a:hover {color: aqua;}
 </style>

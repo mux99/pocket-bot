@@ -45,6 +45,13 @@
 </script>
 
 <style>
+    .body{
+        text-align: center;
+        padding: 2em;
+    }
+    .body > a {
+        margin: 0 auto;
+    }
     img {
         max-width: 5.5em;
         max-height: 5.5em;
@@ -71,7 +78,8 @@
 	}
 </style>
 
-<form
+<div class="body">
+    <form
     method="post"
     use:enhance={
         ({formData}) => {
@@ -149,3 +157,4 @@
 <div>{form?.message || ''}</div><br>
 
 <a href="/profile" class="am_a_button">Back to profile</a>
+</div>

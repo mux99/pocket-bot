@@ -34,24 +34,24 @@
 
 </script>
 
-<div id="popup-loading-part" class="bg-gray-900">
-    <p id="info-success">Your part request has been successfully sent !</p>
+<div class="body">
+    <h2 id="info-success">Your part request has been successfully sent !</h2>
     <img src="/img/loading.gif" alt="a wheels that spin" id="loading-gif">
     <p id="info-waiting">Now waiting for <i>{opponent}</i>'s response {currentDot}</p>
     {#if timeWaitedToString !== ''}
         <p id="time-waited">for {timeWaitedToString}</p>
     {/if}
-    <button id="cancel-part" on:click={cancelPartFunction}>Cancel part</button>
+    <button id="cancel-part" class="big_button" on:click={cancelPartFunction}>Cancel part</button>
 </div>
 
 <style>
-    #popup-loading-part {
+    .body {
         z-index: 1;
         display: inline-block;
-        padding: 5em 1.2em 5em 1.2em;
+        padding: 4em 1.2em 2em 1.2em;
         border-radius: 0.5em;
         text-align: center;
-        box-shadow: 4px 4px 4px black;
+        box-shadow: 2px 2px 2px black;
         background-color: rgb(31 41 55);
         color: white;
         font-weight: bold;
@@ -61,33 +61,14 @@
         margin: 7em 0 2em 0;
     }
 
-    #info-success {
-        color: green;
-        font-size: 1.7em;
-        margin-bottom: 1em;
-    }
-
-    #info-waiting {
-        margin: 0.35em 0 0.35em 0;
-        font-size: 1.5em;
-    }
-
-    #time-waited {
-        font-size: 1.2em;
-        margin-bottom: 1.1em;
-    }
-
+    #info-success {color: var(--green)}
     #loading-gif {
-        max-width: 20%;
-        min-height: 20%;
+        max-width: 5%;
+        min-height: 5%;
         display: inline-block;
     }
 
-    #cancel-part {
-        background-color: red;
-        border-radius: 0.5em;
-        padding: 0.15em 0.5em 0.25em 0.5em;
-        font-size: 1.7em;
-    }
+    #cancel-part {background-color: var(--red);}
+    #cancel-part:hover {background-color: var(--red-hover);}
 
 </style>

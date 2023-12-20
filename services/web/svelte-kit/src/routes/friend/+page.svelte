@@ -15,7 +15,7 @@
     }
     #global {
         display: flex;
-        background-color: #111827;
+        background-color: var(--background-3);
     }
     #left {
         width: 50%;
