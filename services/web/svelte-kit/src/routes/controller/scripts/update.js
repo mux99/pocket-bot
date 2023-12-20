@@ -1,4 +1,4 @@
-let isFall = 0;
+let isFall = "0";
 
 export function updateLives(lives_left) {
     lifeContainer.innerHTML = '';
@@ -8,6 +8,9 @@ export function updateLives(lives_left) {
       lifeIcon.classList.add('life-icon');
       lifeIcon.src = '/heart.svg';
       lifeContainer.appendChild(lifeIcon);
+    }
+    if (lives_left == "3"){
+        endGame();
     }
 }
 
@@ -21,6 +24,13 @@ export function updateBattery(battery_left) {
 
 export function updateFall(fall_bool) {
     isFall = fall_bool;
+    if (isFall == "1"){
+        endGame();
+    }
+}
+
+export function endGame(){
+    //tmp
 }
 
 function getGradientColor(percentage) {
