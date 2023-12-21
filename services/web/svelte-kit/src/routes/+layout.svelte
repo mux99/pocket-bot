@@ -20,8 +20,8 @@
         throw redirect(307, '/controller');
 </script>
 
-{#if data.user}
-	<Header user={data.user} />
+{#if data.user && $page.url.pathname !== '/controller'}
+    <Header user={data.user} />
 {/if}
 
 <slot />
@@ -29,3 +29,5 @@
 {#if showFooter()}
     <Footer />
 {/if}
+
+

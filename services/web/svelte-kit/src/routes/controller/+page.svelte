@@ -81,6 +81,15 @@
       margin-left: 2vh;
     }
 
+    #endgame {
+        position: absolute;
+        bottom: 3%;
+        left: 3%;
+        background-color: var(--red);
+        height: 3em;
+        width: 10em;
+    }
+
     #lifeContainer {
         justify-content: center;
         align-items: center;
@@ -233,6 +242,7 @@
         text-align: center;
     }
 </style>
+
 <body>
     <div id="title">
         <h2>{getTitle()}</h2>
@@ -262,6 +272,6 @@
     <div id="btcontainer"><button id="bluetooth_button" type="button" class="disconnected"
         on:click={bluetooth_click}></button>
     </div>
-    <button on:click={endGame}>End game</button>
+    <button id="endgame" on:click={endGame}>End game</button>
 </body>
 
