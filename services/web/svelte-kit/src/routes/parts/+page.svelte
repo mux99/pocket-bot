@@ -37,7 +37,7 @@
 <div>
     <a class="am_a_button" href="/profile">⤶ Back to profile</a>
     <div id="page">
-        {#if true}
+        {#if parts.length}
             <h2>
                 You won
                 <span style="color: var(--green);">{totalWin}</span>
