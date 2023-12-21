@@ -1,7 +1,7 @@
 import {getUserRoles, generateUuid} from "$lib/server/account.js";
 import {pool} from "../../../../hooks.server.js";
 import {redirect} from "@sveltejs/kit";
-import {getUserInfo, updateUser} from "../../../../lib/server/users.js";
+import {getUserInfo, updateUser} from '$lib/server/users.js';
 
 async function softDeleteUser(userId) {
 	await pool.query({
