@@ -24,7 +24,7 @@ export async function getUserInfo(userId) {
     return rows[0];
 }
 
-export async function updateUser(username, userId) {
+export async function updateUsername(username, userId) {
     await pool.query({
         text: "UPDATE users SET username = $1 WHERE user_id = $2",
         values: [username, userId]
