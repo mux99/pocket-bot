@@ -1,7 +1,7 @@
 import {getUserRoles} from "$lib/server/account.js";
 import {pool} from "../../../../hooks.server.js";
 import {redirect} from "@sveltejs/kit";
-import {getPartInfo, updatePart} from "../../../../lib/server/parts.js";
+import {getPartInfo, updatePart} from '$lib/server/parts.js';
 
 async function softDeletePart(partId) {
     await pool.query({
