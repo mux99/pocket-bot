@@ -1,5 +1,6 @@
 import {pool} from "../../hooks.server.js";
 import {rows} from "pg/lib/defaults.js";
+import { expoOut } from 'svelte/easing';
 
 export async function askNewPart(requesterId, opponentId) {
     await pool.query({
@@ -55,6 +56,14 @@ export async function acceptPart(requesterId) {
         values: [requesterId]
     });
 }
+
+export async function createNewPart(player1Id, player2Id) {
+    await pool.query({
+        text: 'INSERT INTO parts (player1, player2, time_start) VALUES ($1, $2, DEFAULT);',
+        values: [player1Id, player2Id]
+    });
+}
+
 export async function denyPart(requesterId) {
     await pool.query({
         text: 'UPDATE part_proposal SET accepted=FALSE WHERE requester_id=$1',
@@ -70,4 +79,62 @@ export async function getPartRequestStatus(requesterId) {
     if (!rows.length)
         return null;
     return rows[0].accepted;
+}
+
+export async function getCurrentPartsInfo(userId) {
+    const {rows} = await pool.query({
+        text:
+          'SELECT u1.user_id AS "player1_id", u2.user_id AS "player2_id", u1.username AS "player1_username", u2.username AS"player2_username"\n' +
+          'FROM parts AS "p"\n' +
+          '    JOIN users AS "u1" ON p.player1 = u1.user_id\n' +
+          '    JOIN users AS "u2" ON p.player2 = u2.user_id\n' +
+          'WHERE $1 IN (p.player1, p.player2);',
+        values: [userId]
+    });
+    if (!rows)
+        return {};
+    return rows[0];
+}
+
+export async function getLoser(userId) {
+    const {rows} = await pool.query({
+        text: 'SELECT loser FROM parts WHERE $1 IN (player1, player2) LIMIT 1;',
+        values: [userId]
+    });
+    if (!rows.length)
+        return null;
+    return rows[0].loser;
+}
+
+export async function losePart(userId) {
+    await pool.query({
+        text: 'UPDATE parts SET loser = $1 WHERE $1 IN (player1, player2);',
+        values: [userId]
+    });
+}
+
+export async function deleteParts(userId) {
+    await pool.query({
+        text: 'DELETE FROM parts WHERE $1 IN (player1, player2);',
+        values: [userId]
+    });
+}
+
+export async function archivePart(loserId) {
+    const {rows} = await pool.query({
+        text: 'SELECT player1, player2, time_start FROM parts WHERE $1 IN (player1, player2) LIMIT 1;',
+        values: [loserId]
+    });
+    if (!rows || !rows.length)
+        return;
+    let winner;
+    if (rows[0].player1 === loserId) {
+        winner = rows[0].player2;
+    } else {
+        winner = rows[0].player1;
+    }
+    await pool.query({
+        text: 'INSERT INTO archive_parts (part_id, winner, loser, duration_ms, date) VALUES (DEFAULT, $1, $2, $3, CURRENT_TIMESTAMP)',
+        values: [winner, loserId, new Date().getTime() - rows[0].time_start]
+    });
 }

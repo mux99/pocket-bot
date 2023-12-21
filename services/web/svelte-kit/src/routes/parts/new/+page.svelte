@@ -13,7 +13,7 @@
     let eventSource;
     onMount(() => {
         const beforeUnloadHandler = (event) => {
-            if (form !== null && form.success) {
+            if (form !== null && form.success && eventSource) {
                 const confirmationMessage = `Are you sure to cancel your part with ${form.opponent} ?`;
                 event.returnValue = confirmationMessage;
                 stopServerSentEvent();
@@ -24,15 +24,16 @@
 
         eventSource = new EventSource('/parts/new/sse');
         if (!eventSource)
-            throw redirect('/login');
+            throw redirect(307, '/login');
         eventSource.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.accepted === null)return;
             eventSource.close();
-            fetch('/parts/new/cancel');
+            eventSource = null;
+            fetch('/parts/new/cancel', {method: 'POST'});
             if (data.accepted) {
                 alert(`${form.opponent} accepted your request !\nYou'll be redirected to the part page.`);
-                goto('/');
+                goto('/controller');
             } else {
                 alert(`${form.opponent} declined your request`);
                 goto('/').then(() => goto('/parts/new'));

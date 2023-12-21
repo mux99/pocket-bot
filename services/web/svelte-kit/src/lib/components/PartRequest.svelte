@@ -12,7 +12,7 @@
                     goto('/').then(() => goto('/parts/requests'));
                 } else {
                     alert(`You'll be redirected to the part page to fight against ${part.requester_username}\nGood luck !`);
-                    goto('/');
+                    goto('/controller');
                 }
             });
     }
