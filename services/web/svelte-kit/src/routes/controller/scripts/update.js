@@ -1,4 +1,8 @@
+import { goto } from '$app/navigation';
+import { redirect } from '@sveltejs/kit';
+
 let isFall = "0";
+let eventSource;
 
 
 export function updateLives(lives_left) {
@@ -10,7 +14,7 @@ export function updateLives(lives_left) {
       lifeIcon.src = '/heart.svg';
       lifeContainer.appendChild(lifeIcon);
     }
-    if (lives_left == "3"){
+    if (lives_left == "0"){
         endGame();
     }
 }
@@ -31,7 +35,29 @@ export function updateFall(fall_bool) {
 }
 
 export function endGame(){
-    //tmp
+    if (eventSource)
+        eventSource.close();
+    alert("You've lost the part");
+    fetch('/parts/lose', {method: 'POST'}).then(() => goto('/parts'));
+}
+
+export function startServerSentEvenSession() {
+    eventSource = new EventSource('/controller/sse');
+    if (!eventSource)
+        throw redirect(307, '/login');
+    eventSource.onmessage = (event) => {
+        const eventData = JSON.parse(event.data);
+        if (eventData.loser) {
+            stopServerSentEventSession();
+            alert(`You've won the part !`);
+            goto('/parts');
+        }
+    }
+}
+
+export function stopServerSentEventSession() {
+    if (eventSource)
+        eventSource.close();
 }
 
 function getGradientColor(percentage) {

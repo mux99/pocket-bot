@@ -1,10 +1,12 @@
 <script>
-  import { onMount, afterUpdate } from 'svelte';
+    import { onMount, afterUpdate, onDestroy } from 'svelte';
   import { startDrag, endDrag, moveJoystick, activateArms } from './scripts/joystick.js';
-  import { updateBattery, updateLives } from './scripts/update.js';
-  import { handleKeyDown, handleKeyUp } from './scripts/key.js'
-  import { connect, disconnect, get_os } from './scripts/blt.js'
+    import { endGame, stopServerSentEventSession, updateBattery, updateLives } from './scripts/update.js';
+  import { handleKeyDown, handleKeyUp } from './scripts/key.js';
+  import { connect, disconnect, get_os } from './scripts/blt.js';
+  import { startServerSentEvenSession } from './scripts/update.js';
 
+  export let data;
   let joystick, outerCircle, actionButton, batteryPercentage, lifeContainer, batteryIcon;
 
   onMount(() => {
@@ -15,7 +17,11 @@
     lifeContainer = document.getElementById('lifeContainer');
     batteryIcon = document.getElementById('batteryIcon');
     init();
+    if (data.part)
+        startServerSentEvenSession();
   });
+
+  onDestroy(() => stopServerSentEventSession());
 
   afterUpdate(() => {
     updateLives("3");
@@ -48,7 +54,14 @@
         bluetooth_button.classList.add("connecting");
         connect();
     }
+
+
 }
+  function getTitle() {
+      if (!data.part)
+          return "You're playing in a free roaming";
+      return `You're playing against ${data.user_info.user_id === data.part.player1_id ? data.part.player1_username : data.part.player2_username}`;
+  }
 </script>
 <style>
     :root{
@@ -214,8 +227,17 @@
         .button-text { width: 35vh ; height: 35vh; }
         .joystick-container { top: 25%; }
     }
+
+    #title {
+        display: block;
+        text-align: center;
+    }
 </style>
 <body>
+    <div id="title">
+        <h2>{getTitle()}</h2>
+    </div>
+
     <div class="battery">
         <div class="battery-icon" id="batteryIcon">
             <span id="batteryPercentage"></span>
@@ -240,4 +262,6 @@
     <div id="btcontainer"><button id="bluetooth_button" type="button" class="disconnected"
         on:click={bluetooth_click}></button>
     </div>
+    <button on:click={endGame}>End game</button>
 </body>
+
