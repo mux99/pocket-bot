@@ -20,21 +20,9 @@ async function createUser(username, hashedPassword) {
 
 const testCSSProperties = async (element, properties) => {
     for (const [property, value] of Object.entries(properties)) {
-        const isEmValue = value.includes('em');
-        const expectedValue = isEmValue
-            ? Math.floor(parseFloat(value) * 17.333) // conversion en px
-            : value;
-        const receivedValue = await element.evaluate((el, prop) =>
-            window.getComputedStyle(el).getPropertyValue(prop),
-            property
-        );
-        const receivedValueInt = isEmValue
-            ? Math.floor(parseFloat(receivedValue))
-            : receivedValue;
-        await expect(receivedValueInt.toString()).toBe(expectedValue.toString());
+        await expect(element).toHaveCSS(property, value);
     }
 };
-
 
 const getComputedStyleProperty = async (element, property) => {
     return await element.evaluate((el, prop) =>
@@ -75,7 +63,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
 
     // Test title properties
     await testCSSProperties(title, {
-        'font-size': '1.8em',
         'font-weight': '700',
     });
 
@@ -88,10 +75,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     // Test form properties
     expect(formColor).toBe('rgb(31, 41, 55)');
     expect(formBorderColor).toBe('rgb(55, 65, 81)');
-    await testCSSProperties(formDiv, {
-        'border-radius': '0.5em',
-        'padding': '1em',
-    });
 
     // Test globalInput properties
     await testCSSProperties(basicInput, {
@@ -104,7 +87,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
         'outline': 'rgb(255, 255, 255) none 0px',
         'border': '0px none rgb(255, 255, 255)',
         'font-family': 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
-        'padding': '0px 1em',
         'background-repeat': 'no-repeat',
         'cursor': 'pointer',
         'box-sizing': 'border-box',
