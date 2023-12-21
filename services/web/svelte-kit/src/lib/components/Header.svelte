@@ -22,60 +22,21 @@
 	}
 </script>
 
-<header>
-	<div id='notifications-counter' style='opacity: {!showNotifications && notificationsToSee ? "1": "0"}'>{notificationsToString()}</div>
-	<div
-		on:click={() => showNotifications = !showNotifications}
-		on:keypress={() => showNotifications}
-		on:keydown={() => showNotifications}
-		aria-hidden="false"
-		role="button"
-		aria-pressed="false"
-		tabindex="0"
-	>
-		<img src={user.avatar} alt="{user.username}'s avatar" id="avatar-header" class={showNotifications ? 'avatar-header-big' : 'avatar-header-small'} />
-	</div>
-	<br>
-
-	<nav id="navbar-header" class={showNotifications ? "navbar-header-showed" : "navbar-header-hidden"}>
-		<a href='/' class="links-header" on:click={hideNotification}>Home page</a><br>
-		<a href='/profile' class="links-header" on:click={hideNotification}>Profile</a><br>
-		<a href='/friend' class="links-header" on:click={hideNotification}>
-			Friends request
-			<NotificationsBubble notifications={friendsNotificationsToSee} />
-		</a><br>
-		<a href='/parts/requests' class="links-header" on:click={hideNotification}>
-			Parts request
-			<NotificationsBubble notifications={partsNotificationsToSee} />
-		</a>
-		<br>
-		<a href='/notifications' class="links-header" on:click={hideNotification}>
-			Notifications
-			<NotificationsBubble notifications={notifications}/>
-		</a><br>
-		<a href='/login' class="links-header" on:click={disconnect} data-sveltekit-reload>Disconnect</a>
-	</nav>
-	<div
-		id='filled-header'
-		on:click={() => showNotifications = !showNotifications}
-		class={!showNotifications ? "filled-header-hidden" : "filled-header-showed"}
-		aria-hidden='true'
-	></div>
-</header>
-
 <style>
 	header {
 		text-align: center;
-		background-color: #000B1D;
-		color: white;
-		box-shadow: black 0.3em 0.3em 0.3em 0.3em;
-		margin-bottom: 1em;
+		background-color: var(--background-3);
+		box-shadow: black 0 0 2px 0;
+	}
+
+	a {
+		width: 90%;
+		margin: 0 auto;
 	}
 
 	#notifications-counter {
 		z-index: 2;
-		background-color: red;
-		color: white;
+		background-color: var(--red);
 		clip-path: circle();
 		padding: 0.2em;
 		top: 2em;
@@ -93,37 +54,27 @@
 	}
 
 	.avatar-header-small {
+		margin-top: 1em;
+		margin-bottom: 1em;
 		max-width: 4em;
 		max-height: 4em;
 	}
 
 	.avatar-header-big {
+		margin-top: 1em;
+		margin-bottom: 1em;
 		max-width: 8em;
 		max-height: 8em;
 	}
 
-	.links-header {
-		display: inline-block;
-		font-size: 1.1em;
-		font-weight: bold;
-		padding: 0.3em 1.5em 0.3em 1.5em;
-		margin: 0.5em;
-		border: rgba(255, 255, 255, 0) 0.02em solid;
-		border-radius: 0.5em;
-	}
-
-	.links-header:hover {
-		border-color: rgba(255, 255, 255, 0.5);
-	}
-
 	#navbar-header {
 		z-index: 3;
-		background-color: #000B1D;
+		background-color: var(--background-3);
 		display: block;
 		width: 100vw;
 		transition: all 500ms;
 		position: absolute;
-		box-shadow: black 0.5em 0.5em 0.3em 0.35em;
+		padding-bottom: 1em;
 	}
 
 	.navbar-header-showed, .navbar-header-showed > * {
@@ -132,7 +83,6 @@
 	}
 
 	.navbar-header-hidden, .navbar-header-hidden > * {
-		opacity: 0;
 		height: 0;
 		font-size: 0;
 	}
@@ -140,17 +90,58 @@
 	.filled-header-hidden {
 		height: 0;
 		opacity: 0.5;
+		background-color: rgba(0, 0, 0, 0);
 	}
 	.filled-header-showed {
 		height: 100vh;
 		opacity: 0.7;
+		background-color: rgba(39, 35, 35, 0.699);
 	}
 
 	#filled-header {
-		background-color: black;
 		z-index: 2;
 		position: fixed;
 		transition: all 500ms;
 		width: 100vw;
 	}
 </style>
+
+<header>
+	<div id='notifications-counter' style='opacity: {!showNotifications && notificationsToSee ? "1": "0"}'>{notificationsToString()}</div>
+	<div
+		on:click={() => showNotifications = !showNotifications}
+		on:keypress={() => showNotifications}
+		on:keydown={() => showNotifications}
+		aria-hidden="false"
+		role="button"
+		aria-pressed="false"
+		tabindex="0"
+	>
+		<img src={user.avatar} alt="{user.username}'s avatar" id="avatar-header" class={showNotifications ? 'avatar-header-big' : 'avatar-header-small'} />
+	</div>
+
+	<nav id="navbar-header" class={showNotifications ? "navbar-header-showed" : "navbar-header-hidden"}>
+		<a class="am_a_button" href='/' on:click={hideNotification}>Home page</a><br>
+		<a href='/profile' class="am_a_button" on:click={hideNotification}>Profile</a><br>
+		<a href='/friend' class="am_a_button" on:click={hideNotification}>
+			Friends request
+			<NotificationsBubble notifications={friendsNotificationsToSee} />
+		</a><br>
+		<a href='/parts/requests' class="am_a_button" on:click={hideNotification}>
+			Parts request
+			<NotificationsBubble notifications={partsNotificationsToSee} />
+		</a>
+		<br>
+		<a href='/notifications' class="am_a_button" on:click={hideNotification}>
+			Notifications
+			<NotificationsBubble notifications={notifications}/>
+		</a><br>
+		<a href='/login' class="am_a_button" on:click={disconnect} data-sveltekit-reload>Disconnect</a>
+	</nav>
+	<div
+		id='filled-header'
+		on:click={() => showNotifications = !showNotifications}
+		class={!showNotifications ? "filled-header-hidden" : "filled-header-showed"}
+		aria-hidden='true'
+	></div>
+</header>
