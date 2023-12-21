@@ -23,14 +23,14 @@
     .part {
         background-color: var(--background-3);
         padding: 2em;
-        margin: 1em 0 1em 1em;
+        margin: 0 1em 1em 1em;
         text-align: center;
         border-radius: 1em;
     }
 </style>
 
 <div class="part">
-    <span>You {part.winner_id === user.user_id ? "won" : "lost"} against <b>{getOpponentUsername()}</b> <a href="/part/new">Ask a rematch</a></span>
+    <span>You {part.winner_id === user.user_id ? "won" : "lost"} against <b>{getOpponentUsername()}</b> <a class="am_a_button" style="display: inline-block;" href="/parts/new">Ask a rematch</a></span>
     <div>
         Match date : {part.date}
         <br>
