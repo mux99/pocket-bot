@@ -46,3 +46,17 @@ export async function isNotificationOwnedBy(userId, notificationId) {
 	});
 	return rows[0].exists;
 }
+
+export async function deleteSpecificNotification(receiver, sender, type) {
+	await pool.query({
+		text: 'DELETE FROM notifications WHERE receiver_id=$1 AND sender_id=$2 AND type=$3',
+		values: [receiver, sender, type]
+	});
+}
+
+export async function deletePartNotificationsOfSender(senderId) {
+	await pool.query({
+		text: 'DELETE FROM notifications WHERE sender_id=$1 AND type = \'parts\';',
+		values: [senderId]
+	});
+}

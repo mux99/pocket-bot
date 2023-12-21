@@ -27,6 +27,11 @@
         width: 1px;
         background-color: #9CA3AF;
     }
+    #more-friends {
+        display: inline-block;
+        margin-top: 1em;
+        font-size: 1.7em;
+    }
 </style>
 
 <div id="global">
@@ -57,4 +62,7 @@
             {/if}
         </div>
     </div>
+</div>
+<div style="text-align: center">
+    <a id="more-friends" class="am_a_button" href="/friend-request/send">Add more friends</a>
 </div>
