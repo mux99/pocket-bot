@@ -17,7 +17,7 @@
             <a href="/admin/modules" class="text-white underline">View Modules</a>
         </div>
     </div>
-    <div class="text-center mt-10 text-white" style="margin: 200px;">
+    <div class="text-center mt-10 text-white" style="margin: 13em;">
         You can view this section because you have an 'admin' role.<br>Only owners of this role can access this page and any other page under the '/admin' route.
     </div>
 </div>
