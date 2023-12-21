@@ -1,5 +1,4 @@
 import {pool} from "../../hooks.server.js";
-import {rows} from "pg/lib/defaults.js";
 
 export async function getUsers() {
     const { rows } = await pool.query(`
