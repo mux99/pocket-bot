@@ -1,6 +1,4 @@
 import {pool} from "../../hooks.server.js";
-import {rows} from "pg/lib/defaults.js";
-import { expoOut } from 'svelte/easing';
 
 export async function askNewPart(requesterId, opponentId) {
     await pool.query({

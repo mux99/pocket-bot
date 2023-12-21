@@ -20,8 +20,8 @@
       Alone ? You can also just take control of the Pocket Bot™ * and have fun controling this powerfull machine !
   </p>
   <div id="pictures">
-      <img src="/img/bot1-transformed.png" alt="Pocket bot picture">
-      <img src="/img/bot2-transformed.png" alt="Pocket bot picture">
+      <img src="/img/bot1-transformed.png" alt="Pocket bot">
+      <img src="/img/bot2-transformed.png" alt="Pocket bot">
   </div>
   <br>
   <button data-testid="show_rule_button" on:click={() => show_rules = !show_rules}>{show_rules ? 'Hide Rules' : 'Show Rules'}</button>

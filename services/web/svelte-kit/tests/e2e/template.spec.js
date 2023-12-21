@@ -1,5 +1,5 @@
 import {expect, test} from "@playwright/test";
-import { setAdminFromUsername, deleteUserByUsername, getTempPool, getLoggedCookiesByUsername, insertSession } from "../../utils";
+import { setAdminFromUsername, deleteUserByUsername, getTempPool, getLoggedCookiesByUsername, insertSession } from "../utils";
 import * as crypto from 'crypto'
 
 async function createUser(username, hashedPassword) {
@@ -55,9 +55,6 @@ test("Vérifiez si les propriétés CSS sont correctement définies", async ({ b
     await setAdminFromUsername(username);
     await page.goto('/css-template');
     await expect(page.url().includes('/css-template')).toStrictEqual;
-
-
-    console.log(page.url())
 
     const title = page.locator('h1');
     const formDiv = page.locator('#formTest');
