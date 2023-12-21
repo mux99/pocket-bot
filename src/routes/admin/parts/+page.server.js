@@ -1,6 +1,6 @@
 import {getUserRoles} from "$lib/server/account.js";
 import {redirect} from "@sveltejs/kit";
-import {getAllParts} from "../../../lib/server/parts.js";
+import {getAllParts} from '$lib/server/parts.js';
 
 export const load = async ({ locals }) => {
     if (!locals.userInfo)
