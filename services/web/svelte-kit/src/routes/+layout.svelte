@@ -6,6 +6,7 @@
     import { page } from "$app/stores";
 
     export let data;
+    console.log(data)
 
     function showFooter() {
         if ($page.url.pathname === '/login' || $page.url.pathname === '/register')

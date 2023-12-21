@@ -24,9 +24,17 @@
 
 <header>
 	<div id='notifications-counter' style='opacity: {!showNotifications && notificationsToSee ? "1": "0"}'>{notificationsToString()}</div>
-	<button on:click={() => showNotifications = !showNotifications}>
+	<div
+		on:click={() => showNotifications = !showNotifications}
+		on:keypress={() => showNotifications}
+		on:keydown={() => showNotifications}
+		aria-hidden="false"
+		role="button"
+		aria-pressed="false"
+		tabindex="0"
+	>
 		<img src={user.avatar} alt="{user.username}'s avatar" id="avatar-header" class={showNotifications ? 'avatar-header-big' : 'avatar-header-small'} />
-	</button>
+	</div>
 	<br>
 
 	<nav id="navbar-header" class={showNotifications ? "navbar-header-showed" : "navbar-header-hidden"}>
@@ -56,13 +64,13 @@
 </header>
 
 <style>
-    header {
+	header {
 		text-align: center;
 		background-color: #000B1D;
 		color: white;
 		box-shadow: black 0.3em 0.3em 0.3em 0.3em;
 		margin-bottom: 1em;
-    }
+	}
 
 	#notifications-counter {
 		z-index: 2;
@@ -78,6 +86,7 @@
 	}
 
 	#avatar-header {
+		cursor: pointer;
 		clip-path: circle();
 		display: inline-block;
 		transition: all 500ms;

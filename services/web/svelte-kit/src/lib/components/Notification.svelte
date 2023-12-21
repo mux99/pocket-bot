@@ -17,7 +17,7 @@
     <div class="notification-info">
         {#if notification.type === 'friends'}
             <b>{notification.sender}</b> sent you a friends request
-            <a href="/parts/requests" target="_blank" class="notification-goto">
+            <a href="/friend" target="_blank" class="notification-goto">
                 <img
                   class="notification-goto-img"
                   src="/img/notifications/link.svg"
@@ -26,7 +26,7 @@
             </a>
         {:else if notification.type === 'parts'}
             <b>{notification.sender}</b> sent you a part request
-            <a href="/friend" target="_blank" class="notification-goto">
+            <a href="/parts/requests" target="_blank" class="notification-goto">
                 <img
                   class="notification-goto-img"
                   src="/img/notifications/link.svg"
