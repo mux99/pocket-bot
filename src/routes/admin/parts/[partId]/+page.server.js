@@ -1,16 +1,7 @@
 import {getUserRoles} from "$lib/server/account.js";
 import {pool} from "../../../../hooks.server.js";
 import {redirect} from "@sveltejs/kit";
-import {getPartInfo, updatePart} from '$lib/server/parts.js';
-
-async function softDeletePart(partId) {
-    await pool.query({
-		text: "UPDATE archive_parts SET deleted = true WHERE part_id = $1",
-		values: [partId]
-	});
-
-	return true;
-}
+import {getPartInfo, updatePart, softDeletePart} from '$lib/server/parts.js';
 
 export const load = async (serverLoadEvent) => {
     const {locals} = serverLoadEvent;

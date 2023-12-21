@@ -97,3 +97,12 @@ export async function updatePart(winnerId, loserId, partId) {
         values: [winnerId, loserId, partId]
     });
 }
+
+export async function softDeletePart(partId) {
+    await pool.query({
+		text: "UPDATE archive_parts SET deleted = true WHERE part_id = $1",
+		values: [partId]
+	});
+
+	return true;
+}
